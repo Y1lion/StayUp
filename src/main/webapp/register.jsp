@@ -52,7 +52,7 @@
                 <button type="submit" class="btn btn-light mt-4 text-primary">SUBMIT</button>
             </div>
             <div class="d-flex align-items-end justify-content-end" style="transform: translateY(50px);">
-                <img src="images/StayUp_Scritta.png" class="img-fluid" width="80" height="80">
+                <img src="images/StayUp_White.png" class="img-fluid" width="80" height="80">
             </div>
         </form>
     </div>
