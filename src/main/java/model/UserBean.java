@@ -7,7 +7,7 @@ public class UserBean {
     private String cognome;
     private String role;
     private String telefono;
-    private String sex;
+    private String gender;
     private Integer workoutYears;
     private Integer ptYears;
 
@@ -59,12 +59,12 @@ public class UserBean {
         this.role = role;
     }
 
-    public String getSex() {
-        return sex;
+    public String getgender() {
+        return gender;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setgender(String gender) {
+        this.gender = gender;
     }
 
     public Integer getWorkoutYears() {
