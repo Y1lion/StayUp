@@ -68,6 +68,19 @@ input[type="text"], input[type="email"], input[type="password"], input[type="tel
     box-shadow: none !important;
     border-color: white !important;
 }
+input[type="checkbox"]:checked{
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: 0 0 24px 8px rgba(255,235,167,.2) !important;
+}
+input[type="checkbox"]{
+    box-shadow: 0 0 24px 8px rgba(255,235,167,.2) !important;
+    border-color: transparent;
+    background-color: transparent;
+}
+input[type="checkbox"]:focus{
+    border: none !important;
+}
 
 input[type="radio"] {
     -webkit-appearance: none !important;
