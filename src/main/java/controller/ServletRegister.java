@@ -12,7 +12,7 @@ import model.UserBeanDAO;
 
 import static java.lang.System.out;
 
-@WebServlet(name = "ServletRegister", value = "/ServletRegister")
+@WebServlet(name = "register", value = "/register")
 public class ServletRegister extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -26,7 +26,7 @@ public class ServletRegister extends HttpServlet {
         String nome = request.getParameter("regname");
         String cognome = request.getParameter("regsurname");
         String telefono = request.getParameter("regtel");
-        String gender = request.getParameter("reggender");
+        String gender = request.getParameter("gender");
         int workoutYears = Integer.parseInt(request.getParameter("regwYears"));
 
 
@@ -35,6 +35,7 @@ public class ServletRegister extends HttpServlet {
             password = PasswordEncryptionUtil.encryptPassword(password);
             UserBeanDAO ubDAO=new UserBeanDAO();
             UserBean ub = ubDAO.UserRegistration(ID,password, nome, cognome, telefono, gender, workoutYears);
+            out.println(ub.getEmail());
             if(ub.getEmail() != "duplicato" &&  ub.getPsw() != "duplicato") {
                 HttpSession sess=request.getSession(true);
                 sess.setAttribute("email",ID);
