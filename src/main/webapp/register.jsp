@@ -10,7 +10,7 @@
 <body>
 <div class="d-flex h-100 align-items-center justify-content-center" id="logDiv">
     <div class="d-flex p-5 flex-column text-white bgGradient shadows">
-        <form method="post" >
+        <form method="post" action="register">
             <div class="d-flex text-center flex-column  h2 mb-3">
                 <span class="card-text">Sign Up</span>
             </div>
@@ -37,15 +37,15 @@
             </div>
             <div class="d-flex flex-column mt-4 form-group h5">
                 <div class="d-flex flex-row justify-content-start align-items-center form-check">
-                    <input type="radio" class="form-check-input" name="gender" id="regmale" required>
+                    <input type="radio" class="form-check-input" name="gender" id="regmale" value="m" required>
                     <label for="regmale" class="form-check-label mt-1">Male</label>
                 </div>
                 <div class="d-flex flex-row justify-content-start align-items-center form-check">
-                    <input type="radio" class="form-check-input" name="gender" id="regfemale" required>
+                    <input type="radio" class="form-check-input" name="gender" id="regfemale" value="f" required>
                     <label for="regfemale" class="form-check-label mt-1">Female</label>
                 </div>
                 <div class="d-flex flex-row justify-content-start align-items-center form-check">
-                    <input type="radio" class="form-check-input" name="gender" id="regother" required>
+                    <input type="radio" class="form-check-input" name="gender" id="regother" value="o" required>
                     <label for="regother" class="form-check-label mt-1">Other</label>
                 </div>
             </div>
