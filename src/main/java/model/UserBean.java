@@ -59,11 +59,11 @@ public class UserBean {
         this.role = role;
     }
 
-    public String getgender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setgender(String gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
