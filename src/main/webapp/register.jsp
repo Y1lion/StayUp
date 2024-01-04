@@ -33,9 +33,6 @@
                 <input type="tel" class="form-control" placeholder="telephone" name="regtel" id="regtel" required pattern="\d{10}" oninvalid="alert('Telephone must contains only 10 numbers.')">
             </div>
             <div class="d-flex flex-column mt-4 form-group h5">
-                <input type="tel" class="form-control" placeholder="workout years" name="regwYears" id="regwYears" required pattern="\d{1,2}" oninvalid="alert('Workout Years must contain 1 or 2 numbers.')">
-            </div>
-            <div class="d-flex flex-column mt-4 form-group h5">
                 <div class="d-flex flex-row justify-content-start align-items-center form-check">
                     <input type="radio" class="form-check-input" name="gender" id="regmale" value="m" required>
                     <label for="regmale" class="form-check-label mt-1">Male</label>
