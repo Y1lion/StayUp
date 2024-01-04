@@ -6,7 +6,7 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 
-import model.PasswordEncryptionUtil;
+import model.utils.PasswordEncryptionUtil;
 import model.UserBean;
 import model.UserBeanDAO;
 
@@ -27,14 +27,16 @@ public class ServletRegister extends HttpServlet {
         String cognome = request.getParameter("regsurname");
         String telefono = request.getParameter("regtel");
         String gender = request.getParameter("gender");
-        int workoutYears = Integer.parseInt(request.getParameter("regwYears"));
-
+        String ptCheck = request.getParameter("ptCheck");
 
         out.println("email: "+ID);
         try{
             password = PasswordEncryptionUtil.encryptPassword(password);
             UserBeanDAO ubDAO=new UserBeanDAO();
-            UserBean ub = ubDAO.UserRegistration(ID,password, nome, cognome, telefono, gender, workoutYears);
+            UserBean ub = ubDAO.userRegistration(ID,password, nome, cognome, telefono, gender);
+            if(ptCheck.equalsIgnoreCase("true")){
+                ub.setRole("PT");
+            }
             out.println(ub.getEmail());
             if(ub.getEmail() != "duplicato" &&  ub.getPsw() != "duplicato") {
                 HttpSession sess=request.getSession(true);
