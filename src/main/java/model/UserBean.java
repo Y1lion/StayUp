@@ -8,8 +8,6 @@ public class UserBean {
     private String role;
     private String telefono;
     private String gender;
-    private Integer workoutYears;
-    private Integer ptYears;
 
     public UserBean(String email2, String psw2) {
         email = email2;
@@ -65,21 +63,5 @@ public class UserBean {
 
     public void setGender(String gender) {
         this.gender = gender;
-    }
-
-    public Integer getWorkoutYears() {
-        return workoutYears;
-    }
-
-    public void setWorkoutYears(Integer workoutYears) {
-        this.workoutYears = workoutYears;
-    }
-
-    public Integer getPtYears() {
-        return ptYears;
-    }
-
-    public void setPtYears(Integer ptYears) {
-        this.ptYears = ptYears;
     }
 }
