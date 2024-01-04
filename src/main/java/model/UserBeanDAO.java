@@ -1,5 +1,7 @@
 package model;
 
+import model.utils.ConnectionPool;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -25,6 +27,11 @@ public class UserBeanDAO {
                 ub.setCognome(res.getString("surname"));
                 ub.setRole(res.getString("role"));
                 ub.setTelefono(res.getString("telephone"));
+                if (res.getString("gender").equalsIgnoreCase("m"))
+                    ub.setGender("Male");
+                else if (res.getString("gender").equalsIgnoreCase("f"))
+                    ub.setGender("Female");
+                else ub.setGender("Other");
 
                 return ub;
             }else{
@@ -194,14 +201,14 @@ public class UserBeanDAO {
 
         return null;
     }
-    public synchronized UserBean UserRegistration(String email, String password, String name, String surname, String telephone, String gender, Integer workoutYears){
+    public synchronized UserBean userRegistration(String email, String password, String name, String surname, String telephone, String gender){
         Connection conn =  null;
         PreparedStatement ps = null;
 
         try {
             System.out.println(password);
             conn = ConnectionPool.getConnection();
-            String sqlString = new String("INSERT INTO user(email,password,name,surname,telephone,gender,workoutYears) VALUES(?,?,?,?,?,?,?)");
+            String sqlString = new String("INSERT INTO user(email,password,name,surname,telephone,gender) VALUES(?,?,?,?,?,?)");
             ps = conn.prepareStatement(sqlString);
 
             ps.setString(1, email);
@@ -210,7 +217,6 @@ public class UserBeanDAO {
             ps.setString(4, surname);
             ps.setString(5, telephone);
             ps.setString(6, gender);
-            ps.setInt(7, workoutYears);
 
             int upd = ps.executeUpdate();
 
