@@ -1,11 +1,22 @@
-package model;
+package model.user;
 
 import model.utils.ConnectionPool;
 
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * The type User bean dao.
+ */
 public class UserBeanDAO {
+    /**
+     * Login user user bean.
+     *
+     * @param email    the email
+     * @param password the password
+     * @return the user bean
+     */
+    //TODO: Admin check and approve request
     public synchronized UserBean loginUser(String email, String password){ //ricerco nel db l'utente con email e psw dati in input
 
         Connection conn = null;
@@ -54,6 +65,14 @@ public class UserBeanDAO {
         return null;
     }
 
+    /**
+     * Change email user bean.
+     *
+     * @param ub       the user bean
+     * @param oldemail the old email
+     * @param newemail the new email
+     * @return the user bean
+     */
     public synchronized UserBean changeEmail(UserBean ub, String oldemail, String newemail) {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -107,6 +126,14 @@ public class UserBeanDAO {
         return null;
     }
 
+    /**
+     * Change psw user bean.
+     *
+     * @param ub     the user bean
+     * @param oldpsw the old password
+     * @param newpsw the new password
+     * @return the user bean
+     */
     public synchronized UserBean changePsw(UserBean ub, String oldpsw, String newpsw) {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -159,6 +186,13 @@ public class UserBeanDAO {
         return null;
     }
 
+    /**
+     * Forgot psw user bean.
+     *
+     * @param ub     the user bean
+     * @param newpsw the new password
+     * @return the user bean
+     */
     public synchronized UserBean forgotPsw(UserBean ub, String newpsw) {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -201,6 +235,18 @@ public class UserBeanDAO {
 
         return null;
     }
+
+    /**
+     * User registration user bean.
+     *
+     * @param email     the email
+     * @param password  the password
+     * @param name      the name
+     * @param surname   the surname
+     * @param telephone the telephone
+     * @param gender    the gender
+     * @return the user bean
+     */
     public synchronized UserBean userRegistration(String email, String password, String name, String surname, String telephone, String gender){
         Connection conn =  null;
         PreparedStatement ps = null;
@@ -225,7 +271,7 @@ public class UserBeanDAO {
                 ub.setNome(name);
                 ub.setCognome(surname);
                 ub.setRole("user");
-                System.out.print("Registrazione effettuata con successo");
+                System.out.println("Registrazione effettuata con successo");
                 ps.close();
                 ConnectionPool.releaseConnection(conn);
                 return ub;
@@ -250,6 +296,12 @@ public class UserBeanDAO {
         return null;
     }
 
+    /**
+     * Check email user bean.
+     *
+     * @param email the email
+     * @return the user bean
+     */
     public synchronized UserBean checkEmail(String email){
 
         Connection conn = null;
@@ -288,6 +340,12 @@ public class UserBeanDAO {
         }
         return null;
     }
+
+    /**
+     * Delete user.
+     *
+     * @param uEmail the user email
+     */
     public synchronized void deleteUser(String uEmail) {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -315,6 +373,11 @@ public class UserBeanDAO {
         }
     }
 
+    /**
+     * All users array list.
+     *
+     * @return the array list
+     */
     public synchronized ArrayList<UserBean> allUsers(){
 
         Connection conn = null;
@@ -346,5 +409,53 @@ public class UserBeanDAO {
             }
         }
         return null;
+    }
+
+    /**
+     * Request role pt user bean.
+     *
+     * @param ub the user bean
+     * @return the user bean
+     */
+    public synchronized UserBean requestRolePT(UserBean ub){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try{
+            conn = ConnectionPool.getConnection();
+            String sql = new String("SELECT * FROM user WHERE email = ? AND password = ?");
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, ub.getEmail());
+            ps.setString(2, ub.getPsw());
+
+            ResultSet res = ps.executeQuery();
+            if(res.next()){
+                PreparedStatement prepstat = conn.prepareStatement("UPDATE user SET role = ? WHERE email = ? AND password = ?");
+                prepstat.setString(1, "PTR");
+                prepstat.setString(2, ub.getEmail());
+                prepstat.setString(3, ub.getPsw());
+                int state = prepstat.executeUpdate();
+
+                if(state != 0) {
+                    ub.setRole("PTR");
+                    System.out.println("Role updated");
+
+                    return ub;
+                }
+                else {
+                    System.out.println("No changes");
+                    return null;
+                }
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try{
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return ub;
     }
 }
