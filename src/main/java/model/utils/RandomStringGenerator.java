@@ -2,6 +2,9 @@ package model.utils;
 
 import java.security.SecureRandom;
 
+/**
+ * The type Random string generator.
+ */
 public class RandomStringGenerator {
     private static final String SYMBOLS = "@$!%*?&";
     private static final String UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -9,6 +12,11 @@ public class RandomStringGenerator {
     private static final String NUMBERS = "0123456789";
     private static final String ALL_CHARACTERS = SYMBOLS + UPPERCASE_LETTERS + LOWERCASE_LETTERS + NUMBERS;
 
+    /**
+     * Generate random string string.
+     *
+     * @return the string
+     */
     public static String generateRandomString() {
         SecureRandom random = new SecureRandom();
         int length = random.nextInt(17) + 8; // Genera una lunghezza casuale tra 8 e 24 caratteri

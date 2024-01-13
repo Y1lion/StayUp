@@ -4,8 +4,18 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * The type Password encryption util.
+ */
 public class PasswordEncryptionUtil {
 
+    /**
+     * Encrypt password string.
+     *
+     * @param password the password
+     * @return the string
+     * @throws NoSuchAlgorithmException the no such algorithm exception
+     */
     public static String encryptPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));

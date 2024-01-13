@@ -4,6 +4,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+
+/**
+ * The type Connection pool.
+ */
 public class ConnectionPool {
     private static List<Connection> freeDbConnections;
 
@@ -29,6 +33,12 @@ public class ConnectionPool {
     }
 
 
+    /**
+     * Gets connection.
+     *
+     * @return the connection
+     * @throws SQLException the sql exception
+     */
     public static synchronized Connection getConnection() throws SQLException {
         Connection connection;
 
@@ -50,6 +60,12 @@ public class ConnectionPool {
         return connection;
     }
 
+    /**
+     * Release connection.
+     *
+     * @param connection the connection
+     * @throws SQLException the sql exception
+     */
     public static synchronized void releaseConnection(Connection connection) throws SQLException {
         if(connection != null) freeDbConnections.add(connection);
     }
