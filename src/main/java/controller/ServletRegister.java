@@ -7,8 +7,8 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 
 import model.utils.PasswordEncryptionUtil;
-import model.UserBean;
-import model.UserBeanDAO;
+import model.user.UserBean;
+import model.user.UserBeanDAO;
 
 import static java.lang.System.out;
 
@@ -30,12 +30,14 @@ public class ServletRegister extends HttpServlet {
         String ptCheck = request.getParameter("ptCheck");
 
         out.println("email: "+ID);
+        out.println("ptCheck: "+ptCheck);
         try{
             password = PasswordEncryptionUtil.encryptPassword(password);
             UserBeanDAO ubDAO=new UserBeanDAO();
             UserBean ub = ubDAO.userRegistration(ID,password, nome, cognome, telefono, gender);
             if(ptCheck.equalsIgnoreCase("true")){
-                ub.setRole("PT");
+                //TODO: Admin check and approve request
+                ub = ubDAO.requestRolePT(ub);
             }
             out.println(ub.getEmail());
             if(ub.getEmail() != "duplicato" &&  ub.getPsw() != "duplicato") {
