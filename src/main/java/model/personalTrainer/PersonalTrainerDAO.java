@@ -1,5 +1,6 @@
-package model;
+package model.personalTrainer;
 
+import model.user.UserBean;
 import model.utils.ConnectionPool;
 
 import java.sql.Connection;

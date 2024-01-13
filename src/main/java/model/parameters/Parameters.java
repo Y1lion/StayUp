@@ -1,4 +1,4 @@
-package model;
+package model.parameters;
 
 public class Parameters  {
     private String email;

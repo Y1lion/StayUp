@@ -1,4 +1,6 @@
-package model;
+package model.personalTrainer;
+
+import model.user.UserBean;
 
 public class PersonalTrainer {
     private UserBean user;

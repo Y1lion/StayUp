@@ -1,4 +1,4 @@
-package model;
+package model.parameters;
 
 import model.utils.ConnectionPool;
 
