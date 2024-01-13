@@ -1,0 +1,157 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@700&family=Noto+Sans+Symbols+2&family=Spectral:wght@600&display=block");
+body{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #c4c3ca;
+    background-color: whitesmoke;
+}
+
+.form-group input::-moz-placeholder  {
+    color: #c4c3ca;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+.form-group input:-moz-placeholder  {
+    color: #c4c3ca;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+.form-group input::-webkit-input-placeholder  {
+    color: #c4c3ca;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+.form-group input:focus:-ms-input-placeholder  {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+.form-group input:focus::-moz-placeholder  {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+.form-group input:focus:-moz-placeholder  {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+.form-group input:focus::-webkit-input-placeholder  {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.btn{
+    font-weight:  600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-left: 30px;
+    padding-right: 30px;
+    box-shadow: 0 8px 24px 0 rgba(255,235,167,.2);
+}
+.shadows{
+    border-radius: 15px;
+    box-shadow: 0 0 24px 8px rgba(255,235,167,.2) !important;
+}
+input[type="text"], input[type="email"], input[type="password"], input[type="tel"]{
+    background: transparent !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border-color: white !important;
+}
+input[type="checkbox"]:checked{
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: 0 0 24px 8px rgba(255,235,167,.2) !important;
+}
+input[type="checkbox"]{
+    box-shadow: 0 0 24px 8px rgba(255,235,167,.2) !important;
+    border-color: transparent;
+    background-color: transparent;
+}
+input[type="checkbox"]:focus{
+    border: none !important;
+}
+
+input[type="radio"] {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    box-shadow: none !important;
+    position: relative;
+    width: 25px;
+    height: 25px;
+    background-color: #fff !important;
+    color: #1789b5 !important;
+    border: 1px solid rgb(128, 128, 128) !important;
+    border-radius: 50%;
+    transition: border-color 0.3s !important;
+}
+input[type="radio"]::before {
+    font-family: "Noto Emoji", sans-serif;
+    position: absolute;
+    top: -3px;
+    left: -4px;
+    width: 25px;
+    height: 25px;
+    font-size: 25px;
+    content: "" !important;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+input[type="radio"]:nth-of-type(1)::before {
+    content: "🟣" !important;
+}
+input[type="radio"]:checked {
+    border-color: #1789b5 !important;
+}
+input[type="radio"]:checked::before {
+    opacity: 1;
+}
+input,
+input::before,
+label {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+label {
+    font-size: 18px;
+    margin-left: 5px;
+    vertical-align: top;
+    cursor: pointer;
+}
+#aLogin {
+    text-decoration-color: white !important;
+}
+#aLogin:hover{
+    color: white !important;
+    transition: all 50ms linear;
+    font-weight: 600 !important;
+}
+.whiteBorder {
+    border-top:none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0 !important;
+    border-color: rgba(255, 255, 255, 1) !important;
+    cursor: pointer;
+}
+.bgGradient{
+    background: rgb(34,193,195);
+    background: linear-gradient(229deg, rgba(34,193,195,1) 0%, rgba(23,137,181,1) 70%, rgba(23,137,181,1) 100%);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.form-control {
+    color: white !important;
+}

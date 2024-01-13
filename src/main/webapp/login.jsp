@@ -10,7 +10,7 @@
 <div class="container-fluid h-100 d-flex justify-content-center align-items-center " style="color: aliceblue">
     <div id="divForSignAndInfo" class="row h-50 d-flex align-items-center m-auto ">
         <div id="divInfos" class="col-lg-8 col-sm-8 h-100 p-4 d-flex flex-column" style="background: rgb(34,193,195);
-background: linear-gradient(229deg, rgba(34,193,195,1) 0%, rgba(23,137,181,1) 70%, rgba(23,137,181,1) 100%);border-radius: 5px 0 0 5px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+    background: linear-gradient(229deg, rgba(34,193,195,1) 0%, rgba(23,137,181,1) 70%, rgba(23,137,181,1) 100%);border-radius: 5px 0 0 5px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
             <h1 class="text-center">Bentornato User</h1>
             <p class="h5 mt-2">Benvenuto nella tua pagina di Login, User! Siamo felici di rivederti. E' bello riaverti qui.</p>
             <button class="btn mt-4 btn-primary align-self-center shadow-lg rounded-pill w-75">Vuoi creare un account?</button>
@@ -26,6 +26,7 @@ background: linear-gradient(229deg, rgba(34,193,195,1) 0%, rgba(23,137,181,1) 70
             <div id="logoDiv" class="d-flex align-items-end  flex-fill align-self-end" >
                     <img src="images/StayUp_Scritta.png"  width="100px"  class="img-fluid bottom-right-image">
             </div>
+        </div>
     </div>
 </div>
 </body>
