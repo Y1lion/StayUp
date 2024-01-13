@@ -12,6 +12,9 @@ import model.user.UserBeanDAO;
 
 import static java.lang.System.out;
 
+/**
+ * The type Servlet register.
+ */
 @WebServlet(name = "register", value = "/register")
 public class ServletRegister extends HttpServlet {
     @Override

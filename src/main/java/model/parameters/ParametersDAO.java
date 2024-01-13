@@ -8,7 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * The type Parameters dao.
+ */
 public class ParametersDAO {
+    /**
+     * Get parameters parameters.
+     *
+     * @param email the email
+     * @return the parameters
+     */
     public synchronized Parameters getParameters(String email){
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -47,6 +56,14 @@ public class ParametersDAO {
         }
         return null;
     }
+
+    /**
+     * Set parameters parameters.
+     *
+     * @param email  the email
+     * @param params the parameters
+     * @return the parameters
+     */
     public synchronized Parameters setParameters(String email, ArrayList<Double> params){
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -96,6 +113,14 @@ public class ParametersDAO {
         return null;
     }
 
+    /**
+     * Change parameters parameters.
+     *
+     * @param params   the parameters
+     * @param newParam the new parameter
+     * @param param    the parameter you want to change
+     * @return the parameters
+     */
     public synchronized Parameters changeParameters(Parameters params, Double newParam, String param){
         Connection connection = null;
         PreparedStatement preparedStatement = null;

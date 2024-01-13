@@ -8,7 +8,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * The type Personal trainer dao.
+ */
 public class PersonalTrainerDAO {
+    /**
+     * Personal trainer registration personal trainer.
+     *
+     * @param ub the user bean
+     * @return the personal trainer
+     */
     public synchronized PersonalTrainer personalTrainerRegistration(UserBean ub){
         Connection conn =  null;
         PreparedStatement ps = null;
@@ -46,6 +55,13 @@ public class PersonalTrainerDAO {
         return null;
     }
 
+    /**
+     * Change description personal trainer.
+     *
+     * @param pt             the personal trainer
+     * @param newDescription the new description
+     * @return the personal trainer
+     */
     public synchronized PersonalTrainer changeDescription(PersonalTrainer pt, String newDescription){
         Connection conn = null;
         PreparedStatement ps = null;
@@ -89,6 +105,14 @@ public class PersonalTrainerDAO {
 
         return null;
     }
+
+    /**
+     * Change pt years personal trainer.
+     *
+     * @param pt       the personal trainer
+     * @param newYears the new years
+     * @return the personal trainer
+     */
     public synchronized PersonalTrainer changePTYears(PersonalTrainer pt, Integer newYears){
         Connection conn = null;
         PreparedStatement ps = null;
