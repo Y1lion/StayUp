@@ -1,0 +1,33 @@
+@media only screen and (max-width: 1480px){
+    #divForForgot{
+        height: auto!important;
+        width: auto!important;
+    }
+}
+.form-control{
+    border: solid 2px aliceblue;
+    color:black;
+}
+.form-control:focus{
+     box-shadow: none;
+    -webkit-animation-name: pulseBorder;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: ease;
+    -webkit-animation-direction: alternate;
+    -webkit-animation-duration: 0.5s;
+    color:black;
+}
+a{
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+@-webkit-keyframes pulseBorder {
+    from {
+        border: solid 2px aliceblue;
+    }
+    to {
+        border: solid 2px #034b68;
+    }
+}
