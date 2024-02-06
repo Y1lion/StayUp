@@ -1,0 +1,117 @@
+.form-control{
+    background: transparent;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom-color: black;
+    border-bottom-width: 1px;
+    border-radius: 0;
+}
+.form-control:focus{
+    background: transparent;
+    box-shadow: none;
+    -webkit-animation-name: pulseBorder;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: ease;
+    -webkit-animation-direction: alternate;
+    -webkit-animation-duration: 0.5s;
+    color:black;
+}
+
+
+.form-control::placeholder{
+    color: black;
+}
+ input::-moz-placeholder  {
+    color: #c4c3ca;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+ input:-moz-placeholder  {
+    color: #c4c3ca;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+ input::-webkit-input-placeholder  {
+    color: #c4c3ca;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+ input:focus:-ms-input-placeholder  {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+ input:focus::-moz-placeholder  {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+ input:focus:-moz-placeholder  {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+ input:focus::-webkit-input-placeholder  {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.bottom-right-image {
+
+}
+
+@media only screen and (max-width: 575px) {
+    #logoDiv{
+        margin-top: 10px;
+        align-self: center!important;
+
+    }
+    h1 {
+        font-size:6vw!important;
+    }
+    #divInfos{
+        border-radius: 5px 5px 0 0!important;
+    }
+    #divSignIn{
+        border-radius: 0 0 5px 5px!important;
+    }
+    #divForSignAndInfo{
+        height: auto!important;
+    }
+}
+@media only screen and (max-width: 460px) {
+    h1 {
+        font-size:10vw!important;
+    }
+
+}
+@media only screen and (min-width: 1240px) {
+    h1 {
+        font-size:3vw;
+    }
+    #divInfos{
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    #divSignIn{
+        border-radius: 0 5px 5px 0;
+    }
+}
+@media only screen and(max-width: 1240px){
+    h1{
+        font-size: 4vw;
+    }
+}
+
+@-webkit-keyframes pulseBorder {
+    from {
+        border-bottom: solid 2px black;
+    }
+    to {
+        border-bottom: solid 2px #1789b5;
+    }
+}
