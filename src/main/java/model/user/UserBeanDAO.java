@@ -127,6 +127,47 @@ public class UserBeanDAO {
     }
 
     /**
+     * Recover infos user bean.
+     *
+     * @param email the email
+     * @return the user bean
+     */
+    public synchronized UserBean recoverInfos(String email) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        UserBean ub = null;
+
+        try {
+            conn = ConnectionPool.getConnection();
+            String sql = new String("SELECT * FROM user WHERE email = ");
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+
+            ResultSet res = ps.executeQuery();
+            if(res.next()) {
+                ub = new UserBean(email,"fake");
+                ub.setNome(res.getString("name"));
+                ub.setCognome(res.getString("surname"));
+                ub.setRole(res.getString("role"));
+                ub.setGender(res.getString("gender"));
+                ub.setTelefono(res.getString("telephone"));
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return ub;
+    }
+
+    /**
      * Change psw user bean.
      *
      * @param ub     the user bean

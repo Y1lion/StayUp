@@ -1,6 +1,7 @@
 package model.personalTrainer;
 
 import model.user.UserBean;
+import model.user.UserBeanDAO;
 import model.utils.ConnectionPool;
 
 import java.sql.Connection;
@@ -24,7 +25,7 @@ public class PersonalTrainerDAO {
 
         try {
             conn = ConnectionPool.getConnection();
-            String sqlString = new String("INSERT INTO personalTrainer(email) VALUES(?)");
+            String sqlString = "INSERT INTO personalTrainer(email) VALUES(?)";
             ps = conn.prepareStatement(sqlString);
 
             ps.setString(1, ub.getEmail());
@@ -68,7 +69,7 @@ public class PersonalTrainerDAO {
 
         try {
             conn = ConnectionPool.getConnection();
-            String sql = new String("SELECT * FROM personalTrainer WHERE email = ? AND password = ?");
+            String sql = "SELECT * FROM personalTrainer WHERE email = ? AND password = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, pt.getUser().getEmail());
             ps.setString(2, pt.getUser().getPsw());
@@ -119,7 +120,7 @@ public class PersonalTrainerDAO {
 
         try {
             conn = ConnectionPool.getConnection();
-            String sql = new String("SELECT * FROM personalTrainer WHERE email = ? AND password = ?");
+            String sql = "SELECT * FROM personalTrainer WHERE email = ? AND password = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, pt.getUser().getEmail());
             ps.setString(2, pt.getUser().getPsw());
@@ -155,5 +156,36 @@ public class PersonalTrainerDAO {
         }
 
         return null;
+    }
+    public synchronized PersonalTrainer retrieveInfo(String email){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        PersonalTrainer pt = new PersonalTrainer(new UserBeanDAO().recoverInfos(email));
+
+        try {
+            conn = ConnectionPool.getConnection();
+            String sql = "SELECT * FROM personalTrainer WHERE email = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+
+            ResultSet res = ps.executeQuery();
+
+            if(res.next()) {
+                pt.setPtYears(res.getInt("ptYears"));
+                pt.setDescription(res.getString("description"));
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return pt;
     }
 }
