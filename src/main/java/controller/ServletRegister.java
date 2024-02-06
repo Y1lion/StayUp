@@ -38,7 +38,7 @@ public class ServletRegister extends HttpServlet {
             password = PasswordEncryptionUtil.encryptPassword(password);
             UserBeanDAO ubDAO=new UserBeanDAO();
             UserBean ub = ubDAO.userRegistration(ID,password, nome, cognome, telefono, gender);
-            if(ptCheck.equalsIgnoreCase("true")){
+            if(ptCheck!=null && ptCheck.equalsIgnoreCase("true")){
                 //TODO: Admin check and approve request
                 ub = ubDAO.requestRolePT(ub);
             }
