@@ -5,6 +5,7 @@ import model.personalTrainer.PersonalTrainer;
 import model.utils.ConnectionPool;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class SubscriptionDAO {
     public synchronized Subscription addSubscription(UserBean ub, PersonalTrainer pt, Date dateEnd){
@@ -69,6 +70,37 @@ public class SubscriptionDAO {
                 sub.setEmailUser("ERROR");
                 return sub;
             }
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally{
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+    public synchronized ArrayList<Subscription> getAllSubscriptions(PersonalTrainer pt){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ArrayList<Subscription> subs = new ArrayList<>();
+        try {
+            conn = ConnectionPool.getConnection();
+            ps = conn.prepareStatement("SELECT * FROM subscription WHERE emailPT = ?");
+            ps.setString(1, pt.getUser().getEmail());
+
+            ResultSet res = ps.executeQuery();
+
+            while(res.next())
+            {
+                subs.add(new Subscription(res.getString("emailPT"),res.getString("emailUser"), res.getDate("dateStart"), res.getDate("dateEnd"), res.getBoolean("isActive")));
+            }
+            return subs;
 
         } catch (SQLException e) {
             // TODO Auto-generated catch block
