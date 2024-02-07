@@ -157,6 +157,13 @@ public class PersonalTrainerDAO {
 
         return null;
     }
+
+    /**
+     * Retrieve info personal trainer.
+     *
+     * @param email the email
+     * @return the personal trainer
+     */
     public synchronized PersonalTrainer retrieveInfo(String email){
         Connection conn = null;
         PreparedStatement ps = null;
