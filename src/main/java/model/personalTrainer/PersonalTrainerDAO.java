@@ -16,7 +16,7 @@ public class PersonalTrainerDAO {
     /**
      * Personal trainer registration personal trainer.
      *
-     * @param ub the user bean
+     * @param ub the ub
      * @return the personal trainer
      */
     public synchronized PersonalTrainer personalTrainerRegistration(UserBean ub){
@@ -59,7 +59,7 @@ public class PersonalTrainerDAO {
     /**
      * Change description personal trainer.
      *
-     * @param pt             the personal trainer
+     * @param pt             the pt
      * @param newDescription the new description
      * @return the personal trainer
      */
@@ -110,7 +110,7 @@ public class PersonalTrainerDAO {
     /**
      * Change pt years personal trainer.
      *
-     * @param pt       the personal trainer
+     * @param pt       the pt
      * @param newYears the new years
      * @return the personal trainer
      */
