@@ -19,3 +19,13 @@ html{
     background-color: #1789b5!important;
     border-color: #1789b5!important;
 }
+.btn-outline-primary{
+    outline-color: #1789b5!important;
+    border-color: #1789b5!important;
+    color: #1789b5!important;
+}
+.btn-outline-primary:hover{
+    background-color: #1789b5!important;
+    border-color: #1789b5!important;
+    color: white !important;
+}
