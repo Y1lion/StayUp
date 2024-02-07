@@ -3,9 +3,9 @@ package controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import model.PasswordEncryptionUtil;
-import model.UserBean;
-import model.UserBeanDAO;
+import model.user.UserBean;
+import model.user.UserBeanDAO;
+import model.utils.PasswordEncryptionUtil;
 
 import java.io.IOException;
 import java.io.PrintWriter;
