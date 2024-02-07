@@ -5,6 +5,11 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.parameters.Parameters;
 import model.parameters.ParametersDAO;
+import model.personalTrainer.PersonalTrainer;
+import model.personalTrainer.PersonalTrainerDAO;
+import model.user.UserBean;
+import model.user.UserBeanDAO;
+import model.utils.PasswordEncryptionUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +32,22 @@ public class ServletAddParameters extends HttpServlet {
             params.add(Double.parseDouble(request.getParameter("parhips")));
             params.add(Double.parseDouble(request.getParameter("parshoulders")));
             params.add(Double.parseDouble(request.getParameter("parworkout")));
+
+            String psw = request.getParameter("currentpassword1");
+            psw = PasswordEncryptionUtil.encryptPassword(psw);
+            UserBean ub = new UserBeanDAO().loginUser((String) session.getAttribute("email"),psw);
+
+            if(ub.getEmail().equalsIgnoreCase("ERRORE")){
+                throw new Exception("Wrong password");
+            }
+
+            String ptYears = request.getParameter("parptyears");
+            out.println("ptYears: "+ptYears);
+            if (ptYears != null && !ptYears.isEmpty()){
+                PersonalTrainer pt = new PersonalTrainer(ub);
+                pt = new PersonalTrainerDAO().changePTYears(pt, Integer.valueOf(ptYears));
+            }
+
             Parameters uParam = new ParametersDAO().setParameters((String) session.getAttribute("email"), params);
             request.setAttribute("success","./userpage.jsp");
             request.getRequestDispatcher("./infopages/success.jsp").forward(request,response);
