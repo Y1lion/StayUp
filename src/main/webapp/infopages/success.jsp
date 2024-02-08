@@ -6,7 +6,7 @@
     <title>FlyHigh</title>
     <%
         String success = (String) request.getAttribute("success");
-        int tempoDiRidirezione = 5; // Tempo in secondi
+        int tempoDiRidirezione = 1; // Tempo in secondi
         String contentValue = tempoDiRidirezione + "; url=" + success;
         response.setHeader("refresh", contentValue);
     %>

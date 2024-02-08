@@ -35,8 +35,13 @@ public class ServletLogin extends HttpServlet {
                 Cookie sessionIdCk=new Cookie("JSESSIONID",sessID);
                 sessionIdCk.setMaxAge(60*60*24);
                 response.addCookie(sessionIdCk);
-                request.setAttribute("success","./index.jsp");
-                request.getRequestDispatcher("./infopages/success.jsp").forward(request,response);
+                if(us.getRole().equalsIgnoreCase("admin")){
+                    request.setAttribute("success","./admin_home.jsp");
+                    request.getRequestDispatcher("./infopages/success.jsp").forward(request,response);
+                }else{
+                    request.setAttribute("success","./index.jsp");
+                    request.getRequestDispatcher("./infopages/success.jsp").forward(request,response);
+                }
             }else{
                 throw new Exception("Utente non esistente");
             }
