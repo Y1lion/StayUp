@@ -10,7 +10,7 @@ public class Subscription {
     private String emailUser;
     private Date dateStart;
     private Date dateEnd;
-    private Boolean isActive;
+    private Integer isActive;
 
     /**
      * Instantiates a new Subscription.
@@ -21,7 +21,7 @@ public class Subscription {
      * @param dateEnd   the date end
      * @param isActive  the is active
      */
-    public Subscription(String emailPt, String emailUser, Date dateStart, Date dateEnd, Boolean isActive) {
+    public Subscription(String emailPt, String emailUser, Date dateStart, Date dateEnd, Integer isActive) {
         this.emailPt = emailPt;
         this.emailUser = emailUser;
         this.dateStart = dateStart;
@@ -115,7 +115,7 @@ public class Subscription {
      *
      * @return the active
      */
-    public Boolean getActive() {
+    public Integer getActive() {
         return isActive;
     }
 
@@ -124,7 +124,7 @@ public class Subscription {
      *
      * @param active the active
      */
-    public void setActive(Boolean active) {
+    public void setActive(Integer active) {
         isActive = active;
     }
 }
