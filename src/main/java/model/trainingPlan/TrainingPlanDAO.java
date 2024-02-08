@@ -1,0 +1,160 @@
+package model.trainingPlan;
+
+import model.personalTrainer.PersonalTrainer;
+import model.user.UserBean;
+import model.utils.ConnectionPool;
+
+import java.sql.*;
+import java.util.ArrayList;
+
+public class TrainingPlanDAO {
+    //TODO: ADD TRAINING PLAN BUT BEFORE TODO FORM FOR TRAINING PLAN
+    /*public synchronized TrainingPlan addTrainingPlan(UserBean ub, PersonalTrainer pt, String exercises, Date dateEnd){
+        Connection conn =  null;
+        PreparedStatement ps = null;
+        /*JSON EXERCISES:
+        * TITOLO SCHEDA
+        * SPALLE
+        * BICIPITI
+        * TRICIPITI
+        * DORSALI
+        * FEMORALI
+        * QUADRICIPITI
+        * GLUTEI?
+        * PETTORALI
+        * POLPACCI?
+        * ADDOMINALI
+        * JSON_OBJECT("title","titolo","spalle", JSON_ARRAY(how many????))
+        *
+
+        try {
+            conn = ConnectionPool.getConnection();
+            String sqlString = "INSERT INTO subscription(emailUser, emailPt, exercises, dateStart, dateEnd) VALUES(?,?,JSON_OBJECT(),?,?)";
+            ps = conn.prepareStatement(sqlString);
+
+            ps.setString(1, ub.getEmail());
+            ps.setString(2, pt.getUser().getEmail());
+            ps.setString(3, exercises);
+            ps.setDate(4, new Date(System.currentTimeMillis()));
+            ps.setDate(5, dateEnd);
+
+            int upd = ps.executeUpdate();
+
+            if(upd != 0) {
+                Subscription sub = new Subscription(pt.getUser().getEmail(),ub.getEmail(),new java.sql.Date(System.currentTimeMillis()), dateEnd, Boolean.TRUE);
+                System.out.print("Registered");
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+                return sub;
+            }
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+
+        }
+        finally {
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }*/
+    public synchronized ArrayList<TrainingPlan> getAvailableTrainingPlan(UserBean ub){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ArrayList<TrainingPlan> trainingPlans = new ArrayList<>();
+        try {
+            conn = ConnectionPool.getConnection();
+            ps = conn.prepareStatement("SELECT * FROM trainingPlan WHERE emailUser = ? AND dateEnd > ?");
+            ps.setString(1, ub.getEmail());
+            ps.setDate(2, new Date(System.currentTimeMillis()));
+
+            ResultSet res = ps.executeQuery();
+
+            while(res.next())
+            {
+                trainingPlans.add(new TrainingPlan(res.getString("emailUser"),res.getString("emailPT"), res.getString("exercises"), res.getDate("dateStart"), res.getDate("dateEnd")));
+            }
+            return  trainingPlans;
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally{
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+    public synchronized ArrayList<TrainingPlan> getAllTrainingPlans(PersonalTrainer pt){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ArrayList<TrainingPlan> trainingPlans = new ArrayList<>();
+        try {
+            conn = ConnectionPool.getConnection();
+            ps = conn.prepareStatement("SELECT * FROM trainingPlan WHERE emailPT = ?");
+            ps.setString(1, pt.getUser().getEmail());
+
+            ResultSet res = ps.executeQuery();
+
+            while(res.next())
+            {
+                trainingPlans.add(new TrainingPlan(res.getString("emailUser"),res.getString("emailPT"), res.getString("exercises") ,res.getDate("dateStart"), res.getDate("dateEnd")));
+            }
+            return trainingPlans;
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally{
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+    public synchronized ArrayList<TrainingPlan> getAllUserTrainingPlans(UserBean ub){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ArrayList<TrainingPlan> trainingPlans = new ArrayList<>();
+        try {
+            conn = ConnectionPool.getConnection();
+            ps = conn.prepareStatement("SELECT * FROM trainingPlan WHERE emailUser = ?");
+            ps.setString(1, ub.getEmail());
+
+            ResultSet res = ps.executeQuery();
+
+            while(res.next())
+            {
+                trainingPlans.add(new TrainingPlan(res.getString("emailUser"),res.getString("emailPT"), res.getString("exercises") ,res.getDate("dateStart"), res.getDate("dateEnd")));
+            }
+            return trainingPlans;
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally{
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+}
