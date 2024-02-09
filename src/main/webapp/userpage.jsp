@@ -6,38 +6,51 @@
 <%@ page import="model.personalTrainer.PersonalTrainerDAO" %>
 <%@ page import="model.subscription.Subscription" %>
 <%@ page import="model.subscription.SubscriptionDAO" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="model.trainingPlan.TrainingPlan" %>
+<%@ page import="model.trainingPlan.TrainingPlanDAO" %>
+<%@ page import="org.json.JSONObject" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <%@include file="parts/head.jsp" %>
     <%@include file="parts/meta.jsp" %>
     <%@include file="parts/navbar.jsp"%>
-    <link rel="stylesheet" href="css/register.css">
-    <link rel="stylesheet" href="css/custom.css">
     <title>User Profile</title>
     <script src="js/utils.js"></script>
 </head>
-<body class="bg-primary">
+<body>
 <% if (dataFromSession == null){
     response.sendRedirect(request.getContextPath() + "/index.jsp");
-}else{
+}else {
     UserBean ub = new UserBeanDAO().recoverInfos(dataFromSession);
+    String role = roleSession;
     String gender;
     PersonalTrainer pt = null;
+    ArrayList<Subscription> subs = new ArrayList<>();
+    ArrayList<TrainingPlan> trainingPlans = new ArrayList<>();
     Parameters userParam = new ParametersDAO().getParameters(dataFromSession);
-    if (roleSession!=null && roleSession.equalsIgnoreCase("pt")){
+    if (roleSession != null && roleSession.equalsIgnoreCase("pt")) {
         pt = new PersonalTrainerDAO().retrieveInfo(dataFromSession);
+        role = "personal trainer";
+        subs = new SubscriptionDAO().getAllSubscriptions(pt);
+        trainingPlans = new TrainingPlanDAO().getAllTrainingPlans(pt);
+    } else if (roleSession != null && roleSession.equalsIgnoreCase("ptr")) {
+        role = "requested personal trainer";
     }
-    if (ub.getGender().equalsIgnoreCase("m")){
+    if (ub.getGender().equalsIgnoreCase("m")) {
         gender = "Male";
-    }else if (ub.getGender().equalsIgnoreCase("f")){
+    } else if (ub.getGender().equalsIgnoreCase("f")) {
         gender = "Female";
-    }else{
+    } else {
         gender = "Other";
     }
-    Subscription sub = new SubscriptionDAO().getSubscription(ub);
+    if (roleSession != null && roleSession.equalsIgnoreCase("user")) {
+        subs.add(new SubscriptionDAO().getSubscription(ub));
+        trainingPlans = new TrainingPlanDAO().getAllUserTrainingPlans(ub);
+    }
 %>
-<section>
+<section class="bgGradient">
     <div class="container py-5">
         <div class="row">
             <div class="col-lg-4">
@@ -46,7 +59,7 @@
                         <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
                              class="rounded-circle img-fluid" style="width: 150px;">
                         <h5 class="my-3"><%=nameSession%> <%=surnameSession%></h5>
-                        <p class="text-muted mb-1"><%=roleSession%></p>
+                        <p class="text-muted mb-1"><%=role%></p>
                         <div class="d-flex justify-content-center mb-2">
                             <a href="mailto:<%=ub.getEmail()%>" type="button" class="btn btn-outline-primary">Email me</a>
                         </div>
@@ -55,16 +68,208 @@
                 <div class="card mb-4 mb-md-0 shadow">
                     <div class="card-body">
                         <span class="text-primary font-italic me-1">training plan</span> <span class="text-muted">Your Training Plans</span>
-                        <% if (roleSession!=null && roleSession.equalsIgnoreCase("user")){%>
-                            <% if(sub != null && !sub.getEmailUser().equalsIgnoreCase("error")){%>
-                            <p class="mb-4"><span class="text-primary font-italic me-1">subscription</span> <span class="text-muted"><%=new UserBeanDAO().checkEmail(sub.getEmailPt()).getNome()%> <%=new UserBeanDAO().checkEmail(sub.getEmailPt()).getCognome()%>, <%=sub.getDateEnd()%></span></p>
-                            <div class="container-fluid overflow-auto">
-                                <span class="text-muted">TODO: ADD TRAINING PLAN</span>
+                        <% if (!roleSession.equalsIgnoreCase("pt")){%>
+                            <% if(!subs.isEmpty() && !subs.get(0).getEmailUser().equalsIgnoreCase("error") && subs.get(0).getActive()==1){%>
+                            <p class="mb-4"><span class="text-primary font-italic me-1">subscription</span> <span class="text-muted"><%=new UserBeanDAO().checkEmail(subs.get(0).getEmailPt()).getNome()%> <%=new UserBeanDAO().checkEmail(subs.get(0).getEmailPt()).getCognome()%>, <%=subs.get(0).getDateEnd()%></span></p>
+                            <% if(!trainingPlans.isEmpty() && !trainingPlans.get(0).getEmailUser().equalsIgnoreCase("error")){%>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Personal Trainer</th>
+                                        <th scope="col">Date End</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="table-group-divider">
+                                    <%int modalCount = 0;
+                                        for(TrainingPlan t : trainingPlans){
+                                        JSONObject jsonObject = new JSONObject(t.getExercises());
+                                        String title = jsonObject.getString("title");
+                                        String modalId = "visualizeTPUser"+modalCount;
+                                        modalCount++;%>
+                                    <tr data-bs-toggle="modal" data-bs-target="#<%=modalId%>">
+                                        <td><%=title%></td>
+                                        <td><%=new UserBeanDAO().checkEmail(t.getEmailPt()).getNome()%> <%=new UserBeanDAO().checkEmail(t.getEmailPt()).getCognome()%></td>
+                                        <td><%=t.getDateEnd()%></td>
+                                    </tr>
+                                    <div class="modal fade" id="<%=modalId%>" tabindex="-1" aria-labelledby="visualizeTPUserLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5 text-primary" id="visualizeTPUserLabel">Visualize Training Plan</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body text-black">
+                                                    <div class="d-flex flex-column form-group h5">
+                                                        <p class="text-primary h5 font-italic">Exercises:</p>
+                                                        <textarea class="bgGradient text-light" style="height: 100px"><%=t.getExercises()%></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <%}%>
+                                    </tbody>
+                                </table>
                             </div>
+                            <%}else{%>
+                            <p class="mb-4"><span class="text-muted">No Training Plans Found</span></p>
+                            <%}%>
                             <%} else {%>
                         <p class="mb-4"><span class="text-primary font-italic me-1">subscription</span> <span class="text-muted">No Active Subscription</span></p>
-                        <%} }else{}%>
+                        <a type="button" class="btn btn-outline-primary mt-4" href="#">Request Subscription</a>
+                        <%} }else{%>
+                        <% if(!trainingPlans.isEmpty() && !trainingPlans.get(0).getEmailUser().equalsIgnoreCase("error")){%>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">User</th>
+                                    <th scope="col">Date End</th>
+                                </tr>
+                                </thead>
+                                <tbody class="table-group-divider">
+                                <%int modalCount = 0;
+                                    for(TrainingPlan t : trainingPlans){
+                                    JSONObject jsonObject = new JSONObject(t.getExercises());
+                                    String title = jsonObject.getString("title");
+                                    String modalId = "visualizeTP"+modalCount;
+                                    modalCount++;%>
+                                <tr data-bs-toggle="modal" data-bs-target="#<%=modalId%>">
+                                    <td><%=title%></td>
+                                    <td><%=new UserBeanDAO().checkEmail(t.getEmailUser()).getNome()%> <%=new UserBeanDAO().checkEmail(t.getEmailUser()).getCognome()%></td>
+                                    <td><%=t.getDateEnd()%></td>
+                                </tr>
+                                <div class="modal fade" id="<%=modalId%>" tabindex="-1" aria-labelledby="visualizeTPLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5 text-primary" id="visualizeTPLabel">Visualize Training Plan</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-black">
+                                                <div class="d-flex flex-column form-group h5">
+                                                    <p class="text-primary h5 font-italic">Exercises:</p>
+                                                    <textarea class="bgGradient text-light" style="height: 100px"><%=t.getExercises()%></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%}%>
+                                </tbody>
+                            </table>
+                        </div>
+                        <%}else{%>
+                        <p class="mb-4"><span class="text-muted">No Training Plans Found</span></p>
+                        <%}}%>
                     </div>
+                    <%if(roleSession.equalsIgnoreCase("pt")){%>
+                    <div class="card-body">
+                        <span class="text-primary font-italic me-1">subscribers</span> <span class="text-muted">Your Subscribers</span>
+                            <% if(!subs.isEmpty() && !subs.get(0).getEmailUser().equalsIgnoreCase("error")){%>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Surname</th>
+                                        <th scope="col">Start Subscription</th>
+                                        <th scope="col">Is Active</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="table-group-divider">
+                                    <%int modalCount = 0;
+                                        for (Subscription s : subs){
+                                        if(s.getActive() > 0){
+                                            if(s.getActive() == 2){
+                                                String modalId = "acceptSubscription"+modalCount;
+                                                modalCount++;%>
+                                    <tr data-bs-toggle="modal" data-bs-target="#<%=modalId%>">
+                                        <td><%=new UserBeanDAO().checkEmail(s.getEmailUser()).getNome()%></td>
+                                        <td><%=new UserBeanDAO().checkEmail(s.getEmailUser()).getCognome()%></td>
+                                        <td><%=s.getDateEnd()%></td>
+                                        <td>Pending</td>
+                                    </tr>
+                                    <div class="modal fade" id="<%=modalId%>" tabindex="-1" aria-labelledby="acceptSubscriptionLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5 text-primary" id="acceptSubscriptionLabel">Accept Subscription</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form method="post" action="AcceptSubscription">
+                                                    <div class="modal-body text-black">
+                                                        <div class="d-flex flex-column form-group h5">
+                                                            <p class="text-black">Do you want to accept <%=new UserBeanDAO().checkEmail(s.getEmailUser()).getNome()%> <%=new UserBeanDAO().checkEmail(s.getEmailUser()).getCognome()%>'s subscription?</p>
+                                                            <input type="hidden" name="emailUser" value="<%=s.getEmailUser()%>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-outline-primary">Yes</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <%} else{
+                                            String modalId = "optionsUser"+modalCount;
+                                            modalCount++;
+                                    %>
+                                    <tr data-bs-toggle="modal" data-bs-target="#<%=modalId%>">
+                                        <td><%=new UserBeanDAO().checkEmail(s.getEmailUser()).getNome()%></td>
+                                        <td><%=new UserBeanDAO().checkEmail(s.getEmailUser()).getCognome()%></td>
+                                        <td><%=s.getDateEnd()%></td>
+                                        <td>Active</td>
+                                    </tr>
+                                    <div class="modal fade" id="<%=modalId%>" tabindex="-1" aria-labelledby="optionsUserLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5 text-primary" id="optionsUserLabel">Options User</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form method="post" action="SeeProfile">
+                                                    <div class="modal-body text-black">
+                                                        <p class="text-primary font-italic h5">Training Plan:</p>
+                                                        <div class="container-fluid overflow-auto" style="height: 25%">
+                                                            <%ArrayList<TrainingPlan> userPlan = new TrainingPlanDAO().getAvailablePtTrainingPLan(new UserBeanDAO().recoverInfos(s.getEmailUser()), new PersonalTrainer(new UserBeanDAO().recoverInfos(s.getEmailPt())));
+                                                                for(TrainingPlan t : userPlan){
+                                                                    JSONObject jsonObject = new JSONObject(t.getExercises());
+                                                                    String title = jsonObject.getString("title");%>
+                                                            <p class="text-muted"><%=title%> | <%=t.getDateStart()%> | <%=t.getDateEnd()%></p>
+                                                            <%}%>
+                                                        </div>
+                                                        <p><span class="text-primary font-italic h5">Start Subscription</span> <span class="text-muted"><%=s.getDateStart()%></span></p>
+                                                        <p><span class="text-primary font-italic h5">End Subscription</span> <span class="text-muted"><%=s.getDateEnd()%></span></p>
+                                                        <input class="text-primary" type="hidden" name="visitEmail" id="visitEmail" value="<%=s.getEmailUser()%>">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-outline-primary">Visit Profile</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <%}}}%>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <%} else {%>
+                        <p class="mb-4"><span class="text-primary font-italic me-1">subscription</span> <span class="text-muted">No Active Subscriptions</span></p>
+                        <%}%>
+                    </div>
+                    <%}%>
                 </div>
             </div>
             <div class="col-lg-8">
@@ -115,15 +320,18 @@
                                 <p class="mb-4"><span class="text-primary font-italic me-1">parameters</span> <span class="text-muted">Personal Parameters</span>
                                 </p>
                                 <% if(userParam != null && !userParam.getEmail().equalsIgnoreCase("error")){  %>
-                                    <p class="mb-1 text-primary" style="font-size: .77rem;">Weight <span class="text-black"><%=userParam.getWeight()%></span></p>
-                                    <p class="mt-4 mb-1 text-primary" style="font-size: .77rem;">Lean Mass <span class="text-black"><%=userParam.getLean_mass()%></span></p>
-                                    <p class="mt-4 mb-1 text-primary" style="font-size: .77rem;">Fat Mass <span class="text-black"><%=userParam.getFat_mass()%></span></p>
-                                    <p class="mt-4 mb-1 text-primary" style="font-size: .77rem;">Arm Mensuration <span class="text-black"><%=userParam.getArm_mis()%></span></p>
-                                    <p class="mt-4 mb-1 text-primary" style="font-size: .77rem;">Leg Mensuration <span class="text-black"><%=userParam.getLeg_mis()%></span></p>
-                                    <p class="mt-4 mb-1 text-primary" style="font-size: .77rem;">Chest Mensuration <span class="text-black"><%=userParam.getChest_mis()%></span></p>
-                                    <p class="mt-4 mb-1 text-primary" style="font-size: .77rem;">Hips Mensuration <span class="text-black"><%=userParam.getHips_mis()%></span></p>
-                                    <p class="mt-4 mb-1 text-primary" style="font-size: .77rem;">Shoulders Mensuration <span class="text-black"><%=userParam.getShoulders_mis()%></span></p>
+                                    <p class="mb-1 text-primary" style="font-size: .77rem;">Weight <span class="text-black"><%=userParam.getWeight()%> kg</span></p>
+                                    <p class="mt-4 mb-1 text-primary" style="font-size: .77rem;">Lean Mass <span class="text-black"><%=userParam.getLean_mass()%> cm</span></p>
+                                    <p class="mt-4 mb-1 text-primary" style="font-size: .77rem;">Fat Mass <span class="text-black"><%=userParam.getFat_mass()%> cm</span></p>
+                                    <p class="mt-4 mb-1 text-primary" style="font-size: .77rem;">Arm Mensuration <span class="text-black"><%=userParam.getArm_mis()%> cm</span></p>
+                                    <p class="mt-4 mb-1 text-primary" style="font-size: .77rem;">Leg Mensuration <span class="text-black"><%=userParam.getLeg_mis()%> cm</span></p>
+                                    <p class="mt-4 mb-1 text-primary" style="font-size: .77rem;">Chest Mensuration <span class="text-black"><%=userParam.getChest_mis()%> cm</span></p>
+                                    <p class="mt-4 mb-1 text-primary" style="font-size: .77rem;">Hips Mensuration <span class="text-black"><%=userParam.getHips_mis()%> cm</span></p>
+                                    <p class="mt-4 mb-1 text-primary" style="font-size: .77rem;">Shoulders Mensuration <span class="text-black"><%=userParam.getShoulders_mis()%> cm</span></p>
                                     <p class="mt-4 mb-1 text-primary" style="font-size: .77rem;">Workout Years <span class="text-black"><%=userParam.getWorkoutYears()%></span></p>
+                                <%if(roleSession.equalsIgnoreCase("pt") && pt != null){%>
+                                    <p class="mt-4 mb-1 text-primary" style="font-size: .77rem;">Years of work <span class="text-black"><%=pt.getPtYears()%></span></p>
+                                <%}%>
                                     <button type="button" class="btn btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#addParameters">Change Parameters</button>
                                 <%} else {%>
                                 <p class="mb-1 text-primary" style="font-size: .77rem;">No Parameters Found</p>
@@ -132,12 +340,13 @@
                             </div>
                         </div>
                     </div>
-                    <%if(roleSession!=null && roleSession.equalsIgnoreCase("pt") && pt != null){%>
+                    <%if(roleSession.equalsIgnoreCase("pt") && pt != null){%>
                         <div class="col-md-6">
                             <div class="card mb-4 mb-md-0 shadow">
                                 <div class="card-body">
                                     <p class="mb-4"><span class="text-primary font-italic me-1">description</span> <span class="text-muted">Your Description</span></p>
                                     <p class="mb-1 text-muted" style="font-size: .77rem; text-align: justify"><%=pt.getDescription()%></p>
+                                    <button type="button" class="btn btn-outline-primary mt-2" data-bs-toggle="modal" data-bs-target="#changeDescription">Change Description</button>
                                 </div>
                             </div>
                         </div>
@@ -186,6 +395,17 @@
                     </div>
                     <div class="d-flex flex-column form-group h5">
                         <input type="number" class="form-control text-primary" placeholder="Workout Years" name="parworkout" id="parworkout" required step="1" min=0 max=60>
+                    </div>
+                    <%if(roleSession.equalsIgnoreCase("pt") && pt != null){%>
+                        <div class="d-flex flex-column form-group h5">
+                            <input type="number" class="form-control text-primary" placeholder="Years of work" name="parptyears" id="parptyears" required step="1" min=0 max=60>
+                        </div>
+                    <%}%>
+                    <div class="d-flex flex-column form-group h5">
+                        <div class="input-group">
+                            <input type="password" class="form-control text-primary" placeholder="Current Password" name="currentpassword1" id="currentpassword1" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$" oninvalid="alert('Password must contains: \n8 characters; \nOne lowercase character; \nOne uppercase character; \nOne number; \nOne of the special characters: @,$,!,%,*,?,&;')">
+                            <button type="button" class="input-group-append ml-2 align-items-center bg-transparent rounded text-light border border-0" id="toggle-button8" onclick="togglePasswordVisibility('currentpassword1','toggle-button8')"><i class="fa-solid fa-eye"></i></button>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -367,6 +587,34 @@
                         <div class="input-group">
                             <input type="password" class="form-control text-primary" placeholder="Current Password" name="current_password3" id="current_password3" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$" oninvalid="alert('Password must contains: \n8 characters; \nOne lowercase character; \nOne uppercase character; \nOne number; \nOne of the special characters: @,$,!,%,*,?,&;')">
                             <button type="button" class="input-group-append ml-2 align-items-center bg-transparent rounded text-light border border-0" id="toggle-button6" onclick="togglePasswordVisibility('current_password3','toggle-button6')"><i class="fa-solid fa-eye"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-outline-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="changeDescription" tabindex="-1" aria-labelledby="changeDescriptionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="changeDescriptionLabel">Change Description</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="ChangeDescription">
+                <div class="modal-body text-black">
+                    <div class="d-flex flex-column form-group h5 form-floating">
+                        <textarea class="form-control text-muted" placeholder="Leave a comment here" id="newdescription" name="newdescription" style="height: 100px"></textarea>
+                        <label for="newdescription" class="text-primary" style="font-size: 0.77rem;">Description</label>
+                    </div>
+                    <div class="d-flex flex-column form-group h5">
+                        <div class="input-group">
+                            <input type="password" class="form-control text-primary" placeholder="Current Password" name="current_password4" id="current_password4" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$" oninvalid="alert('Password must contains: \n8 characters; \nOne lowercase character; \nOne uppercase character; \nOne number; \nOne of the special characters: @,$,!,%,*,?,&;')">
+                            <button type="button" class="input-group-append ml-2 align-items-center bg-transparent rounded text-light border border-0" id="toggle-button7" onclick="togglePasswordVisibility('current_password4','toggle-button7')"><i class="fa-solid fa-eye"></i></button>
                         </div>
                     </div>
                 </div>
