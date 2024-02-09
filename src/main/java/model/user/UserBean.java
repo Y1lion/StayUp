@@ -144,4 +144,17 @@ public class UserBean {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+    @Override
+    public String toString() {
+        return "UserBean{" +
+                "email='" + email + '\'' +
+                ", psw='" + psw + '\'' +
+                ", nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                ", role='" + role + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", gender='" + gender + '\'' +
+                '}';
+    }
 }

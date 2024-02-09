@@ -43,10 +43,10 @@ public class ServletRegister extends HttpServlet {
                 ub = ubDAO.requestRolePT(ub);
             }
             out.println(ub.getEmail());
-            if(ub.getEmail() != "duplicato" &&  ub.getPsw() != "duplicato") {
+            if(!ub.getEmail().equals("duplicato") && !ub.getPsw().equals("duplicato")) {
                 HttpSession sess=request.getSession(true);
                 sess.setAttribute("email",ID);
-                sess.setAttribute("username",ub.getNome());
+                sess.setAttribute("name",ub.getNome());
                 sess.setAttribute("surname",ub.getCognome());
                 sess.setAttribute("role",ub.getRole());
                 String sessID=sess.getId();
@@ -60,7 +60,7 @@ public class ServletRegister extends HttpServlet {
             }
         }catch (Exception e){
             request.setAttribute("exception",e);
-            request.setAttribute("exceptionURL","./Register.jsp");
+            request.setAttribute("exceptionURL","./register.jsp");
             request.getRequestDispatcher("./infopages/error.jsp").forward(request,response);
         }
     }

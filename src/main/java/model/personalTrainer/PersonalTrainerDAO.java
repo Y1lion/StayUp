@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type Personal trainer dao.
@@ -16,7 +18,7 @@ public class PersonalTrainerDAO {
     /**
      * Personal trainer registration personal trainer.
      *
-     * @param ub the user bean
+     * @param ub the ub
      * @return the personal trainer
      */
     public synchronized PersonalTrainer personalTrainerRegistration(UserBean ub){
@@ -59,7 +61,7 @@ public class PersonalTrainerDAO {
     /**
      * Change description personal trainer.
      *
-     * @param pt             the personal trainer
+     * @param pt             the pt
      * @param newDescription the new description
      * @return the personal trainer
      */
@@ -110,7 +112,7 @@ public class PersonalTrainerDAO {
     /**
      * Change pt years personal trainer.
      *
-     * @param pt       the personal trainer
+     * @param pt       the pt
      * @param newYears the new years
      * @return the personal trainer
      */
@@ -157,6 +159,13 @@ public class PersonalTrainerDAO {
 
         return null;
     }
+
+    /**
+     * Retrieve info personal trainer.
+     *
+     * @param email the email
+     * @return the personal trainer
+     */
     public synchronized PersonalTrainer retrieveInfo(String email){
         Connection conn = null;
         PreparedStatement ps = null;
@@ -172,7 +181,7 @@ public class PersonalTrainerDAO {
 
             if(res.next()) {
                 pt.setPtYears(res.getInt("ptYears"));
-                pt.setDescription(res.getString("description"));
+                pt.setDescription(res.getString("descrizione"));
             }
         }catch (SQLException e) {
             e.printStackTrace();
@@ -187,5 +196,79 @@ public class PersonalTrainerDAO {
         }
 
         return pt;
+    }
+    public synchronized List<PersonalTrainer> retrieveAll(){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        List<PersonalTrainer> pts=new ArrayList<>();
+        try {
+            conn = ConnectionPool.getConnection();
+            String sql = "SELECT * FROM personalTrainer,user WHERE personalTrainer.email=user.email";
+            ps = conn.prepareStatement(sql);
+
+            ResultSet res = ps.executeQuery();
+
+            while(res.next()) {
+                PersonalTrainer pt=new PersonalTrainer(null,"",0);
+                UserBean ub=new UserBean("null","null");
+                ub.setEmail(res.getString("email"));
+                ub.setGender(res.getString("gender"));
+                ub.setNome(res.getString("name"));
+                ub.setCognome(res.getString("surname"));
+                ub.setTelefono(res.getString("telephone"));
+                ub.setRole(res.getString("role"));
+                ub.setPsw(res.getString("password"));
+                pt.setDescription(res.getString("descrizione"));
+                pt.setPtYears(res.getInt("ptYears"));
+                pt.setUser(ub);
+                pts.add(pt);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return pts;
+    }
+    public synchronized void deletePT(String email){
+        Connection conn = null;
+        PreparedStatement prepstat1 = null;
+        PreparedStatement prepstat2 = null;
+
+
+        try {
+            conn = ConnectionPool.getConnection();
+            String sql1 = "DELETE FROM personalTrainer WHERE email = ?";
+            prepstat1 = conn.prepareStatement(sql1);
+            prepstat1.setString(1,email);
+            int state1 = prepstat1.executeUpdate();
+            String sql2 = "UPDATE user SET role = ? WHERE email = ?";
+            prepstat2 = conn.prepareStatement(sql2);
+            prepstat2.setString(1, "user");
+            prepstat2.setString(2, email);
+            int state2 = prepstat2.executeUpdate();
+
+            if(state1 != 0 && state2 != 0) {
+                System.out.println("Elemento eliminato con successo");
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                prepstat1.close();
+                prepstat2.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

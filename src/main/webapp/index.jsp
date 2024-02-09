@@ -2,6 +2,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <%@include file="parts/head.jsp"%>
+    <%@include file="parts/meta.jsp"%>
+    <%@include file="parts/navbar.jsp"%>
     <title>JSP - Hello World</title>
 </head>
 <body>

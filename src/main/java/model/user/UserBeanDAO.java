@@ -1,9 +1,11 @@
 package model.user;
 
+import model.personalTrainer.PersonalTrainerDAO;
 import model.utils.ConnectionPool;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type User bean dao.
@@ -16,7 +18,7 @@ public class UserBeanDAO {
      * @param password the password
      * @return the user bean
      */
-    //TODO: Admin check and approve request
+//TODO: Admin check and approve request
     public synchronized UserBean loginUser(String email, String password){ //ricerco nel db l'utente con email e psw dati in input
 
         Connection conn = null;
@@ -127,6 +129,162 @@ public class UserBeanDAO {
     }
 
     /**
+     * Change name user bean.
+     *
+     * @param ub         the ub
+     * @param newName    the new name
+     * @param newSurname the new surname
+     * @return the user bean
+     */
+    public synchronized UserBean changeName(UserBean ub, String newName, String newSurname) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            conn = ConnectionPool.getConnection();
+            String sql = new String("SELECT * FROM user WHERE email = ? AND password = ?");
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, ub.getEmail());
+            ps.setString(2, ub.getPsw());
+
+            ResultSet res = ps.executeQuery();
+            if(res.next()) {
+                PreparedStatement prepstat = conn.prepareStatement("UPDATE user SET name = ?, surname = ? WHERE email = ?");
+                prepstat.setString(1, newName);
+                prepstat.setString(2, newSurname);
+                prepstat.setString(3, ub.getEmail());
+                int state = prepstat.executeUpdate();
+
+                if(state != 0) {
+                    ub.setNome(newName);
+                    ub.setCognome(newSurname);
+                    System.out.println("name edit");
+
+                    return ub;
+                }
+                else {
+                    System.out.println("No changes");
+                    return null;
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Change number user bean.
+     *
+     * @param ub        the ub
+     * @param newNumber the new number
+     * @return the user bean
+     */
+    public synchronized UserBean changeNumber(UserBean ub, String newNumber) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            conn = ConnectionPool.getConnection();
+            String sql = new String("SELECT * FROM user WHERE email = ? AND password = ?");
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, ub.getEmail());
+            ps.setString(2, ub.getPsw());
+
+            ResultSet res = ps.executeQuery();
+            if(res.next()) {
+                PreparedStatement prepstat = conn.prepareStatement("UPDATE user SET telephone = ? WHERE email = ?");
+                prepstat.setString(1, newNumber);
+                prepstat.setString(2, ub.getEmail());
+                int state = prepstat.executeUpdate();
+
+                if(state != 0) {
+                    ub.setTelefono(newNumber);
+                    System.out.println("number edit");
+
+                    return ub;
+                }
+                else {
+                    System.out.println("No changes");
+                    return null;
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Change gender user bean.
+     *
+     * @param ub        the ub
+     * @param newGender the new gender
+     * @return the user bean
+     */
+    public synchronized UserBean changeGender(UserBean ub, String newGender) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            conn = ConnectionPool.getConnection();
+            String sql = new String("SELECT * FROM user WHERE email = ? AND password = ?");
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, ub.getEmail());
+            ps.setString(2, ub.getPsw());
+
+            ResultSet res = ps.executeQuery();
+            if(res.next()) {
+                PreparedStatement prepstat = conn.prepareStatement("UPDATE user SET gender = ? WHERE email = ?");
+                prepstat.setString(1, newGender);
+                prepstat.setString(2, ub.getEmail());
+                int state = prepstat.executeUpdate();
+
+                if(state != 0) {
+                    ub.setGender(newGender);
+                    System.out.println("gender edit");
+
+                    return ub;
+                }
+                else {
+                    System.out.println("No changes");
+                    return null;
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Recover infos user bean.
      *
      * @param email the email
@@ -139,7 +297,7 @@ public class UserBeanDAO {
 
         try {
             conn = ConnectionPool.getConnection();
-            String sql = new String("SELECT * FROM user WHERE email = ");
+            String sql = "SELECT * FROM user WHERE email = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, email);
 
@@ -498,5 +656,72 @@ public class UserBeanDAO {
             }
         }
         return ub;
+    }
+
+    public synchronized List<UserBean> retrieveAllPending(){
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            List<UserBean> allUsers=new ArrayList<>();
+            conn = ConnectionPool.getConnection();
+            ps = conn.prepareStatement("SELECT * FROM user WHERE role = ?");
+            ps.setString(1,"PTR");
+            ResultSet res = ps.executeQuery();
+            int i=0;
+            while(res.next())
+            {
+                UserBean ub=new UserBean(res.getString("email"),"fasulla");
+                ub.setRole(res.getString("role"));
+                ub.setNome(res.getString("name"));
+                ub.setCognome(res.getString("surname"));
+                allUsers.add(ub);
+                System.out.println(allUsers.get(i));
+                i++;
+            }
+            return allUsers;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally{
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public synchronized void upgradeToPT(UserBean ub){
+
+        Connection conn = null;
+        PreparedStatement ps1 = null;
+
+        try {
+            ArrayList<UserBean> allUsers=new ArrayList<>();
+            UserBean upgradeUser=ub;
+            conn = ConnectionPool.getConnection();
+            ps1 = conn.prepareStatement("UPDATE user SET role = ? WHERE email = ?");
+            ps1.setString(1,"PT");
+            ps1.setString(2,ub.getEmail());
+            int state1 = ps1.executeUpdate();
+            new PersonalTrainerDAO().personalTrainerRegistration(ub);
+            if (state1!=0)
+                System.out.println("Upgrade da user a personal trainer completato!");
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally{
+            try {
+                ps1.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -61,9 +61,6 @@
     transition: all 200ms linear;
 }
 
-.bottom-right-image {
-
-}
 
 @media only screen and (max-width: 575px) {
     #logoDiv{
