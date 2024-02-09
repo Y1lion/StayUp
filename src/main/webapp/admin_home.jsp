@@ -2,13 +2,7 @@
 <%@ page import="model.user.UserBeanDAO" %>
 <%@ page import="model.personalTrainer.PersonalTrainer" %>
 <%@ page import="java.util.List" %>
-<%@ page import="model.personalTrainer.PersonalTrainerDAO" %><%--
-  Created by IntelliJ IDEA.
-  User: Andrea
-  Date: 07/02/2024
-  Time: 20:25
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="model.personalTrainer.PersonalTrainerDAO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -20,11 +14,8 @@
     <link rel="stylesheet" href="css/custom.css">
 </head>
 <body class="bgGradient">
-<%  dataFromSession="ciao@ciao.it";
-    nameSession="Andrea";
-    surnameSession="Abbate";
-    if(dataFromSession==null)
-    response.sendRedirect(request.getContextPath() + "/index.jsp");
+<%if(dataFromSession==null)
+        response.sendRedirect(request.getContextPath() + "/index.jsp");
     else{
         UserBean ub=new UserBeanDAO().recoverInfos(dataFromSession);
         List<PersonalTrainer> pts=new PersonalTrainerDAO().retrieveAll();
