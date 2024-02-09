@@ -5,6 +5,11 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.parameters.Parameters;
 import model.parameters.ParametersDAO;
+import model.personalTrainer.PersonalTrainer;
+import model.personalTrainer.PersonalTrainerDAO;
+import model.user.UserBean;
+import model.user.UserBeanDAO;
+import model.utils.PasswordEncryptionUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,9 +31,23 @@ public class ServletChangeParameters extends HttpServlet {
             uParam.setChest_mis(Double.parseDouble(request.getParameter("parchest")));
             uParam.setHips_mis(Double.parseDouble(request.getParameter("parhips")));
             uParam.setShoulders_mis(Double.parseDouble(request.getParameter("parshoulders")));
-            out.println("BEFORE SET: "+Integer.parseInt(request.getParameter("parworkout")));
             uParam.setWorkoutYears(Integer.parseInt(request.getParameter("parworkout")));
-            out.println("AFTER SET: "+uParam.getWorkoutYears());
+
+            String psw = request.getParameter("currentpassword1");
+            psw = PasswordEncryptionUtil.encryptPassword(psw);
+            UserBean ub = new UserBeanDAO().loginUser((String) session.getAttribute("email"),psw);
+
+            if(ub.getEmail().equalsIgnoreCase("ERRORE")){
+                throw new Exception("Wrong password");
+            }
+
+            String ptYears = request.getParameter("parptyears");
+            out.println("ptYears: "+ptYears);
+            if (ptYears != null && !ptYears.isEmpty()){
+                PersonalTrainer pt = new PersonalTrainer(ub);
+                pt = new PersonalTrainerDAO().changePTYears(pt, Integer.valueOf(ptYears));
+            }
+
             uParam = new ParametersDAO().changeParameters(uParam);
             request.setAttribute("success","./userpage.jsp");
             request.getRequestDispatcher("./infopages/success.jsp").forward(request,response);

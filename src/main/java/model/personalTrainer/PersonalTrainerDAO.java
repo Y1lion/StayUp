@@ -71,15 +71,14 @@ public class PersonalTrainerDAO {
 
         try {
             conn = ConnectionPool.getConnection();
-            String sql = "SELECT * FROM personalTrainer WHERE email = ? AND password = ?";
+            String sql = "SELECT * FROM personalTrainer WHERE email = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, pt.getUser().getEmail());
-            ps.setString(2, pt.getUser().getPsw());
 
             ResultSet res = ps.executeQuery();
 
             if(res.next()) {
-                PreparedStatement prepstat = conn.prepareStatement("UPDATE personalTrainer SET description = ? WHERE email = ?");
+                PreparedStatement prepstat = conn.prepareStatement("UPDATE personalTrainer SET descrizione = ? WHERE email = ?");
                 prepstat.setString(1, newDescription);
                 prepstat.setString(2, pt.getUser().getEmail());
                 int state = prepstat.executeUpdate();
@@ -122,10 +121,9 @@ public class PersonalTrainerDAO {
 
         try {
             conn = ConnectionPool.getConnection();
-            String sql = "SELECT * FROM personalTrainer WHERE email = ? AND password = ?";
+            String sql = "SELECT * FROM personalTrainer WHERE email = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, pt.getUser().getEmail());
-            ps.setString(2, pt.getUser().getPsw());
 
             ResultSet res = ps.executeQuery();
 
