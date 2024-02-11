@@ -1,17 +1,16 @@
-#title.form-control{
+.form-control-lg{
     background: transparent;
     border-top: none;
     border-right: none;
     border-left: none;
-    width: 25rem;
-    font-size: 3rem;
     border-bottom-color: #1789b5;
     border-bottom-width: 5px;
     border-radius: 0;
 }
-#title.form-control:focus{
+.form-control-lg:focus{
     background: transparent;
-    box-shadow: none;
+    box-shadow: none!important;
+    outline: none!important;
     -webkit-animation-name: pulseBorder;
     -webkit-animation-iteration-count: infinite;
     -webkit-animation-timing-function: ease;
@@ -19,9 +18,13 @@
     -webkit-animation-duration: 0.5s;
     color:black;
 }
-#title.form-control::placeholder{
+.form-control-lg::placeholder{
     color: #878387;
     text-align: center;
+}
+
+.form-control::placeholder{
+    color: #878387;
 }
 input::-moz-placeholder  {
     color: #878387;
