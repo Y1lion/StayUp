@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class TrainingPlanDAO {
     //TODO: ADD TRAINING PLAN BUT BEFORE TODO FORM FOR TRAINING PLAN
-    public synchronized void addTrainingPlan(String emailPT, String emailUser, String exercises, Date dateStart, Date dateEnd){
+    public synchronized Boolean addTrainingPlan(String emailPT, String emailUser, String exercises, Date dateStart, Date dateEnd){
         Connection conn =  null;
         PreparedStatement ps = null;
 
@@ -30,24 +30,22 @@ public class TrainingPlanDAO {
 
             if(upd != 0) {
                 System.out.print("Added training plan");
-                ps.close();
-                ConnectionPool.releaseConnection(conn);
-
+                return true;
             }
         }
         catch(SQLException e){
             e.printStackTrace();
-
         }
         finally {
             try {
                 ps.close();
                 ConnectionPool.releaseConnection(conn);
             }
-            catch(Exception e) {
+            catch(SQLException e) {
                 e.printStackTrace();
             }
         }
+        return false;
     }
 
     public synchronized ArrayList<TrainingPlan> getAvailableTrainingPlan(UserBean ub){
