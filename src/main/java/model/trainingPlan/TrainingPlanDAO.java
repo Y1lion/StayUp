@@ -1,53 +1,38 @@
 package model.trainingPlan;
 
 import model.personalTrainer.PersonalTrainer;
+import model.subscription.Subscription;
 import model.user.UserBean;
 import model.utils.ConnectionPool;
+import org.json.simple.JSONObject;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class TrainingPlanDAO {
     //TODO: ADD TRAINING PLAN BUT BEFORE TODO FORM FOR TRAINING PLAN
-    /*public synchronized TrainingPlan addTrainingPlan(UserBean ub, PersonalTrainer pt, String exercises, Date dateEnd){
+    public synchronized void addTrainingPlan(String emailPT, String emailUser, String exercises, Date dateStart, Date dateEnd){
         Connection conn =  null;
         PreparedStatement ps = null;
-        /*JSON EXERCISES:
-        * TITOLO SCHEDA
-        * GIORNI: ?
-        *
-        * SPALLE
-        * BICIPITI
-        * TRICIPITI
-        * DORSALI
-        * FEMORALI
-        * QUADRICIPITI
-        * GLUTEI?
-        * PETTORALI
-        * POLPACCI?
-        * ADDOMINALI
-        * JSON_OBJECT("title","titolo","spalle", JSON_ARRAY(how many????))
-        *
 
         try {
             conn = ConnectionPool.getConnection();
-            String sqlString = "INSERT INTO subscription(emailUser, emailPt, exercises, dateStart, dateEnd) VALUES(?,?,JSON_OBJECT(),?,?)";
+            String sqlString = "INSERT INTO trainingPlan(emailUser, emailPT, exercises, dateStart, dateEnd) VALUES(?,?,?,?,?)";
             ps = conn.prepareStatement(sqlString);
 
-            ps.setString(1, ub.getEmail());
-            ps.setString(2, pt.getUser().getEmail());
+            ps.setString(1, emailUser);
+            ps.setString(2, emailPT);
             ps.setString(3, exercises);
-            ps.setDate(4, new Date(System.currentTimeMillis()));
+            ps.setDate(4, dateStart);
             ps.setDate(5, dateEnd);
 
             int upd = ps.executeUpdate();
 
             if(upd != 0) {
-                Subscription sub = new Subscription(pt.getUser().getEmail(),ub.getEmail(),new java.sql.Date(System.currentTimeMillis()), dateEnd, Boolean.TRUE);
-                System.out.print("Registered");
+                System.out.print("Added training plan");
                 ps.close();
                 ConnectionPool.releaseConnection(conn);
-                return sub;
+
             }
         }
         catch(SQLException e){
@@ -63,8 +48,8 @@ public class TrainingPlanDAO {
                 e.printStackTrace();
             }
         }
-        return null;
-    }*/
+    }
+
     public synchronized ArrayList<TrainingPlan> getAvailableTrainingPlan(UserBean ub){
         Connection conn = null;
         PreparedStatement ps = null;
