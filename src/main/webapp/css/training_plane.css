@@ -6,6 +6,7 @@
     border-bottom-color: #1789b5;
     border-bottom-width: 5px;
     border-radius: 0;
+    color:black;
 }
 .form-control-lg:focus{
     background: transparent;
