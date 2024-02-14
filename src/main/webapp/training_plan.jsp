@@ -32,11 +32,11 @@
 
       <button class="btn col-lg-4 col-12 col-xl-3 btn-outline-primary align-self-end" onclick="window.location.reload();">Cancel Training plan</button>
       <div class="d-flex justify-content-center flex-column">
-        <label for="dateStart" class="text-primary">Data inizio:</label>
+        <label for="dateStart" class="text-primary">Start data:</label>
         <input name="dateStart" id="dateStart" type="date" required class="col-lg-5 col-xl-5 col-12 form-control">
       </div>
       <div class="d-flex justify-content-center flex-column">
-        <label for="dateEnd" class="text-primary">Data fine:</label>
+        <label for="dateEnd" class="text-primary">End data:</label>
         <input name="dateEnd" id="dateEnd" required type="date" class="col-lg-5 col-xl-5 col-12 form-control">
       </div>
       <input name="title" id="title" type="text" class="col-lg-12 col-xl-3 col-12 text-center form-control-lg" required placeholder="Title">
