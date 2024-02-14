@@ -103,7 +103,7 @@
                                                 <div class="modal-body text-black">
                                                     <div class="d-flex flex-column form-group h5">
                                                         <p class="text-primary h5 font-italic">Exercises:</p>
-                                                        <textarea class="bgGradient text-light" style="height: 100px"><%=t.getExercises()%></textarea>
+                                                        <textarea class="bgGradient text-light" style="height: 100px" disabled><%=t.getExercises()%></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -155,7 +155,7 @@
                                             <div class="modal-body text-black">
                                                 <div class="d-flex flex-column form-group h5">
                                                     <p class="text-primary h5 font-italic">Exercises:</p>
-                                                    <textarea class="bgGradient text-light" style="height: 100px"><%=t.getExercises()%></textarea>
+                                                    <textarea class="bgGradient text-light" style="height: 100px" disabled><%=t.getExercises()%></textarea>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
