@@ -144,4 +144,15 @@ public class UserBean {
     public void setGender(String gender) {
         this.gender = gender;
     }
+    public String toString() {
+        return "User{"
+                + "Nome='" + nome + '\''
+                + ", Cognome='" + cognome + '\''
+                + ", Numero di Telefono='" + telefono + '\''
+                + ", email='" + email + '\''
+                + ", password='" + psw + '\''
+                + ", gender='" + gender + '\''
+                + ", ruolo=" + role
+                + '}';
+    }
 }
