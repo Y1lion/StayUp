@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * The type Personal trainer dao.
@@ -192,5 +193,42 @@ public class PersonalTrainerDAO {
         }
 
         return pt;
+    }
+    public synchronized ArrayList<PersonalTrainer> allPersonalTrainers(){
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            ArrayList<PersonalTrainer> allPersonalTrainers=new ArrayList<>();
+            conn = ConnectionPool.getConnection();
+            ps = conn.prepareStatement("SELECT * FROM personalTrainer");
+            ResultSet res = ps.executeQuery();
+            int i=0;
+            System.out.println("FUORI WHILE");
+            while(res.next())
+            {
+                System.out.println("DENTRO WHILE");
+                allPersonalTrainers.add(new PersonalTrainer(new UserBean(res.getString("email"),"fasulla")));
+                UserBean ub = new UserBeanDAO().recoverInfos(res.getString("email"));
+                allPersonalTrainers.get(i).setUser(ub);
+                allPersonalTrainers.get(i).setPtYears(res.getInt("ptYears"));
+                System.out.println(allPersonalTrainers.get(i).getUser().getEmail());
+                System.out.println(i);
+                i++;
+            }
+            return allPersonalTrainers;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally{
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }
