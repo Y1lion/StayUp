@@ -18,8 +18,8 @@ background: linear-gradient(229deg, rgba(34,193,195,1) 0%, rgba(23,137,181,1) 70
         <div id="divSignIn" class="col-lg-4 col-sm-4 d-flex flex-column bg-light h-100 p-4 align-items-center" style=" border-radius:0 5px 5px 0;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);color:black">
             <p class="h1">Sign In</p>
             <form action="login" method="post">
-                <input type="email" name="emailLog" style="margin-top:20px" class="form-control" placeholder="Email">
-                <input type="password" name="passwordLog" style="margin-top:15px" class="form-control" placeholder="Password">
+                <input type="email" name="emailLog" style="margin-top:20px" class="form-control" placeholder="Email" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$">
+                <input type="password" name="passwordLog" style="margin-top:15px" class="form-control" placeholder="Password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$" oninvalid="alert('Password must contains: \n8 characters; \nOne lowercase character; \nOne uppercase character; \nOne number; \nOne of the special characters: @,$,!,%,*,?,&;')">
                 <p class="text-center mt-2" style="color: darkslategray;font-size: 13px">Forgot password?</p>
                 <button type="submit" class="btn btn-primary w-100 mt-2 ">Log-in</button>
             </form>
