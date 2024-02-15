@@ -3,10 +3,14 @@
 <head>
     <%@ include file="parts/meta.jsp"%>
     <%@ include file="parts/head.jsp"%>
+    <%@include file="parts/cookie.jsp"%>
     <link rel="stylesheet" href="css/loginCSS.css">
     <title>Login</title>
 </head>
 <body style="background: #dddddd">
+<%if (dataFromSession != null) {
+    response.sendRedirect(request.getContextPath() + "/index.jsp");
+} else{%>
 <div class="container-fluid h-100 d-flex justify-content-center align-items-center " style="color: aliceblue">
     <div id="divForSignAndInfo" class="row h-50 d-flex align-items-center m-auto ">
         <div id="divInfos" class="col-lg-8 col-sm-8 h-100 p-4 d-flex flex-column" style="background: rgb(34,193,195);
@@ -29,5 +33,6 @@ background: linear-gradient(229deg, rgba(34,193,195,1) 0%, rgba(23,137,181,1) 70
         </div>
     </div>
 </div>
+<%}%>
 </body>
 </html>
