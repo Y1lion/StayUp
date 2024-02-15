@@ -22,12 +22,12 @@ public class SubscriptionDAO {
             ps.setString(2, ub.getEmail());
             ps.setDate(3, new Date(System.currentTimeMillis()));
             ps.setDate(4, dateEnd);
-            ps.setInt(5, 1);
+            ps.setInt(5, 2);
 
             int upd = ps.executeUpdate();
 
             if(upd != 0) {
-                Subscription sub = new Subscription(pt.getUser().getEmail(),ub.getEmail(),new java.sql.Date(System.currentTimeMillis()), dateEnd, 1);
+                Subscription sub = new Subscription(pt.getUser().getEmail(),ub.getEmail(),new java.sql.Date(System.currentTimeMillis()), dateEnd, 2);
                 System.out.print("Registered");
                 ps.close();
                 ConnectionPool.releaseConnection(conn);
@@ -90,6 +90,47 @@ public class SubscriptionDAO {
         catch(SQLException e){
             e.printStackTrace();
 
+        }
+        finally {
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return s;
+    }
+    public synchronized Subscription refuseSubscription(Subscription s){
+        Connection conn =  null;
+        PreparedStatement ps = null;
+
+        try {
+            conn = ConnectionPool.getConnection();
+            ps = conn.prepareStatement("SELECT * FROM subscription WHERE emailUser = ? AND emailPT = ? AND isActive = 2");
+            ps.setString(1, s.getEmailUser());
+            ps.setString(2, s.getEmailPt());
+            Date today = new Date(System.currentTimeMillis());
+            ResultSet resultSet = ps.executeQuery();
+
+            if(resultSet.next()) {
+                ps = conn.prepareStatement("DELETE FROM subscription WHERE emailUser = ? AND emailPT = ? AND isActive = 2 ");
+                ps.setString(1, s.getEmailUser());
+                ps.setString(2, s.getEmailPt());
+                int upd = ps.executeUpdate();
+                if (upd != 0){
+                    s.setActive(0);
+                    System.out.println("Subscription refused");
+                    return s;
+                } else {
+                    System.out.println("No changes");
+                    return null;
+                }
+            }
+        }
+        catch(SQLException e){
+            e.printStackTrace();
         }
         finally {
             try {
