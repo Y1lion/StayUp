@@ -24,7 +24,7 @@ background: linear-gradient(229deg, rgba(34,193,195,1) 0%, rgba(23,137,181,1) 70
             <form action="login" method="post">
                 <input type="email" name="emailLog" style="margin-top:20px" class="form-control" placeholder="Email" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$">
                 <input type="password" name="passwordLog" style="margin-top:15px" class="form-control" placeholder="Password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$" oninvalid="alert('Password must contains: \n8 characters; \nOne lowercase character; \nOne uppercase character; \nOne number; \nOne of the special characters: @,$,!,%,*,?,&;')">
-                <p class="text-center mt-2" style="color: darkslategray;font-size: 13px">Forgot password?</p>
+                <a href="forgot_password.jsp" class="text-center mt-2" style="color: darkslategray;font-size: 13px">Forgot password?</a>
                 <button type="submit" class="btn btn-primary w-100 mt-2 ">Log-in</button>
             </form>
             <div id="logoDiv" class="d-flex align-items-end  flex-fill align-self-end" >
