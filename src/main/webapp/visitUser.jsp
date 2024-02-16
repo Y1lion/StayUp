@@ -40,7 +40,7 @@
     } else {
         gender = "Other";
     }%>
-<section class="bgGradient" style="height: 100vh;">
+<section class="bgGradient" style="min-height: 100vh;">
     <div class="container py-5">
         <div class="row">
             <div class="col-lg-4">
