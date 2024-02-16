@@ -25,7 +25,7 @@ public class ServletRequestSubscription extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             UserBean ub = new UserBeanDAO().recoverInfos((String) session.getAttribute("email"));
-            PersonalTrainer pt = new PersonalTrainerDAO().retrieveInfo(request.getParameter("emailPT"));
+            PersonalTrainer pt = new PersonalTrainerDAO().retrieveInfo(request.getParameter("visitEmail"));
             if (pt == null || pt.getUser() == null){
                 throw new Exception("Personal Trainer email not valid");
             }
