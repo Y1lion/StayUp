@@ -4,8 +4,8 @@
     <%@include file="parts/head.jsp" %>
     <%@include file="parts/meta.jsp" %>
     <link rel="stylesheet" href="css/register.css">
-    <link rel="stylesheet" href="css/custom.css">
     <title>Sign Up</title>
+    <script src="js/utils.js"></script>
 </head>
 <body>
 <div class="d-flex h-100 align-items-center justify-content-center" id="logDiv">
@@ -24,10 +24,10 @@
                 </div>
             </div>
             <div class="d-flex flex-column mt-4 form-group h5">
-                <input type="text" class="form-control" placeholder="name" name="regname" id="regname" pattern="[A-Za-zÀ-ÿ\s']{1,50}" oninvalid="alert('Name must contains at least 1 character and maximum 50, furthermore the only acceptable characters are: \nA to Z; \na to z; \nÀ to ÿ; \n')" required>
+                <input type="text" class="form-control" placeholder="name" name="regname" id="regname" pattern="^[A-Z][a-zA-Z]{1,50}$" oninvalid="alert('Name must contains at least 1 character and maximum 50, furthermore the only acceptable characters are: \nA to Z; \na to z; \nÀ to ÿ; \n')" required>
             </div>
             <div class="d-flex flex-column mt-4 form-group h5">
-                <input type="text" class="form-control" placeholder="surname" name="regsurname" id="regsurname" required pattern="[A-Za-zÀ-ÿ\s']{1,50}" oninvalid="alert('Surname must contains at least 1 character and maximum 50, furthermore the only acceptable characters are: \nA to Z; \na to z; \nÀ to ÿ; \n')">
+                <input type="text" class="form-control" placeholder="surname" name="regsurname" id="regsurname" required pattern="^[A-Z][a-zA-Z]{1,50}$" oninvalid="alert('Surname must contains at least 1 character and maximum 50, furthermore the only acceptable characters are: \nA to Z; \na to z; \nÀ to ÿ; \n')">
             </div>
             <div class="d-flex flex-column mt-4 form-group h5">
                 <input type="tel" class="form-control" placeholder="telephone" name="regtel" id="regtel" required pattern="\d{10}" oninvalid="alert('Telephone must contains only 10 numbers.')">

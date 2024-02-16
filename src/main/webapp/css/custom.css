@@ -19,3 +19,50 @@ html{
     background-color: #1789b5!important;
     border-color: #1789b5!important;
 }
+.btn-outline-primary{
+    outline-color: #1789b5!important;
+    border-color: #1789b5!important;
+    color: #1789b5!important;
+}
+.btn-outline-primary:hover{
+    background-color: #1789b5!important;
+    border-color: #1789b5!important;
+    color: white !important;
+}
+.bg-secondary{
+    background-color: rgba(34,193,195,1) !important;
+}
+.border-secondary {
+    border-color: rgba(34,193,195,1) !important;
+}
+.text-secondary {
+    color: rgba(34,193,195,1) !important;
+}
+.btn-secondary{
+    background-color: rgba(34,193,195,1)!important;
+    border-color: rgba(34,193,195,1)!important;
+}
+.btn-outline-secondary{
+    outline-color: rgba(34,193,195,1)!important;
+    border-color: rgba(34,193,195,1)!important;
+    color: rgba(34,193,195,1)!important;
+}
+.btn-outline-secondary:hover{
+    background-color: rgba(34,193,195,1)!important;
+    border-color: rgba(34,193,195,1)!important;
+    color: white !important;
+}
+
+.btn-outline-light:hover{
+    color: rgba(34,193,195,1)!important;
+}
+
+.btn-outline-light:hover > i{
+    color: rgba(34,193,195,1) !important;
+}
+
+.bgGradient{
+    background: rgb(34,193,195);
+    background: linear-gradient(229deg, rgba(34,193,195,1) 0%, rgba(23,137,181,1) 70%, rgba(23,137,181,1) 100%);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

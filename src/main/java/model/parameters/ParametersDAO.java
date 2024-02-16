@@ -117,29 +117,28 @@ public class ParametersDAO {
      * Change parameters parameters.
      *
      * @param params   the parameters
-     * @param newParam the new parameter
-     * @param param    the parameter you want to change
      * @return the parameters
      */
-    public synchronized Parameters changeParameters(Parameters params, Double newParam, String param){
+    public synchronized Parameters changeParameters(Parameters params){
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = ConnectionPool.getConnection();
-            String query = "UPDATE parameters SET"+ param +" = ? WHERE email = ?";
-            preparedStatement = connection.prepareStatement(query);
-            if(param.equalsIgnoreCase("workoutYears")) {
-                preparedStatement.setInt(1, newParam.intValue());
-            } else {
-                preparedStatement.setDouble(1, newParam);
-            }
-            preparedStatement.setString(2, params.getEmail());
+            preparedStatement = connection.prepareStatement("UPDATE parameters SET weight = ?, lean_mass = ?, fat_mass = ?, arm_mis = ?, leg_mis = ?, chest_mis = ?, hips_mis = ?, shoulders_mis = ?, workoutYears = ? WHERE email = ?");
+            preparedStatement.setDouble(1, params.getWeight());
+            preparedStatement.setDouble(2, params.getLean_mass());
+            preparedStatement.setDouble(3, params.getFat_mass());
+            preparedStatement.setDouble(4, params.getArm_mis());
+            preparedStatement.setDouble(5, params.getLeg_mis());
+            preparedStatement.setDouble(6, params.getChest_mis());
+            preparedStatement.setDouble(7, params.getHips_mis());
+            preparedStatement.setDouble(8, params.getShoulders_mis());
+            preparedStatement.setInt(9, params.getWorkoutYears());
+            preparedStatement.setString(10, params.getEmail());
             int state = preparedStatement.executeUpdate();
 
             if(state != 0) {
-                params.setWeight(newParam);
-                System.out.println(param+" changed");
-
+                System.out.println("params updated");
                 return params;
             }else {
                 System.out.println("No changes");
