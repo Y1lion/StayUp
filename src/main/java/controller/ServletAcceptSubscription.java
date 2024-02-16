@@ -3,14 +3,14 @@ package controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import model.user.UserBean;
+import model.subscription.Subscription;
+import model.subscription.SubscriptionDAO;
 import model.user.UserBeanDAO;
-import model.utils.PasswordEncryptionUtil;
 
 import java.io.IOException;
 
-@WebServlet(name = "ChangeNumber", value = "/ChangeNumber")
-public class ServletChangeNumber extends HttpServlet {
+@WebServlet(name = "AcceptSubscription", value = "/AcceptSubscription")
+public class ServletAcceptSubscription extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -18,23 +18,18 @@ public class ServletChangeNumber extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try{
+        try {
             HttpSession session = request.getSession();
-            String number = request.getParameter("newnumber");
-            String psw = request.getParameter("current_password3");
-            psw = PasswordEncryptionUtil.encryptPassword(psw);
-            UserBean ub = new UserBeanDAO().loginUser((String) session.getAttribute("email"),psw);
-            if(!number.matches("\\d{10}"))
-                throw new Exception("Number format is not respected");
-            if(ub.getEmail().equalsIgnoreCase("ERRORE")){
-                throw new Exception("Wrong password");
+            String emailUser = request.getParameter("visitEmail");
+            Subscription s = new SubscriptionDAO().getSubscription(new UserBeanDAO().recoverInfos(emailUser));
+            if (s == null || s.getEmailUser().equalsIgnoreCase("error")){
+                throw new Exception("User email not valid");
             }
-            if (ub.getGender().equalsIgnoreCase(number)){
-                throw new Exception("New number is the same as the old number");
-            }
-            ub = new UserBeanDAO().changeNumber(ub, number);
-            if(ub==null)
+            s = new SubscriptionDAO().acceptSubscription(s);
+
+            if (s == null){
                 throw new Exception("Something went wrong");
+            }
             request.setAttribute("success","./userpage.jsp");
             request.getRequestDispatcher("./infopages/success.jsp").forward(request, response);
         }catch (Exception e){

@@ -3,14 +3,17 @@ package controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import model.trainingPlan.TrainingPlanDAO;
 import model.user.UserBean;
 import model.user.UserBeanDAO;
-import model.utils.PasswordEncryptionUtil;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
-@WebServlet(name = "ChangeNumber", value = "/ChangeNumber")
-public class ServletChangeNumber extends HttpServlet {
+import static java.lang.System.out;
+
+@WebServlet(name = "DeleteTrainingPlan", value = "/DeleteTrainingPlan")
+public class ServletDeleteTrainingPlan extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -20,21 +23,15 @@ public class ServletChangeNumber extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try{
             HttpSession session = request.getSession();
-            String number = request.getParameter("newnumber");
-            String psw = request.getParameter("current_password3");
-            psw = PasswordEncryptionUtil.encryptPassword(psw);
-            UserBean ub = new UserBeanDAO().loginUser((String) session.getAttribute("email"),psw);
-            if(!number.matches("\\d{10}"))
-                throw new Exception("Number format is not respected");
-            if(ub.getEmail().equalsIgnoreCase("ERRORE")){
-                throw new Exception("Wrong password");
-            }
-            if (ub.getGender().equalsIgnoreCase(number)){
-                throw new Exception("New number is the same as the old number");
-            }
-            ub = new UserBeanDAO().changeNumber(ub, number);
-            if(ub==null)
-                throw new Exception("Something went wrong");
+            String emailPT = (String) session.getAttribute("email");
+            String exercises = request.getParameter("exercisesString");
+            String emailUser = request.getParameter("visitEmail");
+            out.println("JSON: "+exercises);
+            UserBean ub = new UserBeanDAO().checkEmail(emailUser);
+            if (ub == null || ub.getEmail().equalsIgnoreCase("errore"))
+                throw new Exception("Email user is not valid");
+            Boolean delete = new TrainingPlanDAO().deleteTrainingPlan(emailUser, emailPT, exercises);
+            if (!delete) throw new Exception("Something went wrong");
             request.setAttribute("success","./userpage.jsp");
             request.getRequestDispatcher("./infopages/success.jsp").forward(request, response);
         }catch (Exception e){

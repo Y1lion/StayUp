@@ -1,40 +1,40 @@
-package model.subscription;
+package model.trainingPlan;
 
 import java.sql.Date;
 
 /**
- * The type Subscription.
+ * The type Training plan.
  */
-public class Subscription {
-    private String emailPt;
+public class TrainingPlan {
     private String emailUser;
+    private String emailPt;
+    private String exercises;
     private Date dateStart;
     private Date dateEnd;
-    private Integer isActive;
 
     /**
-     * Instantiates a new Subscription.
+     * Instantiates a new Training plan.
      *
-     * @param emailPt   the email personal trainer
      * @param emailUser the email user
+     * @param emailPt   the email personal trainer
+     * @param exercises the exercises
      * @param dateStart the date start
      * @param dateEnd   the date end
-     * @param isActive  the is active
      */
-    public Subscription(String emailPt, String emailUser, Date dateStart, Date dateEnd, Integer isActive) {
-        this.emailPt = emailPt;
+    public TrainingPlan(String emailUser, String emailPt, String exercises, Date dateStart, Date dateEnd) {
         this.emailUser = emailUser;
+        this.emailPt = emailPt;
+        this.exercises = exercises;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
-        this.isActive = isActive;
     }
 
     /**
-     * Instantiates a new Subscription.
+     * Instantiates a new Training plan.
      *
      * @param emailUser the email user
      */
-    public Subscription(String emailUser) {
+    public TrainingPlan(String emailUser) {
         this.emailUser = emailUser;
     }
 
@@ -75,6 +75,24 @@ public class Subscription {
     }
 
     /**
+     * Gets exercises.
+     *
+     * @return the exercises
+     */
+    public String getExercises() {
+        return exercises;
+    }
+
+    /**
+     * Sets exercises.
+     *
+     * @param exercises the exercises
+     */
+    public void setExercises(String exercises) {
+        this.exercises = exercises;
+    }
+
+    /**
      * Gets date start.
      *
      * @return the date start
@@ -108,23 +126,5 @@ public class Subscription {
      */
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
-    }
-
-    /**
-     * Gets active.
-     *
-     * @return the active
-     */
-    public Integer getActive() {
-        return isActive;
-    }
-
-    /**
-     * Sets active.
-     *
-     * @param active the active
-     */
-    public void setActive(Integer active) {
-        isActive = active;
     }
 }
