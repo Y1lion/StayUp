@@ -16,7 +16,7 @@ public class UserBeanDAO {
      * @param password the password
      * @return the user bean
      */
-    //TODO: Admin check and approve request
+//TODO: Admin check and approve request
     public synchronized UserBean loginUser(String email, String password){ //ricerco nel db l'utente con email e psw dati in input
 
         Connection conn = null;
@@ -124,6 +124,203 @@ public class UserBeanDAO {
         }
 
         return null;
+    }
+
+    /**
+     * Change name user bean.
+     *
+     * @param ub         the ub
+     * @param newName    the new name
+     * @param newSurname the new surname
+     * @return the user bean
+     */
+    public synchronized UserBean changeName(UserBean ub, String newName, String newSurname) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            conn = ConnectionPool.getConnection();
+            String sql = new String("SELECT * FROM user WHERE email = ? AND password = ?");
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, ub.getEmail());
+            ps.setString(2, ub.getPsw());
+
+            ResultSet res = ps.executeQuery();
+            if(res.next()) {
+                PreparedStatement prepstat = conn.prepareStatement("UPDATE user SET name = ?, surname = ? WHERE email = ?");
+                prepstat.setString(1, newName);
+                prepstat.setString(2, newSurname);
+                prepstat.setString(3, ub.getEmail());
+                int state = prepstat.executeUpdate();
+
+                if(state != 0) {
+                    ub.setNome(newName);
+                    ub.setCognome(newSurname);
+                    System.out.println("name edit");
+
+                    return ub;
+                }
+                else {
+                    System.out.println("No changes");
+                    return null;
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Change number user bean.
+     *
+     * @param ub        the ub
+     * @param newNumber the new number
+     * @return the user bean
+     */
+    public synchronized UserBean changeNumber(UserBean ub, String newNumber) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            conn = ConnectionPool.getConnection();
+            String sql = new String("SELECT * FROM user WHERE email = ? AND password = ?");
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, ub.getEmail());
+            ps.setString(2, ub.getPsw());
+
+            ResultSet res = ps.executeQuery();
+            if(res.next()) {
+                PreparedStatement prepstat = conn.prepareStatement("UPDATE user SET telephone = ? WHERE email = ?");
+                prepstat.setString(1, newNumber);
+                prepstat.setString(2, ub.getEmail());
+                int state = prepstat.executeUpdate();
+
+                if(state != 0) {
+                    ub.setTelefono(newNumber);
+                    System.out.println("number edit");
+
+                    return ub;
+                }
+                else {
+                    System.out.println("No changes");
+                    return null;
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Change gender user bean.
+     *
+     * @param ub        the ub
+     * @param newGender the new gender
+     * @return the user bean
+     */
+    public synchronized UserBean changeGender(UserBean ub, String newGender) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            conn = ConnectionPool.getConnection();
+            String sql = new String("SELECT * FROM user WHERE email = ? AND password = ?");
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, ub.getEmail());
+            ps.setString(2, ub.getPsw());
+
+            ResultSet res = ps.executeQuery();
+            if(res.next()) {
+                PreparedStatement prepstat = conn.prepareStatement("UPDATE user SET gender = ? WHERE email = ?");
+                prepstat.setString(1, newGender);
+                prepstat.setString(2, ub.getEmail());
+                int state = prepstat.executeUpdate();
+
+                if(state != 0) {
+                    ub.setGender(newGender);
+                    System.out.println("gender edit");
+
+                    return ub;
+                }
+                else {
+                    System.out.println("No changes");
+                    return null;
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Recover infos user bean.
+     *
+     * @param email the email
+     * @return the user bean
+     */
+    public synchronized UserBean recoverInfos(String email) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        UserBean ub = null;
+
+        try {
+            conn = ConnectionPool.getConnection();
+            String sql = "SELECT * FROM user WHERE email = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+
+            ResultSet res = ps.executeQuery();
+            if(res.next()) {
+                ub = new UserBean(email,"fake");
+                ub.setNome(res.getString("name"));
+                ub.setCognome(res.getString("surname"));
+                ub.setRole(res.getString("role"));
+                ub.setGender(res.getString("gender"));
+                ub.setTelefono(res.getString("telephone"));
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return ub;
     }
 
     /**
