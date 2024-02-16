@@ -525,10 +525,10 @@
             <form method="post" action="ChangeName">
                 <div class="modal-body text-black">
                     <div class="d-flex flex-column form-group h5">
-                        <input type="text" class="form-control text-primary" placeholder="name" name="newname" id="newname" pattern="[A-Za-zÀ-ÿ\s']{2,50}" oninvalid="alert('Name must contains at least 1 character and maximum 50, furthermore the only acceptable characters are: \nA to Z; \na to z; \nÀ to ÿ; \n')" required>
+                        <input type="text" class="form-control text-primary" placeholder="name" name="newname" id="newname" pattern="^[A-Z][a-zA-Z]{1,50}$" oninvalid="alert('Name must contains at least 1 character and maximum 50, furthermore the only acceptable characters are: \nA to Z; \na to z; \nÀ to ÿ; \n')" required>
                     </div>
                     <div class="d-flex flex-column form-group h5">
-                        <input type="text" class="form-control text-primary" placeholder="surname" name="newsurname" id="newsurname" required pattern="[A-Za-zÀ-ÿ\s']{2,50}" oninvalid="alert('Surname must contains at least 1 character and maximum 50, furthermore the only acceptable characters are: \nA to Z; \na to z; \nÀ to ÿ; \n')">
+                        <input type="text" class="form-control text-primary" placeholder="surname" name="newsurname" id="newsurname" required pattern="^[A-Z][a-zA-Z]{1,50}$" oninvalid="alert('Surname must contains at least 1 character and maximum 50, furthermore the only acceptable characters are: \nA to Z; \na to z; \nÀ to ÿ; \n')">
                     </div>
                     <div class="d-flex flex-column form-group h5">
                         <div class="input-group">

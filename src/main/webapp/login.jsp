@@ -17,7 +17,7 @@
 background: linear-gradient(229deg, rgba(34,193,195,1) 0%, rgba(23,137,181,1) 70%, rgba(23,137,181,1) 100%);border-radius: 5px 0 0 5px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
             <h1 class="text-center">Welcome User</h1>
             <p class="h5 mt-2">We greet you in our login page, User! We're happy to see you. It's a pleasure for us having you here.</p>
-            <button class="btn mt-4 btn-primary align-self-center shadow-lg rounded-pill w-75">Is this your first time? Subscribe here!</button>
+            <a href="register.jsp" class="btn mt-4 btn-primary align-self-center shadow-lg rounded-pill w-75">Is this your first time? Subscribe here!</a>
         </div>
         <div id="divSignIn" class="col-lg-4 col-sm-4 d-flex flex-column bg-light h-100 p-4 align-items-center" style=" border-radius:0 5px 5px 0;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);color:black">
             <p class="h1">Sign In</p>
