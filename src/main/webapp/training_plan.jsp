@@ -21,11 +21,12 @@
 </head>
 <body>
 <%
-  PersonalTrainer pt= new PersonalTrainerDAO().retrieveInfo(dataFromSession);
-  List< Subscription> subs=new SubscriptionDAO().getAllSubscriptions(pt);
-  if(dataFromSession==null)
+  if(dataFromSession==null) {
     response.sendRedirect(request.getContextPath() + "/index.jsp");
-  else{%>
+  }
+  else{
+    PersonalTrainer pt= new PersonalTrainerDAO().retrieveInfo(dataFromSession);
+    List<Subscription> subs=new SubscriptionDAO().getAllSubscriptions(pt);%>
 <div class="container-fluid">
   <form action="addTrainingPlan" onsubmit="return controllaDate()">
     <div class="d-flex mx-auto justify-content-between w-75 mt-3 flex-wrap">
