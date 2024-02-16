@@ -3,6 +3,8 @@ package controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import model.user.UserBean;
+import model.user.UserBeanDAO;
 
 import java.io.IOException;
 
@@ -17,8 +19,17 @@ public class ServletSeeProfile extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = request.getParameter("visitEmail");
-        request.setAttribute("emailUser",email);
-        request.getRequestDispatcher("./visitUser.jsp").forward(request, response);
+        try {
+            String email = request.getParameter("visitEmail");
+            UserBean ub = new UserBeanDAO().checkEmail(email);
+            if (ub == null || ub.getEmail().equalsIgnoreCase("errore"))
+                throw new Exception("Clicked email is not valid");
+            request.setAttribute("emailUser", email);
+            request.getRequestDispatcher("./visitUser.jsp").forward(request, response);
+        }catch (Exception e){
+            request.setAttribute("exception",e);
+            request.setAttribute("exceptionURL","./userpage.jsp");
+            request.getRequestDispatcher("./infopages/error.jsp").forward(request, response);
+        }
     }
 }
