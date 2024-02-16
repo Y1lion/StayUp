@@ -144,17 +144,15 @@ public class UserBean {
     public void setGender(String gender) {
         this.gender = gender;
     }
-
-    @Override
     public String toString() {
-        return "UserBean{" +
-                "email='" + email + '\'' +
-                ", psw='" + psw + '\'' +
-                ", nome='" + nome + '\'' +
-                ", cognome='" + cognome + '\'' +
-                ", role='" + role + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", gender='" + gender + '\'' +
-                '}';
+        return "User{"
+                + "Nome='" + nome + '\''
+                + ", Cognome='" + cognome + '\''
+                + ", Numero di Telefono='" + telefono + '\''
+                + ", email='" + email + '\''
+                + ", password='" + psw + '\''
+                + ", gender='" + gender + '\''
+                + ", ruolo=" + role
+                + '}';
     }
 }

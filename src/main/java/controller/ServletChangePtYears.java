@@ -3,14 +3,16 @@ package controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import model.personalTrainer.PersonalTrainer;
+import model.personalTrainer.PersonalTrainerDAO;
 import model.user.UserBean;
 import model.user.UserBeanDAO;
 import model.utils.PasswordEncryptionUtil;
 
 import java.io.IOException;
 
-@WebServlet(name = "ChangeName", value = "/ChangeName")
-public class ServletChangeName extends HttpServlet {
+@WebServlet(name = "ChangePtYears", value = "/ChangePtYears")
+public class ServletChangePtYears extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -20,15 +22,14 @@ public class ServletChangeName extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try{
             HttpSession session = request.getSession();
-            String name = request.getParameter("newname");
-            String surname = request.getParameter("newsurname");
+            Integer years = Integer.parseInt(request.getParameter("newyears"));
+            String psw = request.getParameter("current_password4");
 
-            if(!name.matches("^[A-Z][a-zA-Z]{1,50}$"))
-                throw new Exception("Name format is not respected");
-            if(!surname.matches("^[A-Z][a-zA-Z]{1,50}$"))
-                throw new Exception("Surname format is not respected");
+            if(!psw.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$"))
+                throw new Exception("Password format is not respected");
+            if(years<0 || years>60)
+                throw new Exception("Years format is not respected");
 
-            String psw = request.getParameter("current_password1");
             psw = PasswordEncryptionUtil.encryptPassword(psw);
             UserBean ub = new UserBeanDAO().loginUser((String) session.getAttribute("email"),psw);
 
@@ -36,18 +37,17 @@ public class ServletChangeName extends HttpServlet {
                 throw new Exception("Wrong password");
             }
 
-            if (ub.getNome().equalsIgnoreCase(name)){
-                throw new Exception("New name is the same as the old name");
+            PersonalTrainer pt = new PersonalTrainerDAO().retrieveInfo((String) session.getAttribute("email"));
+
+            if (pt.getPtYears() == years){
+                throw new Exception("New years are the same as the old years");
             }
 
-            if (ub.getCognome().equalsIgnoreCase(surname)){
-                throw new Exception("New surname is the same as the old surname");
-            }
-            ub = new UserBeanDAO().changeName(ub, name, surname);
-            if(ub == null)
+            pt = new PersonalTrainerDAO().changePTYears(pt,years);
+
+            if (pt == null){
                 throw new Exception("Something went wrong");
-            session.setAttribute("name",ub.getNome());
-            session.setAttribute("surname",ub.getCognome());
+            }
             request.setAttribute("success","./userpage.jsp");
             request.getRequestDispatcher("./infopages/success.jsp").forward(request, response);
         }catch (Exception e){

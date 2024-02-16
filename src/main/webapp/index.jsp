@@ -7,7 +7,7 @@
     <%@include file="parts/navbar.jsp"%>
     <title>JSP - Hello World</title>
 </head>
-<body>
+<body >
 <h1><%= "Hello World!" %>
 </h1>
 <br/>

@@ -4,7 +4,6 @@
     <%@include file="parts/head.jsp" %>
     <%@include file="parts/meta.jsp" %>
     <link rel="stylesheet" href="css/register.css">
-    <link rel="stylesheet" href="css/custom.css">
     <title>Sign Up</title>
     <script src="js/utils.js"></script>
 </head>
@@ -21,14 +20,14 @@
             <div class="d-flex flex-column mt-4 form-group h5">
                 <div class="input-group">
                     <input id="psw" type="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$" oninvalid="alert('Password must contains: \n8 characters; \nOne lowercase character; \nOne uppercase character; \nOne number; \nOne of the special characters: @,$,!,%,*,?,&;')" class="form-control rounded" placeholder="password" name="regpass" id="regpass">
-                    <button type="button" class="input-group-append ml-2 align-items-center bg-transparent rounded text-light border border-0" id="toggle-button2" onclick="togglePasswordVisibility('regpass','toggle-button2')"><i class="fa-solid fa-eye"></i></button>
+                    <button type="button" class="input-group-append ml-2 align-items-center bg-transparent rounded text-light border border-0" id="toggle-button2" onclick="togglePasswordVisibility('psw','toggle-button2')"><i class="fa-solid fa-eye"></i></button>
                 </div>
             </div>
             <div class="d-flex flex-column mt-4 form-group h5">
-                <input type="text" class="form-control" placeholder="name" name="regname" id="regname" pattern="[A-Za-zÀ-ÿ\s']{1,50}" oninvalid="alert('Name must contains at least 1 character and maximum 50, furthermore the only acceptable characters are: \nA to Z; \na to z; \nÀ to ÿ; \n')" required>
+                <input type="text" class="form-control" placeholder="name" name="regname" id="regname" pattern="^[A-Z][a-zA-Z]{1,50}$" oninvalid="alert('Name must contains at least 1 character and maximum 50, furthermore the only acceptable characters are: \nA to Z; \na to z; \nÀ to ÿ; \n')" required>
             </div>
             <div class="d-flex flex-column mt-4 form-group h5">
-                <input type="text" class="form-control" placeholder="surname" name="regsurname" id="regsurname" required pattern="[A-Za-zÀ-ÿ\s']{1,50}" oninvalid="alert('Surname must contains at least 1 character and maximum 50, furthermore the only acceptable characters are: \nA to Z; \na to z; \nÀ to ÿ; \n')">
+                <input type="text" class="form-control" placeholder="surname" name="regsurname" id="regsurname" required pattern="^[A-Z][a-zA-Z]{1,50}$" oninvalid="alert('Surname must contains at least 1 character and maximum 50, furthermore the only acceptable characters are: \nA to Z; \na to z; \nÀ to ÿ; \n')">
             </div>
             <div class="d-flex flex-column mt-4 form-group h5">
                 <input type="tel" class="form-control" placeholder="telephone" name="regtel" id="regtel" required pattern="\d{10}" oninvalid="alert('Telephone must contains only 10 numbers.')">
