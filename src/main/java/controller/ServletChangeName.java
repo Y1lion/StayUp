@@ -22,6 +22,12 @@ public class ServletChangeName extends HttpServlet {
             HttpSession session = request.getSession();
             String name = request.getParameter("newname");
             String surname = request.getParameter("newsurname");
+
+            if(!name.matches("^[A-Z][a-zA-Z]{1,50}$"))
+                throw new Exception("Name format is not respected");
+            if(!surname.matches("^[A-Z][a-zA-Z]{1,50}$"))
+                throw new Exception("Surname format is not respected");
+
             String psw = request.getParameter("current_password1");
             psw = PasswordEncryptionUtil.encryptPassword(psw);
             UserBean ub = new UserBeanDAO().loginUser((String) session.getAttribute("email"),psw);
@@ -38,6 +44,8 @@ public class ServletChangeName extends HttpServlet {
                 throw new Exception("New surname is the same as the old surname");
             }
             ub = new UserBeanDAO().changeName(ub, name, surname);
+            if(ub == null)
+                throw new Exception("Something went wrong");
             session.setAttribute("name",ub.getNome());
             session.setAttribute("surname",ub.getCognome());
             request.setAttribute("success","./userpage.jsp");

@@ -28,6 +28,14 @@ public class ServletChangePassword extends HttpServlet {
             nPsw = PasswordEncryptionUtil.encryptPassword(nPsw);
             supPsw = PasswordEncryptionUtil.encryptPassword(supPsw);
             psw = PasswordEncryptionUtil.encryptPassword(psw);
+
+            if(!nPsw.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$"))
+                throw new Exception("Password format is not respected");
+            if(!supPsw.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$"))
+                throw new Exception("Password format is not respected");
+            if(!psw.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$"))
+                throw new Exception("Password format is not respected");
+
             String mail = (String) session.getAttribute("email");
             UserBeanDAO ubd = new UserBeanDAO();
             UserBean user = ubd.loginUser(mail, psw);
@@ -47,6 +55,8 @@ public class ServletChangePassword extends HttpServlet {
             }
 
             user = ubd.changePsw(user, psw, nPsw); // password cambiata
+            if (user == null)
+                throw new Exception("Something went wrong");
             request.setAttribute("success","./userpage.jsp");
             request.getRequestDispatcher("./infopages/success.jsp").forward(request, response);
         } catch (Exception e) {

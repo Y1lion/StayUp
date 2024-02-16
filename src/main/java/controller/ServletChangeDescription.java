@@ -40,6 +40,8 @@ public class ServletChangeDescription extends HttpServlet {
             }
 
             pt = new PersonalTrainerDAO().changeDescription(pt,desc);
+            if (pt == null)
+                throw new Exception("Something went wrong");
             request.setAttribute("success","./userpage.jsp");
             request.getRequestDispatcher("./infopages/success.jsp").forward(request, response);
         }catch (Exception e){

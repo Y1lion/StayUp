@@ -24,7 +24,8 @@ public class ServletChangeNumber extends HttpServlet {
             String psw = request.getParameter("current_password3");
             psw = PasswordEncryptionUtil.encryptPassword(psw);
             UserBean ub = new UserBeanDAO().loginUser((String) session.getAttribute("email"),psw);
-
+            if(!number.matches("\\d{10}"))
+                throw new Exception("Number format is not respected");
             if(ub.getEmail().equalsIgnoreCase("ERRORE")){
                 throw new Exception("Wrong password");
             }
@@ -32,6 +33,8 @@ public class ServletChangeNumber extends HttpServlet {
                 throw new Exception("New number is the same as the old number");
             }
             ub = new UserBeanDAO().changeNumber(ub, number);
+            if(ub==null)
+                throw new Exception("Something went wrong");
             request.setAttribute("success","./userpage.jsp");
             request.getRequestDispatcher("./infopages/success.jsp").forward(request, response);
         }catch (Exception e){

@@ -22,6 +22,9 @@ public class ServletAcceptSubscription extends HttpServlet {
             HttpSession session = request.getSession();
             String emailUser = request.getParameter("emailUser");
             Subscription s = new SubscriptionDAO().getSubscription(new UserBeanDAO().recoverInfos(emailUser));
+            if (s == null || s.getEmailUser().equalsIgnoreCase("error")){
+                throw new Exception("User email not valid");
+            }
             s = new SubscriptionDAO().acceptSubscription(s);
 
             if (s == null){

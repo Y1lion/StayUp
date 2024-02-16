@@ -17,8 +17,7 @@ public class ServletSeeProfile extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = (String) request.getParameter("visitEmail");
-        out.println("EMAIL ATTRIBUTE:"+email);
+        String email = request.getParameter("visitEmail");
         request.setAttribute("emailUser",email);
         request.getRequestDispatcher("./visitUser.jsp").forward(request, response);
     }

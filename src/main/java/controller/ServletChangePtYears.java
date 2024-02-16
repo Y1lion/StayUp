@@ -24,6 +24,12 @@ public class ServletChangePtYears extends HttpServlet {
             HttpSession session = request.getSession();
             Integer years = Integer.parseInt(request.getParameter("newyears"));
             String psw = request.getParameter("current_password4");
+
+            if(!psw.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$"))
+                throw new Exception("Password format is not respected");
+            if(years<0 || years>60)
+                throw new Exception("Years format is not respected");
+
             psw = PasswordEncryptionUtil.encryptPassword(psw);
             UserBean ub = new UserBeanDAO().loginUser((String) session.getAttribute("email"),psw);
 
@@ -38,6 +44,10 @@ public class ServletChangePtYears extends HttpServlet {
             }
 
             pt = new PersonalTrainerDAO().changePTYears(pt,years);
+
+            if (pt == null){
+                throw new Exception("Something went wrong");
+            }
             request.setAttribute("success","./userpage.jsp");
             request.getRequestDispatcher("./infopages/success.jsp").forward(request, response);
         }catch (Exception e){

@@ -22,14 +22,18 @@ public class ServletChangeEmail extends HttpServlet {
             HttpSession session = request.getSession();
             String mail  = request.getParameter("newemail");
             String psw = request.getParameter("current_password");
-            psw= PasswordEncryptionUtil.encryptPassword(psw);
+            psw = PasswordEncryptionUtil.encryptPassword(psw);
             String oldMail = (String) session.getAttribute("email");
+            if (!mail.matches("^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,})+$"))
+                throw new Exception("Email format is not respected");
             UserBeanDAO ubd = new UserBeanDAO();
             UserBean user = ubd.loginUser(oldMail, psw);
             if(user.getEmail().equalsIgnoreCase("ERRORE") || mail.equalsIgnoreCase(oldMail)){
                 throw new Exception("Wrong password or new email is the same as the old email");
             }
             user = ubd.changeEmail(user, user.getEmail(), mail); //mail cambiata
+            if (user == null)
+                throw new Exception("Something went wrong");
             session.setAttribute("email",user.getEmail());
             request.setAttribute("success","./userpage.jsp");
             request.getRequestDispatcher("./infopages/success.jsp").forward(request,response);

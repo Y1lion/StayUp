@@ -19,9 +19,12 @@ public class ServletRefuseSubscription extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            HttpSession session = request.getSession();
             String emailUser = request.getParameter("emailUser");
             Subscription s = new SubscriptionDAO().getSubscription(new UserBeanDAO().recoverInfos(emailUser));
+            if (s == null || s.getEmailUser().equalsIgnoreCase("error")){
+                throw new Exception("User email not valid");
+            }
+
             s = new SubscriptionDAO().refuseSubscription(s);
 
             if (s == null){

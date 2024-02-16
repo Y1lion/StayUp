@@ -22,6 +22,10 @@ public class ServletLogin extends HttpServlet {
         String ID = request.getParameter("emailLog");
         String password = request.getParameter("passwordLog");
         try {
+            if(!ID.matches("^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,})+$"))
+                throw new Exception("Email format is not respected");
+            if(!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$"))
+                throw new Exception("Password format is not respected");
             password = PasswordEncryptionUtil.encryptPassword(password);
             UserBeanDAO usDAO = new UserBeanDAO();
             UserBean us=usDAO.loginUser(ID,password);

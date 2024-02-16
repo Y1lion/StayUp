@@ -26,6 +26,9 @@ public class ServletRequestSubscription extends HttpServlet {
             HttpSession session = request.getSession();
             UserBean ub = new UserBeanDAO().recoverInfos((String) session.getAttribute("email"));
             PersonalTrainer pt = new PersonalTrainerDAO().retrieveInfo(request.getParameter("emailPT"));
+            if (pt == null || pt.getUser() == null){
+                throw new Exception("Personal Trainer email not valid");
+            }
             Date dateEnd = Date.valueOf(request.getParameter("dateEnd"));
             if(dateEnd.before(new Date(System.currentTimeMillis()))){
                 throw new Exception("Date end is before today date");
