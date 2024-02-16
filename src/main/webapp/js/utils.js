@@ -12,9 +12,7 @@ function togglePasswordVisibility(inputId, buttonId) {
 }
 var selectedRowPT=null;
 function setEmailPT(email,row){
-    console.log("ciaoo email: "+email);
     if (selectedRowPT !== null) {
-        console.log("dentro");
         selectedRowPT.classList.remove('table-active');
     }
     row.classList.add('table-active');
