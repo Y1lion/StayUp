@@ -1,0 +1,75 @@
+.form-control-lg{
+    background: transparent;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom-color: #1789b5;
+    border-bottom-width: 5px;
+    border-radius: 0;
+    color:black;
+}
+.form-control-lg:focus{
+    background: transparent;
+    box-shadow: none!important;
+    outline: none!important;
+    -webkit-animation-name: pulseBorder;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: ease;
+    -webkit-animation-direction: alternate;
+    -webkit-animation-duration: 0.5s;
+    color:black;
+}
+.form-control-lg::placeholder{
+    color: #878387;
+    text-align: center;
+}
+
+.form-control::placeholder{
+    color: #878387;
+}
+input::-moz-placeholder  {
+    color: #878387;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+input:-moz-placeholder  {
+    color: #878387;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+input::-webkit-input-placeholder  {
+    color: #878387;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+input:focus:-ms-input-placeholder  {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+input:focus::-moz-placeholder  {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+input:focus:-moz-placeholder  {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+input:focus::-webkit-input-placeholder  {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+@-webkit-keyframes pulseBorder {
+    from {
+        border-bottom: solid 5px #1789b5;
+    }
+    to {
+        border-bottom: solid 5px rgb(64, 244, 246);
+    }
+}
