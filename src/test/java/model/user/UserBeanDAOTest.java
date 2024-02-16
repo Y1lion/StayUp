@@ -1,13 +1,133 @@
 package model.user;
 
 import model.utils.PasswordEncryptionUtil;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserBeanDAOTest {
+    @BeforeAll
+    static void registerUser() throws NoSuchAlgorithmException {
+        String password = PasswordEncryptionUtil.encryptPassword("Ciaoprova1@");
+        new UserBeanDAO().userRegistration("testing@testing.org",password,"Name", "Surname", "1234567890", "m");
+        new UserBeanDAO().userRegistration("admin@admin.org",password,"Name", "Surname", "1234567890", "m");
+    }
+    @AfterAll
+    static void removeRegisteredUser(){
+        new UserBeanDAO().deleteUser("testing@testing.org");
+        new UserBeanDAO().deleteUser("testing@testing.net");
+        new UserBeanDAO().deleteUser("admin@admin.org");
+    }
+    @Test
+    void userRegistration() throws NoSuchAlgorithmException {
+        String password = PasswordEncryptionUtil.encryptPassword("Ciaoprova1@");
+        UserBean ub = new UserBeanDAO().userRegistration("testing@testing.org",password,"Name", "Surname", "1234567890", "m");
+        assertNotNull(ub);
+    }
+    @Test
+    public void loginUser() throws NoSuchAlgorithmException {
+        UserBeanDAO dao = new UserBeanDAO();
+        String password = PasswordEncryptionUtil.encryptPassword("Ciaoprova1@");
+        UserBean userToLog = dao.loginUser("testing@testing.org",password);
+        assertEquals("testing@testing.org", userToLog.getEmail());
+        assertEquals(password, userToLog.getPsw());
+    }
+    @Test
+    void recoverInfos() {
+        UserBeanDAO dao = new UserBeanDAO();
+        UserBean userToLog = dao.recoverInfos("testing@testing.org");
+        assertEquals("fake", userToLog.getPsw());
+    }
+    @Test
+    void checkEmail() {
+        UserBean ub = new UserBeanDAO().checkEmail("testing@testing.org");
+        assertNotNull(ub);
+        assertNotEquals("ERRORE",ub.getEmail());
+    }
+    @Test
+    public void changeName() throws NoSuchAlgorithmException {
+        UserBeanDAO dao = new UserBeanDAO();
+        String password = PasswordEncryptionUtil.encryptPassword("Ciaoprova1@");
+        UserBean ub = new UserBean("testing@testing.org",password);
+        ub.setNome("Name");
+        ub.setCognome("Surname");
+        UserBean userToLog = dao.changeName(ub, "Admin", "Admin");
+        assertNotNull(userToLog);
+        assertEquals("Admin", userToLog.getNome());
+        assertEquals("Admin", userToLog.getCognome());
+    }
+    @Test
+    public void changeNumber() throws NoSuchAlgorithmException {
+        UserBeanDAO dao = new UserBeanDAO();
+        String password = PasswordEncryptionUtil.encryptPassword("Ciaoprova1@");
+        UserBean ub = new UserBean("testing@testing.org",password);
+        ub.setTelefono("1234567890");
+        UserBean userToLog = dao.changeNumber(ub, "1234567899");
+        assertEquals("1234567899", userToLog.getTelefono());
+    }
+
+    @Test
+    public void changeGender() throws NoSuchAlgorithmException {
+        UserBeanDAO dao = new UserBeanDAO();
+        String password = PasswordEncryptionUtil.encryptPassword("Ciaoprova1@");
+        UserBean ub = new UserBean("testing@testing.org",password);
+        ub.setGender("Male");
+        UserBean userToLog = dao.changeGender(ub, "f");
+        assertNotNull(userToLog);
+        assertEquals("f", userToLog.getGender());
+    }
+
+    @Test
+    void changePsw() throws NoSuchAlgorithmException {
+        UserBeanDAO dao = new UserBeanDAO();
+        String password = PasswordEncryptionUtil.encryptPassword("Ciaoprova1@");
+        String password1 = PasswordEncryptionUtil.encryptPassword("Ciaoprova1!");
+        UserBean userToLog = dao.changePsw(new UserBean("testing@testing.org",password), password, password1);
+        assertEquals(password1, userToLog.getPsw());
+    }
+    @Test
+    public void changeEmail() throws NoSuchAlgorithmException {
+        UserBeanDAO dao = new UserBeanDAO();
+        String password = PasswordEncryptionUtil.encryptPassword("Ciaoprova1@");
+        UserBean userToLog = dao.changeEmail(new UserBean("admin@admin.org",password), "admin@admin.org", "testing@testing.net");
+        assertNotNull(userToLog);
+        assertEquals("testing@testing.net", userToLog.getEmail());
+        assertEquals(password, userToLog.getPsw());
+    }
+
+    @Test
+    void forgotPsw() throws NoSuchAlgorithmException {
+        UserBeanDAO dao = new UserBeanDAO();
+        String password = PasswordEncryptionUtil.encryptPassword("Ciaoprova1@");
+        String password1 = PasswordEncryptionUtil.encryptPassword("Ciaoprova1!");
+        UserBean userToLog = dao.forgotPsw(new UserBean("testing@testing.net",password), password1);
+        assertNotNull(userToLog);
+        assertEquals(password1, userToLog.getPsw());
+    }
+
+    @Test
+    void allUsers() {
+        ArrayList<UserBean> userBeans = new UserBeanDAO().allUsers();
+        assertNotNull(userBeans);
+    }
+
+    @Test
+    void requestRolePT() throws NoSuchAlgorithmException {
+        String password1 = PasswordEncryptionUtil.encryptPassword("Ciaoprova1@");
+        UserBean ub = new UserBeanDAO().loginUser("testing@testing.net",password1);
+        assertNotNull(ub);
+        assertNotEquals("ERRORE", ub.getEmail());
+        ub = new UserBeanDAO().requestRolePT(ub);
+        assertNotNull(ub);
+        assertEquals("PTR",ub.getRole());
+    }
+
+
 
     // TC_1.3_1
     @Test
@@ -19,11 +139,11 @@ class UserBeanDAOTest {
 
         UserBeanDAO userBeanDAO = new UserBeanDAO();
         UserBean ub = userBeanDAO.loginUser(mail,password);
-        if (ub == null || ub.getEmail().equalsIgnoreCase("errore")){
-            assertThrows(Exception.class, () -> {
-                throw new Exception(message);
-            });
-        }
+        assertNotNull(ub);
+        assertNotEquals("c@c.c",ub.getEmail());
+        assertThrows(Exception.class, () -> {
+            throw new Exception(message);
+        });
     }
 
     // TC_1.3_2
@@ -36,11 +156,11 @@ class UserBeanDAOTest {
 
         UserBeanDAO userBeanDAO = new UserBeanDAO();
         UserBean ub = userBeanDAO.loginUser(mail,password);
-        if (ub == null || ub.getEmail().equalsIgnoreCase("errore")){
-            assertThrows(Exception.class, () -> {
-                throw new Exception(message);
-            });
-        }
+        assertNotNull(ub);
+        assertNotEquals("ciccipappa@@",ub.getEmail());
+        assertThrows(Exception.class, () -> {
+            throw new Exception(message);
+        });
     }
 
     // TC_1.3_3
@@ -53,11 +173,11 @@ class UserBeanDAOTest {
 
         UserBeanDAO userBeanDAO = new UserBeanDAO();
         UserBean ub = userBeanDAO.loginUser(mail,password);
-        if (ub == null || ub.getEmail().equalsIgnoreCase("errore")){
-            assertThrows(Exception.class, () -> {
-                throw new Exception(message);
-            });
-        }
+        assertNotNull(ub);
+        assertNotEquals("ciao@prova.it",ub.getEmail());
+        assertThrows(Exception.class, () -> {
+            throw new Exception(message);
+        });
     }
 
     // TC_1.3_4
@@ -70,11 +190,11 @@ class UserBeanDAOTest {
 
         UserBeanDAO userBeanDAO = new UserBeanDAO();
         UserBean ub = userBeanDAO.loginUser(mail,password);
-        if (ub == null || ub.getEmail().equalsIgnoreCase("errore")){
-            assertThrows(Exception.class, () -> {
-                throw new Exception(message);
-            });
-        }
+        assertNotNull(ub);
+        assertNotEquals("ciao@prova.it",ub.getEmail());
+        assertThrows(Exception.class, () -> {
+            throw new Exception(message);
+        });
     }
 
     // TC_1.3_5
