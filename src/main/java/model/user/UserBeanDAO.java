@@ -1,9 +1,11 @@
 package model.user;
 
+import model.personalTrainer.PersonalTrainerDAO;
 import model.utils.ConnectionPool;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type User bean dao.
@@ -654,5 +656,72 @@ public class UserBeanDAO {
             }
         }
         return ub;
+    }
+
+    public synchronized List<UserBean> retrieveAllPending(){
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            List<UserBean> allUsers=new ArrayList<>();
+            conn = ConnectionPool.getConnection();
+            ps = conn.prepareStatement("SELECT * FROM user WHERE role = ?");
+            ps.setString(1,"PTR");
+            ResultSet res = ps.executeQuery();
+            int i=0;
+            while(res.next())
+            {
+                UserBean ub=new UserBean(res.getString("email"),"fasulla");
+                ub.setRole(res.getString("role"));
+                ub.setNome(res.getString("name"));
+                ub.setCognome(res.getString("surname"));
+                allUsers.add(ub);
+                System.out.println(allUsers.get(i));
+                i++;
+            }
+            return allUsers;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally{
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public synchronized void upgradeToPT(UserBean ub){
+
+        Connection conn = null;
+        PreparedStatement ps1 = null;
+
+        try {
+            ArrayList<UserBean> allUsers=new ArrayList<>();
+            UserBean upgradeUser=ub;
+            conn = ConnectionPool.getConnection();
+            ps1 = conn.prepareStatement("UPDATE user SET role = ? WHERE email = ?");
+            ps1.setString(1,"PT");
+            ps1.setString(2,ub.getEmail());
+            int state1 = ps1.executeUpdate();
+            new PersonalTrainerDAO().personalTrainerRegistration(ub);
+            if (state1!=0)
+                System.out.println("Upgrade da user a personal trainer completato!");
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally{
+            try {
+                ps1.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
 }

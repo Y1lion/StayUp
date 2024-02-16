@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type Personal trainer dao.
@@ -194,41 +195,78 @@ public class PersonalTrainerDAO {
 
         return pt;
     }
-    public synchronized ArrayList<PersonalTrainer> allPersonalTrainers(){
-
+    public synchronized List<PersonalTrainer> retrieveAll(){
         Connection conn = null;
         PreparedStatement ps = null;
+        List<PersonalTrainer> pts=new ArrayList<>();
         try {
-            ArrayList<PersonalTrainer> allPersonalTrainers=new ArrayList<>();
             conn = ConnectionPool.getConnection();
-            ps = conn.prepareStatement("SELECT * FROM personalTrainer");
+            String sql = "SELECT * FROM personalTrainer,user WHERE personalTrainer.email=user.email";
+            ps = conn.prepareStatement(sql);
+
             ResultSet res = ps.executeQuery();
-            int i=0;
-            System.out.println("FUORI WHILE");
-            while(res.next())
-            {
-                System.out.println("DENTRO WHILE");
-                allPersonalTrainers.add(new PersonalTrainer(new UserBean(res.getString("email"),"fasulla")));
-                UserBean ub = new UserBeanDAO().recoverInfos(res.getString("email"));
-                allPersonalTrainers.get(i).setUser(ub);
-                allPersonalTrainers.get(i).setPtYears(res.getInt("ptYears"));
-                System.out.println(allPersonalTrainers.get(i).getUser().getEmail());
-                System.out.println(i);
-                i++;
+
+            while(res.next()) {
+                PersonalTrainer pt=new PersonalTrainer(null,"",0);
+                UserBean ub=new UserBean("null","null");
+                ub.setEmail(res.getString("email"));
+                ub.setGender(res.getString("gender"));
+                ub.setNome(res.getString("name"));
+                ub.setCognome(res.getString("surname"));
+                ub.setTelefono(res.getString("telephone"));
+                ub.setRole(res.getString("role"));
+                ub.setPsw(res.getString("password"));
+                pt.setDescription(res.getString("descrizione"));
+                pt.setPtYears(res.getInt("ptYears"));
+                pt.setUser(ub);
+                pts.add(pt);
             }
-            return allPersonalTrainers;
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
+        }catch (SQLException e) {
             e.printStackTrace();
-        }finally{
+        }
+        finally {
             try {
                 ps.close();
                 ConnectionPool.releaseConnection(conn);
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-        return null;
+
+        return pts;
+    }
+    public synchronized void deletePT(String email){
+        Connection conn = null;
+        PreparedStatement prepstat1 = null;
+        PreparedStatement prepstat2 = null;
+
+
+        try {
+            conn = ConnectionPool.getConnection();
+            String sql1 = "DELETE FROM personalTrainer WHERE email = ?";
+            prepstat1 = conn.prepareStatement(sql1);
+            prepstat1.setString(1,email);
+            int state1 = prepstat1.executeUpdate();
+            String sql2 = "UPDATE user SET role = ? WHERE email = ?";
+            prepstat2 = conn.prepareStatement(sql2);
+            prepstat2.setString(1, "user");
+            prepstat2.setString(2, email);
+            int state2 = prepstat2.executeUpdate();
+
+            if(state1 != 0 && state2 != 0) {
+                System.out.println("Elemento eliminato con successo");
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                prepstat1.close();
+                prepstat2.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
