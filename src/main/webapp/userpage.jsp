@@ -51,7 +51,7 @@
         trainingPlans = new TrainingPlanDAO().getAllUserTrainingPlans(ub);
     }
 %>
-<section class="bgGradient">
+<section class="bgGradient" style="min-height: 100vh;">
     <div class="container py-5">
         <div class="row">
             <div class="col-lg-4">
@@ -97,28 +97,32 @@
                                     <div class="modal fade" id="<%=modalId%>" tabindex="-1" aria-labelledby="visualizeTPUserLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5 text-primary" id="visualizeTPUserLabel">Visualize Training Plan</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body text-black">
-                                                    <div class="d-flex flex-column form-group h5">
-                                                        <p class="text-primary h5 font-italic">Exercises:</p>
-                                                        <textarea class="bgGradient text-light" style="height: 100px" disabled><%
-                                                        JSONArray days = jsonObject.getJSONArray("Days");
-                                                        for (int i = 0; i<days.length();i++){
-                                                            JSONArray exercises = days.getJSONObject(i).getJSONArray("Exercises");
-                                                            for(int j = 0; j<exercises.length(); j++){
-                                                                String exercise = exercises.getJSONObject(j).getString("Exercise");
-                                                                String reps = exercises.getJSONObject(i).getString("Reps");
-                                                                String sets = exercises.getJSONObject(i).getString("Sets");
-                                                                String rest = exercises.getJSONObject(i).getString("Rest");
-                                                        %>Day: <%=i+1%>&#13;&#10;Exercise: <%=exercise%>&#13;&#10;Reps: <%=reps%>&#13;&#10;Sets: <%=sets%>&#13;&#10;Rest: <%=rest%>&#13;&#10;&#13;&#10;<%}}%></textarea>
+                                                <form method="post" action="SeeProfile">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5 text-primary" id="visualizeTPUserLabel">Visualize Training Plan</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                                                </div>
+                                                    <div class="modal-body text-black">
+                                                        <div class="d-flex flex-column form-group h5">
+                                                            <p class="text-primary h5 font-italic">Exercises:</p>
+                                                            <textarea class="bgGradient text-light" style="height: 100px" disabled><%
+                                                            JSONArray days = jsonObject.getJSONArray("Days");
+                                                            for (int i = 0; i<days.length();i++){
+                                                                JSONArray exercises = days.getJSONObject(i).getJSONArray("Exercises");
+                                                                for(int j = 0; j<exercises.length(); j++){
+                                                                    String exercise = exercises.getJSONObject(j).getString("Exercise");
+                                                                    String reps = exercises.getJSONObject(i).getString("Reps");
+                                                                    String sets = exercises.getJSONObject(i).getString("Sets");
+                                                                    String rest = exercises.getJSONObject(i).getString("Rest");
+                                                            %>Day: <%=i+1%>&#13;&#10;Exercise: <%=exercise%>&#13;&#10;Reps: <%=reps%>&#13;&#10;Sets: <%=sets%>&#13;&#10;Rest: <%=rest%>&#13;&#10;&#13;&#10;<%}}%></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-outline-primary" data-bs-dismiss="modal">See profile</button>
+                                                    </div>
+                                                    <input type="hidden" value="<%=t.getEmailPt()%>" name="visitEmail">
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -129,7 +133,9 @@
                             <%}else{%>
                             <p class="mb-4"><span class="text-muted">No Training Plans Found</span></p>
                             <%}%>
-                            <%} else {%>
+                            <%}else if(subs.get(0).getActive() != null && subs.get(0).getActive() == 2){ %>
+                            <p class="mb-4"><span class="text-primary font-italic me-1">subscription</span> <span class="text-muted">You requested a subscription</span></p>
+                            <%}else {%>
                         <p class="mb-4"><span class="text-primary font-italic me-1">subscription</span> <span class="text-muted">No Active Subscription</span></p>
                         <button type="button" class="btn btn-outline-primary mt-4" data-bs-toggle="modal" data-bs-target="#requestSubscription">Request Subscription</button>
                         <%} }else{%>
@@ -147,6 +153,7 @@
                                 <%int modalCount = 0;
                                     for(TrainingPlan t : trainingPlans){
                                     JSONObject jsonObject = new JSONObject(t.getExercises());
+                                    System.out.println("JSONOBJECT: "+t.getExercises());
                                     String title = jsonObject.getString("Title");
                                     String modalId = "visualizeTP"+modalCount;
                                     modalCount++;%>
@@ -158,28 +165,34 @@
                                 <div class="modal fade" id="<%=modalId%>" tabindex="-1" aria-labelledby="visualizeTPLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5 text-primary" id="visualizeTPLabel">Visualize Training Plan</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body text-black">
-                                                <div class="d-flex flex-column form-group h5">
-                                                    <p class="text-primary h5 font-italic">Exercises:</p>
-                                                    <textarea class="bgGradient text-light" style="height: 100px" disabled><%
-                                                        JSONArray days = jsonObject.getJSONArray("Days");
-                                                        for (int i = 0; i<days.length();i++){
-                                                            JSONArray exercises = days.getJSONObject(i).getJSONArray("Exercises");
-                                                            for(int j = 0; j<exercises.length(); j++){
-                                                                String exercise = exercises.getJSONObject(j).getString("Exercise");
-                                                                String reps = exercises.getJSONObject(i).getString("Reps");
-                                                                String sets = exercises.getJSONObject(i).getString("Sets");
-                                                                String rest = exercises.getJSONObject(i).getString("Rest");
-                                                    %>Day: <%=i+1%>&#13;&#10;Exercise: <%=exercise%>&#13;&#10;Reps: <%=reps%>&#13;&#10;Sets: <%=sets%>&#13;&#10;Rest: <%=rest%>&#13;&#10;&#13;&#10;<%}}%></textarea>
+                                            <form method="post" action="#">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5 text-primary" id="visualizeTPLabel">Visualize Training Plan</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                                            </div>
+                                                <div class="modal-body text-black">
+                                                    <div class="d-flex flex-column form-group h5">
+                                                        <p class="text-primary h5 font-italic">Exercises:</p>
+                                                        <textarea class="bgGradient text-light" style="height: 100px" disabled><%
+                                                            JSONArray days = jsonObject.getJSONArray("Days");
+                                                            for (int i = 0; i<days.length();i++){
+                                                                JSONArray exercises = days.getJSONObject(i).getJSONArray("Exercises");
+                                                                for(int j = 0; j<exercises.length(); j++){
+                                                                    String exercise = exercises.getJSONObject(j).getString("Exercise");
+                                                                    String reps = exercises.getJSONObject(i).getString("Reps");
+                                                                    String sets = exercises.getJSONObject(i).getString("Sets");
+                                                                    String rest = exercises.getJSONObject(i).getString("Rest");
+                                                        %>Day: <%=i+1%>&#13;&#10;Exercise: <%=exercise%>&#13;&#10;Reps: <%=reps%>&#13;&#10;Sets: <%=sets%>&#13;&#10;Rest: <%=rest%>&#13;&#10;&#13;&#10;<%}}%></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-outline-primary" formaction="SeeProfile" data-bs-dismiss="modal">See profile</button>
+                                                    <button type="submit" class="btn btn-outline-danger" formaction="DeleteTrainingPlan" data-bs-dismiss="modal">Delete Training Plan</button>
+                                                </div>
+                                                <input type="hidden" value="<%=t.getEmailUser()%>" name="visitEmail">
+                                                <textarea class="d-none" name="exercisesString"><%=t.getExercises()%></textarea>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -190,6 +203,7 @@
                         </div>
                         <%}else{%>
                         <p class="mb-4"><span class="text-muted">No Training Plans Found</span></p>
+                        <a href="training_plan.jsp" type="button" class="btn btn-outline-primary">Create new Training Plan</a>
                         <%}}%>
                     </div>
                     <%if(roleSession.equalsIgnoreCase("pt")){%>
@@ -230,11 +244,12 @@
                                                     <div class="modal-body text-black">
                                                         <div class="d-flex flex-column form-group h5">
                                                             <p class="text-black">Do you want to accept <%=new UserBeanDAO().checkEmail(s.getEmailUser()).getNome()%> <%=new UserBeanDAO().checkEmail(s.getEmailUser()).getCognome()%>'s subscription?</p>
-                                                            <input type="hidden" name="emailUser" value="<%=s.getEmailUser()%>">
+                                                            <input type="hidden" name="visitEmail" value="<%=s.getEmailUser()%>">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" formaction="SeeProfile" class="btn btn-outline-warning">Visit Profile</button>
                                                         <button type="submit" formaction="RefuseSubscription" class="btn btn-outline-primary">No</button>
                                                         <button type="submit" formaction="AcceptSubscription" class="btn btn-outline-primary">Yes</button>
                                                     </div>
@@ -323,6 +338,7 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-outline-primary mt-4" data-bs-toggle="modal" data-bs-target="#changePersonalInfo">Change Personal Info</button>
+                        <button type="button" class="btn btn-outline-danger mt-4" data-bs-toggle="modal" data-bs-target="#deleteProfile">Delete my profile</button>
                     </div>
                 </div>
                 <div class="row">
@@ -641,7 +657,7 @@
 <div class="modal fade modal-lg" id="requestSubscription" tabindex="-1" aria-labelledby="requestSubscriptionLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" action="RequestSubscription">
+            <form method="post" action="#">
                 <div class="modal-header bg-primary">
                     <h5 class="modal-title " id="requestSubscriptionLabel">Personal Trainers list</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -673,12 +689,40 @@
                             <%}}%>
                             </tbody>
                         </table>
-                        <input type="hidden" name="emailPT" id="emailPT">
+                        <input type="hidden" name="visitEmail" id="emailPT">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Confirm</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-outline-warning" data-bs-dismiss="modal" formaction="SeeProfile" formnovalidate>Visit Profile</button>
+                    <button type="submit" class="btn btn-outline-secondary" formaction="RequestSubscription">Confirm</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteProfile" tabindex="-1" aria-labelledby="deleteProfileLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-primary" id="deleteProfileLabel">Delete Profile</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="DeleteProfile">
+                <div class="modal-body text-black">
+                    <div class="d-flex flex-column form-group h5">
+                        <p class="text-black">Are you sure you want to delete your profile? This action is <span class="text-danger fs-4 fw-semibold">IRREVERSIBLE</span></p>
+                    </div>
+                    <div class="d-flex flex-column form-group h5">
+                        <div class="input-group">
+                            <input type="password" class="form-control text-primary" placeholder="Password" name="deleteProfilePassword" id="deleteProfilePassword" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$" oninvalid="alert('Password must contains: \n8 characters; \nOne lowercase character; \nOne uppercase character; \nOne number; \nOne of the special characters: @,$,!,%,*,?,&;')">
+                            <button type="button" class="input-group-append ml-2 align-items-center bg-transparent rounded text-light border border-0" id="deleteProfileToggle" onclick="togglePasswordVisibility('deleteProfilePassword','deleteProfileToggle')"><i class="fa-solid fa-eye"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-outline-primary">Yes</button>
                 </div>
             </form>
         </div>

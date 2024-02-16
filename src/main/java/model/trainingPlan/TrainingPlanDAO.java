@@ -65,6 +65,32 @@ public class TrainingPlanDAO {
         }
         return null;
     }*/
+    public synchronized Boolean deleteTrainingPlan(String emailUser, String emailPT, String exercisesString){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            conn = ConnectionPool.getConnection();
+            ps = conn.prepareStatement("DELETE FROM trainingPlan WHERE emailUser = ? AND emailPT = ? AND JSON_CONTAINS(exercises,?)");
+            ps.setString(1, emailUser);
+            ps.setString(2, emailPT);
+            ps.setString(3, exercisesString);
+
+            int res = ps.executeUpdate();
+            return res != 0;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally{
+            try {
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
     public synchronized ArrayList<TrainingPlan> getAvailableTrainingPlan(UserBean ub){
         Connection conn = null;
         PreparedStatement ps = null;
