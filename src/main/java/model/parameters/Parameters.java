@@ -203,4 +203,20 @@ public class Parameters  {
     public void setWorkoutYears(Integer workoutYears) {
         this.workoutYears = workoutYears;
     }
+
+    @Override
+    public String toString() {
+            return "Parameters{"
+                + "email=" + email
+                + "weight=" + weight
+                + ", leanMass=" + lean_mass
+                + ", fatMass=" + fat_mass
+                + ", armMis=" + arm_mis
+                + ", legMis=" + leg_mis
+                + ", chestMis=" + chest_mis
+                + ", hipsMis=" + hips_mis
+                + ", shouldersMis=" + shoulders_mis
+                + ", workoutYears=" + workoutYears
+                + '}';
+    }
 }
