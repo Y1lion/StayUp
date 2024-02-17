@@ -221,17 +221,15 @@ public class PersonalTrainerDAO {
             e.printStackTrace();
         }finally{
             try {
-                if(ps!=null) {
-                    ps.close();
-                    ConnectionPool.releaseConnection(conn);
-                }
+                ps.close();
+                ConnectionPool.releaseConnection(conn);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return null;
     }
-    public synchronized void deletePT(String email){
+    public synchronized Boolean deletePT(String email){
         Connection conn = null;
         PreparedStatement prepstat1 = null;
         PreparedStatement prepstat2 = null;
@@ -248,23 +246,22 @@ public class PersonalTrainerDAO {
             prepstat2.setString(1, "user");
             prepstat2.setString(2, email);
             int state2 = prepstat2.executeUpdate();
-
             if(state1 != 0 && state2 != 0) {
                 System.out.println("Elemento eliminato con successo");
             }
+            return true;
         }catch (SQLException e) {
             e.printStackTrace();
         }
         finally {
             try {
-                if(prepstat1!=null && prepstat2!=null) {
-                    prepstat1.close();
-                    prepstat2.close();
-                    ConnectionPool.releaseConnection(conn);
-                }
+                prepstat1.close();
+                prepstat2.close();
+                ConnectionPool.releaseConnection(conn);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+        return false;
     }
 }

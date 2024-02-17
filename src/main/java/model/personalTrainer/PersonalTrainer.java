@@ -85,4 +85,13 @@ public class PersonalTrainer {
     public void setPtYears(Integer ptYears) {
         this.ptYears = ptYears;
     }
+
+    @Override
+    public String toString() {
+        return "PersonalTrainer{" +
+                "user=" + user +
+                ", description='" + description + '\'' +
+                ", ptYears=" + ptYears +
+                '}';
+    }
 }
