@@ -129,7 +129,7 @@ class UserBeanDAOTest {
 
 
 
-    // TC_1.3_1
+    // TC_1.1_1
     @Test
     public void emailLengthNotValidIT() throws NoSuchAlgorithmException {
         String mail = "c@c.c";
@@ -140,13 +140,13 @@ class UserBeanDAOTest {
         UserBeanDAO userBeanDAO = new UserBeanDAO();
         UserBean ub = userBeanDAO.loginUser(mail,password);
         assertNotNull(ub);
-        assertNotEquals("c@c.c",ub.getEmail());
+        assertNotEquals(mail,ub.getEmail());
         assertThrows(Exception.class, () -> {
             throw new Exception(message);
         });
     }
 
-    // TC_1.3_2
+    // TC_1.1_2
     @Test
     public void emailFormatNotValidIT() throws NoSuchAlgorithmException {
         String mail = "ciccipappa@@";
@@ -157,16 +157,16 @@ class UserBeanDAOTest {
         UserBeanDAO userBeanDAO = new UserBeanDAO();
         UserBean ub = userBeanDAO.loginUser(mail,password);
         assertNotNull(ub);
-        assertNotEquals("ciccipappa@@",ub.getEmail());
+        assertNotEquals(mail,ub.getEmail());
         assertThrows(Exception.class, () -> {
             throw new Exception(message);
         });
     }
 
-    // TC_1.3_3
+    // TC_1.1_3
     @Test
     public void passwordLengthNotValidIT() throws NoSuchAlgorithmException {
-        String mail = "ciao@prova.it";
+        String mail = "testing@testing.org";
         String password = "C1@o";
         String message = "Lunghezza password non valida";
         password = PasswordEncryptionUtil.encryptPassword(password);
@@ -174,16 +174,16 @@ class UserBeanDAOTest {
         UserBeanDAO userBeanDAO = new UserBeanDAO();
         UserBean ub = userBeanDAO.loginUser(mail,password);
         assertNotNull(ub);
-        assertNotEquals("ciao@prova.it",ub.getEmail());
+        assertNotEquals(mail,ub.getEmail());
         assertThrows(Exception.class, () -> {
             throw new Exception(message);
         });
     }
 
-    // TC_1.3_4
+    // TC_1.1_4
     @Test
     public void passwordFormatNotValidIT() throws NoSuchAlgorithmException {
-        String mail = "ciao@prova.it";
+        String mail = "testing@testing.org";
         String password = "ciaoprovola";
         String message = "Formato password non valida";
         password = PasswordEncryptionUtil.encryptPassword(password);
@@ -191,17 +191,17 @@ class UserBeanDAOTest {
         UserBeanDAO userBeanDAO = new UserBeanDAO();
         UserBean ub = userBeanDAO.loginUser(mail,password);
         assertNotNull(ub);
-        assertNotEquals("ciao@prova.it",ub.getEmail());
+        assertNotEquals(mail,ub.getEmail());
         assertThrows(Exception.class, () -> {
             throw new Exception(message);
         });
     }
 
-    // TC_1.3_5
+    // TC_1.1_5
     @Test
     public void finalTestIT() throws NoSuchAlgorithmException {
-        String mail = "hi@hi.it";
-        String password = "Ciaoprova1@";
+        String mail = "testing@testing.org";
+        String password = "Ciaoprova1!";
         password = PasswordEncryptionUtil.encryptPassword(password);
 
         UserBeanDAO userBeanDAO = new UserBeanDAO();
@@ -209,4 +209,5 @@ class UserBeanDAOTest {
         assertNotNull(ub);
         assertEquals(mail,ub.getEmail());
     }
+    //TODO: ADD REMAINING TEST CASES
 }

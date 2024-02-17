@@ -11,6 +11,7 @@
 <%@ page import="model.trainingPlan.TrainingPlanDAO" %>
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="org.json.JSONArray" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -676,7 +677,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <%ArrayList<PersonalTrainer> allPts = new PersonalTrainerDAO().allPersonalTrainers();
+                            <% List<PersonalTrainer> allPts = new PersonalTrainerDAO().retrieveAll();
                             if(allPts != null && !allPts.isEmpty()){
                                 for(PersonalTrainer personalTrainer: allPts){
                             %>

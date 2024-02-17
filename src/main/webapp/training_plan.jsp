@@ -40,7 +40,7 @@
         <label for="dateEnd" class="text-primary">End data:</label>
         <input name="dateEnd" id="dateEnd" required type="date" class="col-lg-5 col-xl-5 col-12 form-control">
       </div>
-      <input name="title" id="title" type="text" class="col-lg-12 col-xl-3 col-12 text-center form-control-lg" required placeholder="Title">
+      <input name="title" id="title" type="text" class="col-lg-12 col-xl-3 col-12 text-center form-control-lg" required placeholder="Title" pattern="^\S{2,30}$">
     </div>
     <div name="trainingSheet1" id="trainingSheet1" class="card w-75 shadow-lg mx-auto mt-5" >
       <div class="card-body">
@@ -52,15 +52,15 @@
         <div id="thisExerciseD1" class="d-flex flex-wrap row g-3">
           <div class="col-md-6 col-sm-12">
             <label class="text-black ms-2" for="exerciseNameN1D1">Exercise name:</label>
-            <input type="text" class="form-control" required name="formNameExerciseN1D1" id="exerciseNameN1D1" placeholder="Exercise name">
+            <input type="text" class="form-control" required name="formNameExerciseN1D1" id="exerciseNameN1D1" placeholder="Exercise name" pattern="^(?=\s*\S)([\w\s]{2,30})$">
           </div>
           <div class="col-md-2 col-sm-12">
             <label class="text-black ms-2" for="setsN1D1">Sets N°:</label>
-            <input type="number" class="form-control" required name="formNameSetsN1D1" id="setsN1D1" placeholder="Sets N°" min="0" onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109">
+            <input type="number" class="form-control" required name="formNameSetsN1D1" id="setsN1D1" placeholder="Sets N°" min="0" pattern="^[1-9]\d*$" onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109">
           </div>
           <div class="col-md-2 col-sm-12">
             <label class="text-black ms-2"for="repsN1D1">Reps N°:</label>
-            <input type="number" class="form-control" required name="formNameRepsN1D1" id="repsN1D1" placeholder="Reps N°" min="0" onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109">
+            <input type="number" class="form-control" required name="formNameRepsN1D1" id="repsN1D1" placeholder="Reps N°" min="0" pattern="^[1-9]\d*$" onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109">
           </div>
           <div class="col-md-2 col-sm-12">
             <label class="text-black ms-2"for="pauseN1D1">Rest:</label>

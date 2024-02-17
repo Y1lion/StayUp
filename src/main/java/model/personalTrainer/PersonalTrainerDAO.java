@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * The type Personal trainer dao.
  */
@@ -196,44 +197,39 @@ public class PersonalTrainerDAO {
         return pt;
     }
     public synchronized List<PersonalTrainer> retrieveAll(){
+
         Connection conn = null;
         PreparedStatement ps = null;
-        List<PersonalTrainer> pts=new ArrayList<>();
         try {
+            ArrayList<PersonalTrainer> allPersonalTrainers=new ArrayList<>();
             conn = ConnectionPool.getConnection();
-            String sql = "SELECT * FROM personalTrainer,user WHERE personalTrainer.email=user.email";
-            ps = conn.prepareStatement(sql);
-
+            ps = conn.prepareStatement("SELECT * FROM personalTrainer");
             ResultSet res = ps.executeQuery();
-
-            while(res.next()) {
-                PersonalTrainer pt=new PersonalTrainer(null,"",0);
-                UserBean ub=new UserBean("null","null");
-                ub.setEmail(res.getString("email"));
-                ub.setGender(res.getString("gender"));
-                ub.setNome(res.getString("name"));
-                ub.setCognome(res.getString("surname"));
-                ub.setTelefono(res.getString("telephone"));
-                ub.setRole(res.getString("role"));
-                ub.setPsw(res.getString("password"));
-                pt.setDescription(res.getString("descrizione"));
-                pt.setPtYears(res.getInt("ptYears"));
-                pt.setUser(ub);
-                pts.add(pt);
+            int i=0;
+            while(res.next())
+            {
+                allPersonalTrainers.add(new PersonalTrainer(new UserBean(res.getString("email"),"fasulla")));
+                UserBean ub = new UserBeanDAO().recoverInfos(res.getString("email"));
+                allPersonalTrainers.get(i).setUser(ub);
+                allPersonalTrainers.get(i).setPtYears(res.getInt("ptYears"));
+                System.out.println(allPersonalTrainers.get(i).getUser().getEmail());
+                i++;
             }
-        }catch (SQLException e) {
+            return allPersonalTrainers;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
-        }
-        finally {
+        }finally{
             try {
-                ps.close();
-                ConnectionPool.releaseConnection(conn);
+                if(ps!=null) {
+                    ps.close();
+                    ConnectionPool.releaseConnection(conn);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-
-        return pts;
+        return null;
     }
     public synchronized void deletePT(String email){
         Connection conn = null;
