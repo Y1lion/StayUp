@@ -12,6 +12,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -44,8 +45,10 @@ public class ServletAddTrainingPlan extends HttpServlet {
             }
             java.sql.Date startDate = new java.sql.Date(startDateUtil.getTime());
             java.sql.Date endDate = new java.sql.Date(endDateUtil.getTime());
-
-            if (startDate.before(new java.sql.Date(System.currentTimeMillis())))
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DAY_OF_MONTH, -1); // Sottrai un giorno
+            Date yesterday = new Date(cal.getTimeInMillis());
+            if (startDate.before(yesterday))
                 throw new Exception("Start date is before today date");
 
             if (!request.getParameter("title").matches("^\\S{2,30}$"))
@@ -67,9 +70,9 @@ public class ServletAddTrainingPlan extends HttpServlet {
                         LinkedHashMap<String, String> exercise = new LinkedHashMap<>();
                         if (!request.getParameter("formNameExerciseN" + (i+1) + "D" + dayNumber).matches("^(?=\\s*\\S)([\\w\\s]{2,30})$"))
                             throw new Exception("Exercise name format not respected");
-                        if (!request.getParameter("formNameSetsN" + (i+1) + "D" + dayNumber).matches("^(?=\\s*\\S)([\\w\\s]{2,30})$"))
+                        if (!request.getParameter("formNameSetsN" + (i+1) + "D" + dayNumber).matches("^[1-9]\\d*$"))
                             throw new Exception("Sets format not respected");
-                        if (!request.getParameter("formNameRepsN" + (i+1) + "D" + dayNumber).matches("^(?=\\s*\\S)([\\w\\s]{2,30})$"))
+                        if (!request.getParameter("formNameRepsN" + (i+1) + "D" + dayNumber).matches("^[1-9]\\d*$"))
                             throw new Exception("Reps format not respected");
                         exercise.put("Exercise", request.getParameter("formNameExerciseN" + (i+1) + "D" + dayNumber));
                         exercise.put("Sets", request.getParameter("formNameSetsN" + (i+1) + "D" + dayNumber));

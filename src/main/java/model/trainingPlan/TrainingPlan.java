@@ -127,4 +127,15 @@ public class TrainingPlan {
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
+
+    @Override
+    public String toString() {
+        return "TrainingPlan{" +
+                "emailUser='" + emailUser + '\'' +
+                ", emailPt='" + emailPt + '\'' +
+                ", exercises='" + exercises + '\'' +
+                ", dateStart=" + dateStart +
+                ", dateEnd=" + dateEnd +
+                '}';
+    }
 }

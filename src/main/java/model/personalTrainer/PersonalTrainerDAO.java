@@ -257,9 +257,11 @@ public class PersonalTrainerDAO {
         }
         finally {
             try {
-                prepstat1.close();
-                prepstat2.close();
-                ConnectionPool.releaseConnection(conn);
+                if(prepstat1!=null && prepstat2!=null) {
+                    prepstat1.close();
+                    prepstat2.close();
+                    ConnectionPool.releaseConnection(conn);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
