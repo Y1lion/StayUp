@@ -232,4 +232,38 @@ public class PersonalTrainerDAO {
         }
         return null;
     }
+    public synchronized void deletePT(String email){
+        Connection conn = null;
+        PreparedStatement prepstat1 = null;
+        PreparedStatement prepstat2 = null;
+
+
+        try {
+            conn = ConnectionPool.getConnection();
+            String sql1 = "DELETE FROM personalTrainer WHERE email = ?";
+            prepstat1 = conn.prepareStatement(sql1);
+            prepstat1.setString(1,email);
+            int state1 = prepstat1.executeUpdate();
+            String sql2 = "UPDATE user SET role = ? WHERE email = ?";
+            prepstat2 = conn.prepareStatement(sql2);
+            prepstat2.setString(1, "user");
+            prepstat2.setString(2, email);
+            int state2 = prepstat2.executeUpdate();
+
+            if(state1 != 0 && state2 != 0) {
+                System.out.println("Elemento eliminato con successo");
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                prepstat1.close();
+                prepstat2.close();
+                ConnectionPool.releaseConnection(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
