@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type Personal trainer dao.
@@ -194,7 +195,7 @@ public class PersonalTrainerDAO {
 
         return pt;
     }
-    public synchronized ArrayList<PersonalTrainer> allPersonalTrainers(){
+    public synchronized List<PersonalTrainer> retrieveAll(){
 
         Connection conn = null;
         PreparedStatement ps = null;
