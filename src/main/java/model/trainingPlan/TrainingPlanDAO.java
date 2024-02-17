@@ -1,8 +1,10 @@
 package model.trainingPlan;
 
 import model.personalTrainer.PersonalTrainer;
+import model.subscription.Subscription;
 import model.user.UserBean;
 import model.utils.ConnectionPool;
+import org.json.simple.JSONObject;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ public class TrainingPlanDAO {
     public synchronized Boolean addTrainingPlan(String emailPT, String emailUser, String exercises, Date dateStart, Date dateEnd){
         Connection conn =  null;
         PreparedStatement ps = null;
+
         try {
             conn = ConnectionPool.getConnection();
             String sqlString = "INSERT INTO trainingPlan(emailUser, emailPT, exercises, dateStart, dateEnd) VALUES(?,?,?,?,?)";
@@ -32,7 +35,6 @@ public class TrainingPlanDAO {
         }
         catch(SQLException e){
             e.printStackTrace();
-
         }
         finally {
             try {
@@ -45,7 +47,6 @@ public class TrainingPlanDAO {
         }
         return false;
     }
-
     public synchronized Boolean deleteTrainingPlan(String emailUser, String emailPT, String exercisesString){
         Connection conn = null;
         PreparedStatement ps = null;

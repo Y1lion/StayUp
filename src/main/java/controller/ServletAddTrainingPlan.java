@@ -5,7 +5,6 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import model.trainingPlan.TrainingPlanDAO;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
@@ -36,6 +35,7 @@ public class ServletAddTrainingPlan extends HttpServlet {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             java.util.Date startDateUtil=null;
             java.util.Date endDateUtil=null;
+
             try {
                 startDateUtil = sdf.parse(startDateStr);
                 endDateUtil = sdf.parse(endDateStr);
@@ -44,6 +44,12 @@ public class ServletAddTrainingPlan extends HttpServlet {
             }
             java.sql.Date startDate = new java.sql.Date(startDateUtil.getTime());
             java.sql.Date endDate = new java.sql.Date(endDateUtil.getTime());
+
+            if (startDate.before(new java.sql.Date(System.currentTimeMillis())))
+                throw new Exception("Start date is before today date");
+
+            if (!request.getParameter("title").matches("^\\S{2,30}$"))
+                throw new Exception("Title pattern is not respected");
 
             LinkedHashMap<String, Object> trainingPlan = new LinkedHashMap<>();
             trainingPlan.put("Title", request.getParameter("title"));
@@ -59,6 +65,12 @@ public class ServletAddTrainingPlan extends HttpServlet {
                     List<LinkedHashMap<String, String>> exercisesArray = new ArrayList<>();
                     for (int i = 0; i < allExercises.get(dayNumber - 1); i++) {
                         LinkedHashMap<String, String> exercise = new LinkedHashMap<>();
+                        if (!request.getParameter("formNameExerciseN" + (i+1) + "D" + dayNumber).matches("^(?=\\s*\\S)([\\w\\s]{2,30})$"))
+                            throw new Exception("Exercise name format not respected");
+                        if (!request.getParameter("formNameSetsN" + (i+1) + "D" + dayNumber).matches("^(?=\\s*\\S)([\\w\\s]{2,30})$"))
+                            throw new Exception("Sets format not respected");
+                        if (!request.getParameter("formNameRepsN" + (i+1) + "D" + dayNumber).matches("^(?=\\s*\\S)([\\w\\s]{2,30})$"))
+                            throw new Exception("Reps format not respected");
                         exercise.put("Exercise", request.getParameter("formNameExerciseN" + (i+1) + "D" + dayNumber));
                         exercise.put("Sets", request.getParameter("formNameSetsN" + (i+1) + "D" + dayNumber));
                         exercise.put("Reps", request.getParameter("formNameRepsN" + (i+1) + "D" + dayNumber));

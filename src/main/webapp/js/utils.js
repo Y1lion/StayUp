@@ -10,15 +10,6 @@ function togglePasswordVisibility(inputId, buttonId) {
         }
     });
 }
-var selectedRowPT=null;
-function setEmailPT(email,row){
-    if (selectedRowPT !== null) {
-        selectedRowPT.classList.remove('table-active');
-    }
-    row.classList.add('table-active');
-    selectedRowPT = row;
-    document.getElementById("emailPT").value=email;
-}
 function removeThisPT(){
     var email=document.getElementById("confirmationEmailForPTDeleteSpan").innerText;
     var id = email.replace(/@/g, "-");
@@ -242,4 +233,13 @@ function setEmailSub(email,row){
     row.classList.add('table-active');
     selectedRow = row;
     document.getElementById("emailSub").value=email;
+}
+var selectedRowPT=null;
+function setEmailPT(email,row){
+    if (selectedRowPT !== null) {
+        selectedRowPT.classList.remove('table-active');
+    }
+    row.classList.add('table-active');
+    selectedRowPT = row;
+    document.getElementById("emailPT").value=email;
 }
