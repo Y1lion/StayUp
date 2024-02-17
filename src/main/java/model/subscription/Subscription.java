@@ -127,4 +127,15 @@ public class Subscription {
     public void setActive(Integer active) {
         isActive = active;
     }
+
+    @Override
+    public String toString() {
+        return "Subscription{" +
+                "emailPt='" + emailPt + '\'' +
+                ", emailUser='" + emailUser + '\'' +
+                ", dateStart=" + dateStart +
+                ", dateEnd=" + dateEnd +
+                ", isActive=" + isActive +
+                '}';
+    }
 }

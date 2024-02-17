@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 public class SubscriptionDAO {
     public synchronized Subscription addSubscription(UserBean ub, PersonalTrainer pt, Date dateEnd){
+        if(ub==null || pt==null || dateEnd.before(new java.util.Date(System.currentTimeMillis())))
+            return  null;
         Connection conn =  null;
         PreparedStatement ps = null;
 
@@ -29,8 +31,6 @@ public class SubscriptionDAO {
             if(upd != 0) {
                 Subscription sub = new Subscription(pt.getUser().getEmail(),ub.getEmail(),new java.sql.Date(System.currentTimeMillis()), dateEnd, 2);
                 System.out.print("Registered");
-                ps.close();
-                ConnectionPool.releaseConnection(conn);
                 return sub;
             }
         }
@@ -40,8 +40,10 @@ public class SubscriptionDAO {
         }
         finally {
             try {
-                ps.close();
-                ConnectionPool.releaseConnection(conn);
+                if(ps!=null) {
+                    ps.close();
+                    ConnectionPool.releaseConnection(conn);
+                }
             }
             catch(Exception e) {
                 e.printStackTrace();
@@ -50,6 +52,8 @@ public class SubscriptionDAO {
         return null;
     }
     public synchronized Subscription acceptSubscription(Subscription s){
+        if(s==null)
+            return null;
         Connection conn =  null;
         PreparedStatement ps = null;
 
@@ -93,8 +97,10 @@ public class SubscriptionDAO {
         }
         finally {
             try {
-                ps.close();
-                ConnectionPool.releaseConnection(conn);
+                if(ps!=null) {
+                    ps.close();
+                    ConnectionPool.releaseConnection(conn);
+                }
             }
             catch(Exception e) {
                 e.printStackTrace();
@@ -105,6 +111,8 @@ public class SubscriptionDAO {
     public synchronized Subscription refuseSubscription(Subscription s){
         Connection conn =  null;
         PreparedStatement ps = null;
+        if(s==null)
+            return null;
 
         try {
             conn = ConnectionPool.getConnection();
@@ -134,8 +142,10 @@ public class SubscriptionDAO {
         }
         finally {
             try {
-                ps.close();
-                ConnectionPool.releaseConnection(conn);
+                if (ps != null) {
+                    ps.close();
+                    ConnectionPool.releaseConnection(conn);
+                }
             }
             catch(Exception e) {
                 e.printStackTrace();
@@ -144,6 +154,8 @@ public class SubscriptionDAO {
         return s;
     }
     public synchronized Subscription getSubscription(UserBean ub){
+        if(ub==null)
+            return null;
         Connection conn = null;
         PreparedStatement ps = null;
         try {
@@ -171,8 +183,10 @@ public class SubscriptionDAO {
             e.printStackTrace();
         }finally{
             try {
-                ps.close();
-                ConnectionPool.releaseConnection(conn);
+                if(ps!=null) {
+                    ps.close();
+                    ConnectionPool.releaseConnection(conn);
+                }
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -181,6 +195,8 @@ public class SubscriptionDAO {
         return null;
     }
     public synchronized ArrayList<Subscription> getAllSubscriptions(PersonalTrainer pt){
+        if(pt==null)
+            return null;
         Connection conn = null;
         PreparedStatement ps = null;
         ArrayList<Subscription> subs = new ArrayList<>();
@@ -202,8 +218,10 @@ public class SubscriptionDAO {
             e.printStackTrace();
         }finally{
             try {
-                ps.close();
-                ConnectionPool.releaseConnection(conn);
+                if(ps!=null) {
+                    ps.close();
+                    ConnectionPool.releaseConnection(conn);
+                }
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
