@@ -4,10 +4,12 @@ import model.personalTrainer.PersonalTrainer;
 import model.subscription.Subscription;
 import model.user.UserBean;
 import model.utils.ConnectionPool;
-import org.json.simple.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class TrainingPlanDAO {
     //TODO: ADD TRAINING PLAN BUT BEFORE TODO FORM FOR TRAINING PLAN
@@ -16,6 +18,8 @@ public class TrainingPlanDAO {
         PreparedStatement ps = null;
 
         try {
+            if(!checkTrainingPlan(new TrainingPlan(emailUser,emailPT,exercises,dateStart,dateEnd)))
+                return false;
             conn = ConnectionPool.getConnection();
             String sqlString = "INSERT INTO trainingPlan(emailUser, emailPT, exercises, dateStart, dateEnd) VALUES(?,?,?,?,?)";
             ps = conn.prepareStatement(sqlString);
@@ -38,8 +42,10 @@ public class TrainingPlanDAO {
         }
         finally {
             try {
-                ps.close();
-                ConnectionPool.releaseConnection(conn);
+                if(ps!=null) {
+                    ps.close();
+                    ConnectionPool.releaseConnection(conn);
+                }
             }
             catch(SQLException e) {
                 e.printStackTrace();
@@ -199,5 +205,35 @@ public class TrainingPlanDAO {
             }
         }
         return null;
+    }
+    private Boolean checkTrainingPlan(TrainingPlan tp){
+        JSONObject trainingPlan=new JSONObject(tp.getExercises());
+        String title= (String) trainingPlan.get("Title");
+        System.out.println("CAZZO DAIIII: "+tp.getDateStart()+" "+tp.getEmailUser());
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, -1); // Sottrai un giorno
+        Date yesterday = new Date(cal.getTimeInMillis());
+        if (tp.getDateStart().after(tp.getDateEnd()))
+            return false;
+        if (tp.getDateStart().before(yesterday))
+            return false;
+        if(!title.matches("^\\S{2,30}$"))
+            return false;
+        JSONArray days = trainingPlan.getJSONArray("Days");
+        for (int i = 0; i<days.length();i++){
+            JSONArray exercises = days.getJSONObject(i).getJSONArray("Exercises");
+            for(int j = 0; j<exercises.length(); j++){
+                String exercise = exercises.getJSONObject(j).getString("Exercise");
+                if(!exercise.matches("^(?=\\s*\\S)([\\w\\s]{2,30})$"))
+                    return false;
+                String reps = exercises.getJSONObject(i).getString("Reps");
+                if(!reps.matches("^[1-9]\\d*$"))
+                    return false;
+                String sets = exercises.getJSONObject(i).getString("Sets");
+                if(!sets.matches("^[1-9]\\d*$"))
+                    return false;
+            }
+        }
+        return true;
     }
 }
