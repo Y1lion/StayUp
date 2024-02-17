@@ -197,8 +197,10 @@ public class TrainingPlanDAO {
             e.printStackTrace();
         }finally{
             try {
-                ps.close();
-                ConnectionPool.releaseConnection(conn);
+                if(ps!=null) {
+                    ps.close();
+                    ConnectionPool.releaseConnection(conn);
+                }
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
