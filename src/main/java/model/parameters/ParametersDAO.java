@@ -133,6 +133,24 @@ public class ParametersDAO {
             return false;
         if (params.getWorkoutYears()<0 || params.getWorkoutYears()>60)
             return false;
+        if (!Double.toString(params.getWeight()).matches("^(?=\\d{2,3}(?:\\.\\d{0,2})?$)[0-9]*(?:\\.\\d*)?$"))
+            return false;
+        if (!Double.toString(params.getLean_mass()).matches("^(?=\\d{2,3}(?:\\.\\d{0,2})?$)[0-9]*(?:\\.\\d*)?$"))
+            return false;
+        if (!Double.toString(params.getFat_mass()).matches("^(?=\\d{2,3}(?:\\.\\d{0,2})?$)[0-9]*(?:\\.\\d*)?$"))
+            return false;
+        if (!Double.toString(params.getArm_mis()).matches("^(?=\\d{2,3}(?:\\.\\d{0,2})?$)[0-9]*(?:\\.\\d*)?$"))
+            return false;
+        if (!Double.toString(params.getLeg_mis()).matches("^(?=\\d{2,3}(?:\\.\\d{0,2})?$)[0-9]*(?:\\.\\d*)?$"))
+            return false;
+        if (!Double.toString(params.getChest_mis()).matches("^(?=\\d{2,3}(?:\\.\\d{0,2})?$)[0-9]*(?:\\.\\d*)?$"))
+            return false;
+        if (!Double.toString(params.getHips_mis()).matches("^(?=\\d{2,3}(?:\\.\\d{0,2})?$)[0-9]*(?:\\.\\d*)?$"))
+            return false;
+        if (!Double.toString(params.getShoulders_mis()).matches("^(?=\\d{2,3}(?:\\.\\d{0,2})?$)[0-9]*(?:\\.\\d*)?$"))
+            return false;
+        if (!Integer.toString(params.getWorkoutYears()).matches("^[0-9]{1,2}$"))
+            return false;
         return true;
     }
     /**
