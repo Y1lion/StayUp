@@ -7,7 +7,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.user.UserBean;
 import model.user.UserBeanDAO;
 import model.utils.PasswordEncryptionUtil;
 import org.junit.jupiter.api.AfterAll;
@@ -65,7 +64,7 @@ class ServletChangePasswordTest {
     }
 
     @Test
-    void doPost() throws Exception {
+    void doPostTrue() throws Exception {
         when(request.getParameter("newpassword")).thenReturn("Ciaoprova1!");
         when(request.getParameter("confirmpassword")).thenReturn("Ciaoprova1!");
         when(request.getParameter("currentpassword")).thenReturn("Ciaoprova1@");
@@ -76,6 +75,48 @@ class ServletChangePasswordTest {
         verify(request, times(3)).getParameter(anyString());
         verify(session, times(1)).getAttribute(anyString());
         verify(request, times(1)).setAttribute("success", "./userpage.jsp");
+        verify(requestDispatcher).forward(request, response);
+    }
+    @Test
+    void doPostPasswordFormatInvalid() throws Exception {
+        when(request.getParameter("newpassword")).thenReturn("Lollipop");
+        when(request.getParameter("confirmpassword")).thenReturn("Lollipop");
+        when(request.getParameter("currentpassword")).thenReturn("Ciaoprova1@");
+        when(session.getAttribute("email")).thenReturn("testing@testing.org");
+
+        servlet.doPost(request, response);
+
+        verify(request, times(3)).getParameter(anyString());
+        verify(session, times(0)).getAttribute(anyString());
+        verify(request, times(1)).setAttribute("exceptionURL", "./userpage.jsp");
+        verify(requestDispatcher).forward(request, response);
+    }
+    @Test
+    void doPostCurrentPasswordWrong() throws Exception {
+        when(request.getParameter("newpassword")).thenReturn("Ciaoprova1!");
+        when(request.getParameter("confirmpassword")).thenReturn("Ciaoprova1!");
+        when(request.getParameter("currentpassword")).thenReturn("Ciaoprova1$");
+        when(session.getAttribute("email")).thenReturn("testing@testing.org");
+
+        servlet.doPost(request, response);
+
+        verify(request, times(3)).getParameter(anyString());
+        verify(session, times(1)).getAttribute(anyString());
+        verify(request, times(1)).setAttribute("exceptionURL", "./userpage.jsp");
+        verify(requestDispatcher).forward(request, response);
+    }
+    @Test
+    void doPostEmailNotFound() throws Exception {
+        when(request.getParameter("newpassword")).thenReturn("Ciaoprova1!");
+        when(request.getParameter("confirmpassword")).thenReturn("Ciaoprova1!");
+        when(request.getParameter("currentpassword")).thenReturn("Ciaoprova1@");
+        when(session.getAttribute("email")).thenReturn("test@test.org");
+
+        servlet.doPost(request, response);
+
+        verify(request, times(3)).getParameter(anyString());
+        verify(session, times(1)).getAttribute(anyString());
+        verify(request, times(1)).setAttribute("exceptionURL", "./userpage.jsp");
         verify(requestDispatcher).forward(request, response);
     }
 
