@@ -8,7 +8,7 @@
                 <a href="index.jsp"><img src="./images/StayUp_LOGO.jpeg" class="img-fluid" alt="FlyHigh" height="150" width="150"></a>
             </div>
             <div class="col-sm">
-                <div class="embed-responsive embed-responsive-16by9">
+                <div class="ratio ratio-16x9">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2136.488718100356!2d14.78934794107144!3d40.77409107613729!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc377a069f69748ad!2sDepartment+of+Computer+Science!5e0!3m2!1sen!2sit!4v1531219193105" width="600" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
                 </div>
             </div>
