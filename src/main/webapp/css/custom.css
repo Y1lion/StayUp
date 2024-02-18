@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
 *{
     font-family: 'Poppins', sans-serif;
+    color: whitesmoke;
 }
 html{
     height: 100%;
@@ -17,82 +18,51 @@ html{
 .btn-primary{
     background-color: #1789b5!important;
     border-color: #1789b5!important;
-    transition: all 150ms linear;
 }
-.btn-primary:hover{
-    background-color: #08536d!important;
-    border-color: #08536d!important;
-    transition: all 150ms linear;
+.btn-outline-primary{
+    outline-color: #1789b5!important;
+    border-color: #1789b5!important;
+    color: #1789b5!important;
+}
+.btn-outline-primary:hover{
+    background-color: #1789b5!important;
+    border-color: #1789b5!important;
+    color: white !important;
+}
+.bg-secondary{
+    background-color: rgba(34,193,195,1) !important;
+}
+.border-secondary {
+    border-color: rgba(34,193,195,1) !important;
+}
+.text-secondary {
+    color: rgba(34,193,195,1) !important;
+}
+.btn-secondary{
+    background-color: rgba(34,193,195,1)!important;
+    border-color: rgba(34,193,195,1)!important;
+}
+.btn-outline-secondary{
+    outline-color: rgba(34,193,195,1)!important;
+    border-color: rgba(34,193,195,1)!important;
+    color: rgba(34,193,195,1)!important;
+}
+.btn-outline-secondary:hover{
+    background-color: rgba(34,193,195,1)!important;
+    border-color: rgba(34,193,195,1)!important;
+    color: white !important;
 }
 
-
-.form-control{
-    background: transparent;
-    border-top: none;
-    border-right: none;
-    border-left: none;
-    border-bottom-color: black;
-    border-bottom-width: 1px;
-    border-radius: 0;
-}
-.form-control:focus{
-    background: transparent;
-    box-shadow: none;
-    -webkit-animation-name: pulseBorder;
-    -webkit-animation-iteration-count: infinite;
-    -webkit-animation-timing-function: ease;
-    -webkit-animation-direction: alternate;
-    -webkit-animation-duration: 0.5s;
-    color:black;
+.btn-outline-light:hover{
+    color: rgba(34,193,195,1)!important;
 }
 
+.btn-outline-light:hover > i{
+    color: rgba(34,193,195,1) !important;
+}
 
-.form-control::placeholder{
-    color: black;
-}
-input::-moz-placeholder  {
-    color: #c4c3ca;
-    opacity: 0.7;
-    -webkit-transition: all 200ms linear;
-    transition: all 200ms linear;
-}
-input:-moz-placeholder  {
-    color: #c4c3ca;
-    opacity: 0.7;
-    -webkit-transition: all 200ms linear;
-    transition: all 200ms linear;
-}
-input::-webkit-input-placeholder  {
-    color: #c4c3ca;
-    opacity: 0.7;
-    -webkit-transition: all 200ms linear;
-    transition: all 200ms linear;
-}
-input:focus:-ms-input-placeholder  {
-    opacity: 0;
-    -webkit-transition: all 200ms linear;
-    transition: all 200ms linear;
-}
-input:focus::-moz-placeholder  {
-    opacity: 0;
-    -webkit-transition: all 200ms linear;
-    transition: all 200ms linear;
-}
-input:focus:-moz-placeholder  {
-    opacity: 0;
-    -webkit-transition: all 200ms linear;
-    transition: all 200ms linear;
-}
-input:focus::-webkit-input-placeholder  {
-    opacity: 0;
-    -webkit-transition: all 200ms linear;
-    transition: all 200ms linear;
-}
-@-webkit-keyframes pulseBorder {
-    from {
-        border-bottom: solid 2px black;
-    }
-    to {
-        border-bottom: solid 2px #1789b5;
-    }
+.bgGradient{
+    background: rgb(34,193,195);
+    background: linear-gradient(229deg, rgba(34,193,195,1) 0%, rgba(23,137,181,1) 70%, rgba(23,137,181,1) 100%);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
