@@ -17,7 +17,7 @@
                     <span class="h3 text-black">Welcome to </span><span class="fw-bold h3 text-primary">Stay Up</span>
                 </div>
                 <div class="w-50 text-center mt-1">
-                    <span class="h6"><em style="color: gray!important;">Start by telling us about yourself </em></span>
+                    <a href="userpage.jsp" class="h6"><em style="color: gray!important;">Start by telling us about yourself </em></a>
                 </div>
             </div>
         </div>
