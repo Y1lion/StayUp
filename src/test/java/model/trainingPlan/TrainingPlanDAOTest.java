@@ -127,7 +127,6 @@ class TrainingPlanDAOTest {
         LocalDate startDate = LocalDate.of(2024, 2, 10);
         Date dateStart = Date.valueOf(startDate);
         String message="Data inizio antecedente a quella attuale";
-        System.out.println("CAZZO DAIIII: "+dateStart);
         LocalDate endDate = startDate.plusMonths(1);
         Date dateEnd = Date.valueOf(endDate);
         String exercises = "{\n" +
