@@ -47,7 +47,7 @@
     } else {
         gender = "Other";
     }
-    if (roleSession != null && (roleSession.equalsIgnoreCase("user") || roleSession.equalsIgnoreCase("admin"))) {
+    if (roleSession != null && !roleSession.equalsIgnoreCase("pt")) {
         subs.add(new SubscriptionDAO().getSubscription(ub));
         trainingPlans = new TrainingPlanDAO().getAllUserTrainingPlans(ub);
     }
