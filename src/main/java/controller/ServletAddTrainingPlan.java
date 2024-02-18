@@ -48,9 +48,10 @@ public class ServletAddTrainingPlan extends HttpServlet {
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.DAY_OF_MONTH, -1); // Sottrai un giorno
             Date yesterday = new Date(cal.getTimeInMillis());
-            if (startDate.before(yesterday))
+            if (startDate.before(yesterday) )
                 throw new Exception("Start date is before today date");
-
+            if (startDate.after(endDate) )
+                throw new Exception("Start date is after end date");
             if (!request.getParameter("title").matches("^\\S{2,30}$"))
                 throw new Exception("Title pattern is not respected");
 
@@ -73,6 +74,8 @@ public class ServletAddTrainingPlan extends HttpServlet {
                         if (!request.getParameter("formNameSetsN" + (i+1) + "D" + dayNumber).matches("^[1-9]\\d*$"))
                             throw new Exception("Sets format not respected");
                         if (!request.getParameter("formNameRepsN" + (i+1) + "D" + dayNumber).matches("^[1-9]\\d*$"))
+                            throw new Exception("Reps format not respected");
+                        if (request.getParameter("formNamePauseN" + (i+1) + "D" + dayNumber).isEmpty() || request.getParameter("formNamePauseN" + (i+1) + "D" + dayNumber)==null)
                             throw new Exception("Reps format not respected");
                         exercise.put("Exercise", request.getParameter("formNameExerciseN" + (i+1) + "D" + dayNumber));
                         exercise.put("Sets", request.getParameter("formNameSetsN" + (i+1) + "D" + dayNumber));
