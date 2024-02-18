@@ -209,5 +209,80 @@ class UserBeanDAOTest {
         assertNotNull(ub);
         assertEquals(mail,ub.getEmail());
     }
-    //TODO: ADD REMAINING TEST CASES
+    // TC_1.3.3_1
+    @Test
+    public void nameLengthError() throws NoSuchAlgorithmException {
+        String mail = "testing@testing.org";
+        String password = "Ciaoprova1@";
+        String message = "Lunghezza nome non valida";
+        password = PasswordEncryptionUtil.encryptPassword(password);
+
+        UserBeanDAO userBeanDAO = new UserBeanDAO();
+        UserBean ub = userBeanDAO.loginUser(mail,password);
+        assertNotNull(ub);
+        assertEquals(mail,ub.getEmail());
+
+        ub = userBeanDAO.changeName(ub, "A","Rossi");
+        assertNull(ub);
+        assertThrows(Exception.class, () -> {
+            throw new Exception(message);
+        });
+    }
+    // TC_1.3.3_2
+    @Test
+    public void nameFormatError() throws NoSuchAlgorithmException {
+        String mail = "testing@testing.org";
+        String password = "Ciaoprova1@";
+        String message = "Formato nome non valido";
+        password = PasswordEncryptionUtil.encryptPassword(password);
+
+        UserBeanDAO userBeanDAO = new UserBeanDAO();
+        UserBean ub = userBeanDAO.loginUser(mail,password);
+        assertNotNull(ub);
+        assertEquals(mail,ub.getEmail());
+
+        ub = userBeanDAO.changeName(ub, "alpacino","Rossi");
+        assertNull(ub);
+        assertThrows(Exception.class, () -> {
+            throw new Exception(message);
+        });
+    }
+    // TC_1.3.3_3
+    @Test
+    public void surnameLengthError() throws NoSuchAlgorithmException {
+        String mail = "testing@testing.org";
+        String password = "Ciaoprova1@";
+        String message = "Lunghezza cognome non valida";
+        password = PasswordEncryptionUtil.encryptPassword(password);
+
+        UserBeanDAO userBeanDAO = new UserBeanDAO();
+        UserBean ub = userBeanDAO.loginUser(mail,password);
+        assertNotNull(ub);
+        assertEquals(mail,ub.getEmail());
+
+        ub = userBeanDAO.changeName(ub, "Alpacino","R");
+        assertNull(ub);
+        assertThrows(Exception.class, () -> {
+            throw new Exception(message);
+        });
+    }
+    // TC_1.3.3_5
+    @Test
+    public void surnameFormatError() throws NoSuchAlgorithmException {
+        String mail = "testing@testing.org";
+        String password = "Ciaoprova1@";
+        String message = "Formato cognome non valido";
+        password = PasswordEncryptionUtil.encryptPassword(password);
+
+        UserBeanDAO userBeanDAO = new UserBeanDAO();
+        UserBean ub = userBeanDAO.loginUser(mail,password);
+        assertNotNull(ub);
+        assertEquals(mail,ub.getEmail());
+
+        ub = userBeanDAO.changeName(ub, "Alpacino","rossi");
+        assertNull(ub);
+        assertThrows(Exception.class, () -> {
+            throw new Exception(message);
+        });
+    }
 }
