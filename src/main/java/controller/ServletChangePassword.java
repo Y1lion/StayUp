@@ -25,16 +25,15 @@ public class ServletChangePassword extends HttpServlet {
             String nPsw = request.getParameter("newpassword");
             String supPsw = request.getParameter("confirmpassword");
             String psw = request.getParameter("currentpassword");
-            nPsw = PasswordEncryptionUtil.encryptPassword(nPsw);
-            supPsw = PasswordEncryptionUtil.encryptPassword(supPsw);
-            psw = PasswordEncryptionUtil.encryptPassword(psw);
-
             if(!nPsw.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$"))
                 throw new Exception("Password format is not respected");
             if(!supPsw.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$"))
                 throw new Exception("Password format is not respected");
             if(!psw.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$"))
                 throw new Exception("Password format is not respected");
+            nPsw = PasswordEncryptionUtil.encryptPassword(nPsw);
+            supPsw = PasswordEncryptionUtil.encryptPassword(supPsw);
+            psw = PasswordEncryptionUtil.encryptPassword(psw);
 
             String mail = (String) session.getAttribute("email");
             UserBeanDAO ubd = new UserBeanDAO();
