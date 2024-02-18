@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class TrainingPlanDAO {
-    //TODO: ADD TRAINING PLAN BUT BEFORE TODO FORM FOR TRAINING PLAN
     public synchronized Boolean addTrainingPlan(String emailPT, String emailUser, String exercises, Date dateStart, Date dateEnd){
         Connection conn =  null;
         PreparedStatement ps = null;
