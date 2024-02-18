@@ -210,7 +210,6 @@ public class TrainingPlanDAO {
     private Boolean checkTrainingPlan(TrainingPlan tp){
         JSONObject trainingPlan=new JSONObject(tp.getExercises());
         String title= (String) trainingPlan.get("Title");
-        System.out.println("CAZZO DAIIII: "+tp.getDateStart()+" "+tp.getEmailUser());
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, -1); // Sottrai un giorno
         Date yesterday = new Date(cal.getTimeInMillis());
