@@ -232,6 +232,9 @@ public class TrainingPlanDAO {
                 String sets = exercises.getJSONObject(i).getString("Sets");
                 if(!sets.matches("^[1-9]\\d*$"))
                     return false;
+                String rest = exercises.getJSONObject(i).getString("Rest");
+                if(rest.isEmpty() || rest==null)
+                    return false;
             }
         }
         return true;
