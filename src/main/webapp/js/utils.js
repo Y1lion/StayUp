@@ -53,7 +53,6 @@ function upgradeThisUser() {
 
             // Aggiungi il nuovo elemento <tr> al <tbody>
             $("#tabellaPTBody").append(tr);
-            console.log("CAZOOLONE "+id);
             document.getElementById(id).remove();
         },
         error: function() {

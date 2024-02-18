@@ -28,10 +28,11 @@ public class PersonalTrainerDAO {
 
         try {
             conn = ConnectionPool.getConnection();
-            String sqlString = "INSERT INTO personalTrainer(email) VALUES(?)";
+            String sqlString = "INSERT INTO personalTrainer(email,descrizione) VALUES(?,?)";
             ps = conn.prepareStatement(sqlString);
 
             ps.setString(1, ub.getEmail());
+            ps.setString(2, "Insert your description");
 
             int upd = ps.executeUpdate();
 
