@@ -29,14 +29,16 @@ public class ServletSendEmail extends HttpServlet {
             String emailuser=request.getParameter("emailLog");
             if (!emailuser.matches("^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,})+$"))
                 throw new Exception("Email format is not respected");
+            if(emailuser.length()<6 || emailuser.length()>40)
+                throw new Exception("Email lenght is not respected");
             String psw=RandomStringGenerator.generateRandomString();
             UserBean ub=new UserBeanDAO().checkEmail(emailuser);
-            if (ub == null)
-                throw new Exception("Account doens't exist");
+            if (ub.getEmail().equalsIgnoreCase("ERRORE"))
+                throw new Exception("Account doesn't exist");
             ApiClient client = Postmark.getApiClient("dc790940-a28a-4e55-9824-8cb69f51d804");
             Message message = new Message("a.abbate20@studenti.unisa.it", emailuser, "New Password for StayUp", "Your password: "+psw);
             message.setMessageStream("stayup");
-            MessageResponse sendeing = client.deliverMessage(message);
+            MessageResponse sending = client.deliverMessage(message);
             psw=PasswordEncryptionUtil.encryptPassword(psw);
             new UserBeanDAO().forgotPsw(ub,psw);
             System.out.println("Email sent successfully!");

@@ -26,6 +26,8 @@ public class ServletChangeEmail extends HttpServlet {
             String oldMail = (String) session.getAttribute("email");
             if (!mail.matches("^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,})+$"))
                 throw new Exception("Email format is not respected");
+            if(mail.length()<6 || mail.length()>40)
+                throw new Exception("Email length not respected");
             UserBeanDAO ubd = new UserBeanDAO();
             UserBean user = ubd.loginUser(oldMail, psw);
             if(user.getEmail().equalsIgnoreCase("ERRORE") || mail.equalsIgnoreCase(oldMail)){

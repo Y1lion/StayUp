@@ -1,7 +1,6 @@
 package model.trainingPlan;
 
 import model.personalTrainer.PersonalTrainer;
-import model.subscription.Subscription;
 import model.user.UserBean;
 import model.utils.ConnectionPool;
 import org.json.JSONArray;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class TrainingPlanDAO {
-    //TODO: ADD TRAINING PLAN BUT BEFORE TODO FORM FOR TRAINING PLAN
     public synchronized Boolean addTrainingPlan(String emailPT, String emailUser, String exercises, Date dateStart, Date dateEnd){
         Connection conn =  null;
         PreparedStatement ps = null;
@@ -111,7 +109,7 @@ public class TrainingPlanDAO {
         }
         return null;
     }
-    public synchronized ArrayList<TrainingPlan> getAvailablePtTrainingPLan(UserBean ub, PersonalTrainer pt){
+    public synchronized ArrayList<TrainingPlan> getAvailablePtTrainingPlan(UserBean ub, PersonalTrainer pt){
         Connection conn = null;
         PreparedStatement ps = null;
         ArrayList<TrainingPlan> trainingPlans = new ArrayList<>();
@@ -211,7 +209,6 @@ public class TrainingPlanDAO {
     private Boolean checkTrainingPlan(TrainingPlan tp){
         JSONObject trainingPlan=new JSONObject(tp.getExercises());
         String title= (String) trainingPlan.get("Title");
-        System.out.println("CAZZO DAIIII: "+tp.getDateStart()+" "+tp.getEmailUser());
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, -1); // Sottrai un giorno
         Date yesterday = new Date(cal.getTimeInMillis());
@@ -233,6 +230,9 @@ public class TrainingPlanDAO {
                     return false;
                 String sets = exercises.getJSONObject(i).getString("Sets");
                 if(!sets.matches("^[1-9]\\d*$"))
+                    return false;
+                String rest = exercises.getJSONObject(i).getString("Rest");
+                if(rest.isEmpty() || rest==null)
                     return false;
             }
         }

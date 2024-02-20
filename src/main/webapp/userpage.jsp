@@ -47,7 +47,7 @@
     } else {
         gender = "Other";
     }
-    if (roleSession != null && roleSession.equalsIgnoreCase("user")) {
+    if (roleSession != null && !roleSession.equalsIgnoreCase("pt")) {
         subs.add(new SubscriptionDAO().getSubscription(ub));
         trainingPlans = new TrainingPlanDAO().getAllUserTrainingPlans(ub);
     }
@@ -455,7 +455,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-black">
-                <div class="btn-group-vertical" role="group" aria-label="Personal Info Buttons">
+                <div class="btn-group-vertical  w-100" role="group" aria-label="Personal Info Buttons">
                     <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#changePassword">Change Password</button>
                     <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#changeEmail">Change Email</button>
                     <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#changeMobile">Change Mobile</button>

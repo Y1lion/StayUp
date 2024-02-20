@@ -139,6 +139,12 @@ public class UserBeanDAO {
     public synchronized UserBean changeName(UserBean ub, String newName, String newSurname) {
         Connection conn = null;
         PreparedStatement ps = null;
+        UserBean testing = new UserBean(ub.getEmail(),"testing");
+        testing.setNome(newName);
+        testing.setCognome(newSurname);
+        testing.setTelefono("1234567890");
+        if (!checkFormat(testing))
+            return null;
 
         try {
             conn = ConnectionPool.getConnection();
@@ -172,8 +178,10 @@ public class UserBeanDAO {
         }
         finally {
             try {
-                ps.close();
-                ConnectionPool.releaseConnection(conn);
+                if (ps != null) {
+                    ps.close();
+                    ConnectionPool.releaseConnection(conn);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -192,6 +200,12 @@ public class UserBeanDAO {
     public synchronized UserBean changeNumber(UserBean ub, String newNumber) {
         Connection conn = null;
         PreparedStatement ps = null;
+        UserBean testing = new UserBean(ub.getEmail(),"testing");
+        testing.setNome("Testing");
+        testing.setCognome("Testing");
+        testing.setTelefono(newNumber);
+        if (!checkFormat(testing))
+            return null;
 
         try {
             conn = ConnectionPool.getConnection();
@@ -223,8 +237,10 @@ public class UserBeanDAO {
         }
         finally {
             try {
-                ps.close();
-                ConnectionPool.releaseConnection(conn);
+                if (ps != null) {
+                    ps.close();
+                    ConnectionPool.releaseConnection(conn);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -243,6 +259,13 @@ public class UserBeanDAO {
     public synchronized UserBean changeGender(UserBean ub, String newGender) {
         Connection conn = null;
         PreparedStatement ps = null;
+        UserBean testing = new UserBean(ub.getEmail(),"testing");
+        testing.setNome("Testing");
+        testing.setCognome("Testing");
+        testing.setTelefono("1234567890");
+        testing.setGender(newGender);
+        if (!checkFormat(ub))
+            return null;
 
         try {
             conn = ConnectionPool.getConnection();
@@ -723,5 +746,16 @@ public class UserBeanDAO {
                 e.printStackTrace();
             }
         }
+    }
+    private synchronized Boolean checkFormat(UserBean ub){
+        if (!ub.getNome().matches("^[A-Z][a-zA-Z]{1,50}$"))
+            return false;
+        if (!ub.getCognome().matches("^[A-Z][a-zA-Z]{1,50}$"))
+            return false;
+        if (!ub.getTelefono().matches("\\d{10}"))
+            return false;
+        if (ub.getGender() != "m" && ub.getGender() != "f" && ub.getGender() != "o")
+            return false;
+        return true;
     }
 }
