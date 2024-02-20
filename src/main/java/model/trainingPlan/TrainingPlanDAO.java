@@ -1,7 +1,6 @@
 package model.trainingPlan;
 
 import model.personalTrainer.PersonalTrainer;
-import model.subscription.Subscription;
 import model.user.UserBean;
 import model.utils.ConnectionPool;
 import org.json.JSONArray;
@@ -110,7 +109,7 @@ public class TrainingPlanDAO {
         }
         return null;
     }
-    public synchronized ArrayList<TrainingPlan> getAvailablePtTrainingPLan(UserBean ub, PersonalTrainer pt){
+    public synchronized ArrayList<TrainingPlan> getAvailablePtTrainingPlan(UserBean ub, PersonalTrainer pt){
         Connection conn = null;
         PreparedStatement ps = null;
         ArrayList<TrainingPlan> trainingPlans = new ArrayList<>();

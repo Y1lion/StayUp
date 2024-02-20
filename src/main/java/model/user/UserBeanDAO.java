@@ -259,6 +259,13 @@ public class UserBeanDAO {
     public synchronized UserBean changeGender(UserBean ub, String newGender) {
         Connection conn = null;
         PreparedStatement ps = null;
+        UserBean testing = new UserBean(ub.getEmail(),"testing");
+        testing.setNome("Testing");
+        testing.setCognome("Testing");
+        testing.setTelefono("1234567890");
+        testing.setGender(newGender);
+        if (!checkFormat(ub))
+            return null;
 
         try {
             conn = ConnectionPool.getConnection();
@@ -746,6 +753,8 @@ public class UserBeanDAO {
         if (!ub.getCognome().matches("^[A-Z][a-zA-Z]{1,50}$"))
             return false;
         if (!ub.getTelefono().matches("\\d{10}"))
+            return false;
+        if (ub.getGender() != "m" && ub.getGender() != "f" && ub.getGender() != "o")
             return false;
         return true;
     }
