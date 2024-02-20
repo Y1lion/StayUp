@@ -24,6 +24,8 @@ public class ServletLogin extends HttpServlet {
         try {
             if(!ID.matches("^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,})+$"))
                 throw new Exception("Email format is not respected");
+            if(ID.length()<6 || ID.length()>40)
+                throw new Exception("Email length not respected");
             if(!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$"))
                 throw new Exception("Password format is not respected");
             password = PasswordEncryptionUtil.encryptPassword(password);
