@@ -3,13 +3,12 @@ package controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import model.personalTrainer.PersonalTrainer;
-import model.personalTrainer.PersonalTrainerDAO;
 import model.user.UserBean;
 import model.user.UserBeanDAO;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(name = "ServletUpgradeUser", value = "/ServletUpgradeUser")
 public class ServletUpgradeUser extends HttpServlet {
@@ -25,7 +24,7 @@ public class ServletUpgradeUser extends HttpServlet {
             if (!email.matches("^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,})+$"))
                 throw new Exception("Email format is not respected");
             if (email.length() < 6 || email.length() > 40)
-                throw new Exception("Email lenght is not respected");
+                throw new Exception("Email length is not respected");
             UserBeanDAO ubd = new UserBeanDAO();
             UserBean ub = ubd.recoverInfos(email);
             ubd.upgradeToPT(ub);
@@ -37,10 +36,14 @@ public class ServletUpgradeUser extends HttpServlet {
             // Invia la risposta contenente l'oggetto User in formato JSON
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-        }catch (Exception e){
-            request.setAttribute("exception",e);
-            request.setAttribute("exceptionURL","./userpage.jsp");
-            request.getRequestDispatcher("./infopages/error.jsp").forward(request,response);
+            PrintWriter out = response.getWriter();
+            out.print(jsonUser.toJSONString());
+            out.flush();
+        } catch (Exception e) {
+            request.setAttribute("exception", e);
+            request.setAttribute("exceptionURL", "./userpage.jsp");
+            request.getRequestDispatcher("./infopages/error.jsp").forward(request, response);
         }
     }
+
 }
