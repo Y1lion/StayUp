@@ -8,15 +8,11 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
       <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+      <%if (dataFromSession != null && roleSession.equalsIgnoreCase("admin")){%>
         <li class="nav-item">
-          <a class="nav-link active" href="./">Home</a>
+          <a class="nav-link" href="admin_home.jsp">Admin Page</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="./">Another link</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="./">Another link</a>
-        </li>
+      <%}%>
       </ul>
       <ul class="navbar-nav text-inline mt-2 mt-lg-0 me-2">
         <% if (dataFromSession  != null) { %>

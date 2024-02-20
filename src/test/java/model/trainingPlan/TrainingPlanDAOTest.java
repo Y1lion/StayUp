@@ -2,8 +2,6 @@ package model.trainingPlan;
 
 import model.personalTrainer.PersonalTrainer;
 import model.personalTrainer.PersonalTrainerDAO;
-import model.subscription.Subscription;
-import model.subscription.SubscriptionDAO;
 import model.user.UserBean;
 import model.user.UserBeanDAO;
 import model.utils.PasswordEncryptionUtil;
@@ -93,7 +91,7 @@ class TrainingPlanDAOTest {
     void getAvailablePtTrainingPLan() {
         UserBean ub=new UserBeanDAO().recoverInfos("test2@test2.it");
         PersonalTrainer pt=new PersonalTrainerDAO().retrieveInfo("personal2@personal2.it");
-        ArrayList<TrainingPlan>tps = new TrainingPlanDAO().getAvailablePtTrainingPLan(ub,pt);
+        ArrayList<TrainingPlan>tps = new TrainingPlanDAO().getAvailablePtTrainingPlan(ub,pt);
         assertNotNull(tps);
     }
 
