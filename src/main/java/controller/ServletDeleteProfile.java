@@ -4,7 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.user.UserBean;
-import model.user.UserBeanDAO;
+import model.user.UserBeanFacade;
 import model.utils.PasswordEncryptionUtil;
 
 import java.io.IOException;
@@ -24,10 +24,10 @@ public class ServletDeleteProfile extends HttpServlet {
             if(!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$"))
                 throw new Exception("Password format is not respected");
             password = PasswordEncryptionUtil.encryptPassword(password);
-            UserBean us = new UserBeanDAO().loginUser((String) session.getAttribute("email"),password);
+            UserBean us = new UserBeanFacade().loginUser((String) session.getAttribute("email"),password);
             if(us.getEmail().equalsIgnoreCase("ERRORE"))
                 throw new Exception("Wrong password");
-            new UserBeanDAO().deleteUser((String) session.getAttribute("email"));
+            new UserBeanFacade().deleteUser((String) session.getAttribute("email"));
             request.getSession().invalidate();
             request.setAttribute("success","./index.jsp");
             request.getRequestDispatcher("./infopages/success.jsp").forward(request, response);

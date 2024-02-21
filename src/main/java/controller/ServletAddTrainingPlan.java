@@ -4,7 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
-import model.trainingPlan.TrainingPlanDAO;
+import model.trainingPlan.TrainingPlanFacade;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
@@ -91,7 +91,7 @@ public class ServletAddTrainingPlan extends HttpServlet {
             }
             trainingPlan.put("Days", days);
             System.out.println(JSONObject.toJSONString(trainingPlan));
-            Boolean state=new TrainingPlanDAO().addTrainingPlan(emailPT,emailSub,JSONObject.toJSONString(trainingPlan),startDate,endDate);
+            Boolean state=new TrainingPlanFacade().addTrainingPlan(emailPT,emailSub,JSONObject.toJSONString(trainingPlan),startDate,endDate);
 
             if(!state)
                 throw new Exception("Something went wrong!");

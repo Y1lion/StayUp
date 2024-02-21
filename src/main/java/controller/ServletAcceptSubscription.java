@@ -4,7 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.subscription.Subscription;
-import model.subscription.SubscriptionDAO;
+import model.subscription.SubscriptionFacade;
 import model.user.UserBeanDAO;
 
 import java.io.IOException;
@@ -20,11 +20,11 @@ public class ServletAcceptSubscription extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String emailUser = request.getParameter("visitEmail");
-            Subscription s = new SubscriptionDAO().getSubscription(new UserBeanDAO().recoverInfos(emailUser));
+            Subscription s = new SubscriptionFacade().getSubscription(new UserBeanDAO().recoverInfos(emailUser));
             if (s == null || s.getEmailUser().equalsIgnoreCase("error")){
                 throw new Exception("User email not valid");
             }
-            s = new SubscriptionDAO().acceptSubscription(s);
+            s = new SubscriptionFacade().acceptSubscription(s);
 
             if (s == null){
                 throw new Exception("Something went wrong");
