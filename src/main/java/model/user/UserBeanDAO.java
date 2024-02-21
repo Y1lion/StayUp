@@ -754,7 +754,7 @@ public class UserBeanDAO {
             return false;
         if (!ub.getTelefono().matches("\\d{10}"))
             return false;
-        if (ub.getGender() != "m" && ub.getGender() != "f" && ub.getGender() != "o")
+        if (!ub.getGender() .equals("m") && !ub.getGender() .equals("f") && !ub.getGender() .equals("o"))
             return false;
         return true;
     }
