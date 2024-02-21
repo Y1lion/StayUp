@@ -159,5 +159,6 @@ buildNumber.properties
 .classpath
 
 #.ENV FILE
-src/main/.env
+src/.env
 /StayUp.iml
+/src/.env
