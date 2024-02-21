@@ -143,7 +143,6 @@ public class UserBeanDAO {
         testing.setNome(newName);
         testing.setCognome(newSurname);
         testing.setTelefono("1234567890");
-        testing.setGender("Male");
         if (!checkFormat(testing))
             return null;
 
@@ -205,7 +204,6 @@ public class UserBeanDAO {
         testing.setNome("Testing");
         testing.setCognome("Testing");
         testing.setTelefono(newNumber);
-        testing.setGender("Male");
         if (!checkFormat(testing))
             return null;
 
@@ -756,7 +754,7 @@ public class UserBeanDAO {
             return false;
         if (!ub.getTelefono().matches("\\d{10}"))
             return false;
-        if (ub.getGender() != "Male" && ub.getGender() != "Female" && ub.getGender() != "Other")
+        if (!ub.getGender() .equals("m") && !ub.getGender() .equals("f") && !ub.getGender() .equals("o"))
             return false;
         return true;
     }
