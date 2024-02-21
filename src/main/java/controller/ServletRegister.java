@@ -8,7 +8,7 @@ import java.io.IOException;
 
 import model.utils.PasswordEncryptionUtil;
 import model.user.UserBean;
-import model.user.UserBeanDAO;
+import model.user.UserBeanFacade;
 
 import static java.lang.System.out;
 
@@ -54,7 +54,7 @@ public class ServletRegister extends HttpServlet {
 
 
             password = PasswordEncryptionUtil.encryptPassword(password);
-            UserBeanDAO ubDAO=new UserBeanDAO();
+            UserBeanFacade ubDAO=new UserBeanFacade();
             UserBean ub = ubDAO.userRegistration(ID,password, nome, cognome, telefono, gender);
             if(ptCheck!=null && ptCheck.equalsIgnoreCase("true")){
                 //TODO: Admin check and approve request

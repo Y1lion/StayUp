@@ -4,9 +4,9 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.personalTrainer.PersonalTrainer;
-import model.personalTrainer.PersonalTrainerDAO;
+import model.personalTrainer.PersonalTrainerFacade;
 import model.user.UserBean;
-import model.user.UserBeanDAO;
+import model.user.UserBeanFacade;
 import model.utils.PasswordEncryptionUtil;
 
 import java.io.IOException;
@@ -31,19 +31,19 @@ public class ServletChangePtYears extends HttpServlet {
                 throw new Exception("Years format is not respected");
 
             psw = PasswordEncryptionUtil.encryptPassword(psw);
-            UserBean ub = new UserBeanDAO().loginUser((String) session.getAttribute("email"),psw);
+            UserBean ub = new UserBeanFacade().loginUser((String) session.getAttribute("email"),psw);
 
             if(ub.getEmail().equalsIgnoreCase("ERRORE")){
                 throw new Exception("Wrong password");
             }
 
-            PersonalTrainer pt = new PersonalTrainerDAO().retrieveInfo((String) session.getAttribute("email"));
+            PersonalTrainer pt = new PersonalTrainerFacade().retrieveInfo((String) session.getAttribute("email"));
 
             if (pt.getPtYears() == years){
                 throw new Exception("New years are the same as the old years");
             }
 
-            pt = new PersonalTrainerDAO().changePTYears(pt,years);
+            pt = new PersonalTrainerFacade().changePTYears(pt,years);
 
             if (pt == null){
                 throw new Exception("Something went wrong");

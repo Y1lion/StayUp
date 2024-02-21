@@ -4,11 +4,11 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.parameters.Parameters;
-import model.parameters.ParametersDAO;
+import model.parameters.ParametersFacade;
 import model.personalTrainer.PersonalTrainer;
-import model.personalTrainer.PersonalTrainerDAO;
+import model.personalTrainer.PersonalTrainerFacade;
 import model.user.UserBean;
-import model.user.UserBeanDAO;
+import model.user.UserBeanFacade;
 import model.utils.PasswordEncryptionUtil;
 
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class ServletChangeParameters extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try{
             HttpSession session = request.getSession();
-            Parameters uParam = new ParametersDAO().getParameters((String) session.getAttribute("email"));
+            Parameters uParam = new ParametersFacade().getParameters((String) session.getAttribute("email"));
             uParam.setWeight(Double.parseDouble(request.getParameter("parweight")));
             uParam.setLean_mass(Double.parseDouble(request.getParameter("parlean")));
             uParam.setFat_mass(Double.parseDouble(request.getParameter("parfat")));
@@ -54,7 +54,7 @@ public class ServletChangeParameters extends HttpServlet {
 
             String psw = request.getParameter("currentpassword1");
             psw = PasswordEncryptionUtil.encryptPassword(psw);
-            UserBean ub = new UserBeanDAO().loginUser((String) session.getAttribute("email"),psw);
+            UserBean ub = new UserBeanFacade().loginUser((String) session.getAttribute("email"),psw);
 
             if(ub.getEmail().equalsIgnoreCase("ERRORE")){
                 throw new Exception("Wrong password");
@@ -66,12 +66,12 @@ public class ServletChangeParameters extends HttpServlet {
                 if(Integer.parseInt(ptYears)<0 || Integer.parseInt(ptYears)>60)
                     throw new Exception("Personal Trainer Years format is not respected");
                 PersonalTrainer pt = new PersonalTrainer(ub);
-                pt = new PersonalTrainerDAO().changePTYears(pt, Integer.valueOf(ptYears));
+                pt = new PersonalTrainerFacade().changePTYears(pt, Integer.valueOf(ptYears));
                 if (pt == null)
                     throw new Exception("Something went wrong");
             }
 
-            uParam = new ParametersDAO().changeParameters(uParam);
+            uParam = new ParametersFacade().changeParameters(uParam);
             if(uParam == null)
                 throw new Exception("Something went wrong");
             request.setAttribute("success","./userpage.jsp");
