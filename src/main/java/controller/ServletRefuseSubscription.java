@@ -4,8 +4,8 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.subscription.Subscription;
-import model.subscription.SubscriptionDAO;
-import model.user.UserBeanDAO;
+import model.subscription.SubscriptionFacade;
+import model.user.UserBeanFacade;
 
 import java.io.IOException;
 
@@ -20,12 +20,12 @@ public class ServletRefuseSubscription extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String emailUser = request.getParameter("visitEmail");
-            Subscription s = new SubscriptionDAO().getSubscription(new UserBeanDAO().recoverInfos(emailUser));
+            Subscription s = new SubscriptionFacade().getSubscription(new UserBeanFacade().recoverInfos(emailUser));
             if (s == null || s.getEmailUser().equalsIgnoreCase("error")){
                 throw new Exception("User email not valid");
             }
 
-            s = new SubscriptionDAO().refuseSubscription(s);
+            s = new SubscriptionFacade().refuseSubscription(s);
 
             if (s == null){
                 throw new Exception("Something went wrong");

@@ -4,7 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.user.UserBean;
-import model.user.UserBeanDAO;
+import model.user.UserBeanFacade;
 import model.utils.PasswordEncryptionUtil;
 
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class ServletChangeEmail extends HttpServlet {
                 throw new Exception("Email format is not respected");
             if(mail.length()<6 || mail.length()>40)
                 throw new Exception("Email length not respected");
-            UserBeanDAO ubd = new UserBeanDAO();
+            UserBeanFacade ubd = new UserBeanFacade();
             UserBean user = ubd.loginUser(oldMail, psw);
             if(user.getEmail().equalsIgnoreCase("ERRORE") || mail.equalsIgnoreCase(oldMail)){
                 throw new Exception("Wrong password or new email is the same as the old email");

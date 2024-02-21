@@ -4,7 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.user.UserBean;
-import model.user.UserBeanDAO;
+import model.user.UserBeanFacade;
 
 import java.io.IOException;
 
@@ -21,7 +21,7 @@ public class ServletSeeProfile extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String email = request.getParameter("visitEmail");
-            UserBean ub = new UserBeanDAO().checkEmail(email);
+            UserBean ub = new UserBeanFacade().checkEmail(email);
             if (ub == null || ub.getEmail().equalsIgnoreCase("errore"))
                 throw new Exception("Clicked email is not valid");
             request.setAttribute("emailUser", email);
