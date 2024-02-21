@@ -64,14 +64,13 @@ public class TrainingPlanDAO {
             int res = ps.executeUpdate();
             return res != 0;
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }finally{
             try {
                 ps.close();
                 ConnectionPool.releaseConnection(conn);
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
+                
                 e.printStackTrace();
             }
         }
@@ -96,14 +95,12 @@ public class TrainingPlanDAO {
             return  trainingPlans;
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }finally{
             try {
                 ps.close();
                 ConnectionPool.releaseConnection(conn);
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -129,14 +126,12 @@ public class TrainingPlanDAO {
             return  trainingPlans;
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }finally{
             try {
                 ps.close();
                 ConnectionPool.releaseConnection(conn);
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -160,14 +155,12 @@ public class TrainingPlanDAO {
             return trainingPlans;
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }finally{
             try {
                 ps.close();
                 ConnectionPool.releaseConnection(conn);
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -191,7 +184,6 @@ public class TrainingPlanDAO {
             return trainingPlans;
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }finally{
             try {
@@ -200,7 +192,7 @@ public class TrainingPlanDAO {
                     ConnectionPool.releaseConnection(conn);
                 }
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
+                
                 e.printStackTrace();
             }
         }

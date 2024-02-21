@@ -524,6 +524,6 @@ class TrainingPlanDAOTest {
          UserBean ubForPT=new UserBeanDAO().userRegistration("successful@personal.it",PasswordEncryptionUtil.encryptPassword("Ciaoprova1@"),"AndreaPT","AbbatePT","1234567890","m");
          PersonalTrainer pt=new PersonalTrainerDAO().personalTrainerRegistration(ubForPT);
          Boolean tp=new TrainingPlanDAO().addTrainingPlan(pt.getUser().getEmail(), ub.getEmail(),exercises,dateStart,dateEnd);
-
+        assertEquals(tp,true);
      }
 }
