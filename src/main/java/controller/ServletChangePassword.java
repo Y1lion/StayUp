@@ -4,7 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.user.UserBean;
-import model.user.UserBeanDAO;
+import model.user.UserBeanFacade;
 import model.utils.PasswordEncryptionUtil;
 
 import java.io.IOException;
@@ -36,7 +36,7 @@ public class ServletChangePassword extends HttpServlet {
             psw = PasswordEncryptionUtil.encryptPassword(psw);
 
             String mail = (String) session.getAttribute("email");
-            UserBeanDAO ubd = new UserBeanDAO();
+            UserBeanFacade ubd = new UserBeanFacade();
             UserBean user = ubd.loginUser(mail, psw);
 
             if(user.getEmail().equalsIgnoreCase("ERRORE")){

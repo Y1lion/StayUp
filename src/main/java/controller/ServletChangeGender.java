@@ -4,7 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.user.UserBean;
-import model.user.UserBeanDAO;
+import model.user.UserBeanFacade;
 import model.utils.PasswordEncryptionUtil;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class ServletChangeGender extends HttpServlet {
             String newGender;
             String psw = request.getParameter("current_password2");
             psw = PasswordEncryptionUtil.encryptPassword(psw);
-            UserBean ub = new UserBeanDAO().loginUser((String) session.getAttribute("email"),psw);
+            UserBean ub = new UserBeanFacade().loginUser((String) session.getAttribute("email"),psw);
 
             if (gender == null || gender.isEmpty()){
                 throw new Exception("Gender format is not respected");
@@ -46,7 +46,7 @@ public class ServletChangeGender extends HttpServlet {
             if (ub.getGender().equalsIgnoreCase(newGender)){
                 throw new Exception("New gender is the same as the old gender");
             }
-            ub = new UserBeanDAO().changeGender(ub, gender);
+            ub = new UserBeanFacade().changeGender(ub, gender);
             if (ub == null)
                 throw new Exception("Something went wrong");
             request.setAttribute("success","./userpage.jsp");

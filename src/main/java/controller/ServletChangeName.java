@@ -4,7 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.user.UserBean;
-import model.user.UserBeanDAO;
+import model.user.UserBeanFacade;
 import model.utils.PasswordEncryptionUtil;
 
 import java.io.IOException;
@@ -30,7 +30,7 @@ public class ServletChangeName extends HttpServlet {
 
             String psw = request.getParameter("current_password1");
             psw = PasswordEncryptionUtil.encryptPassword(psw);
-            UserBean ub = new UserBeanDAO().loginUser((String) session.getAttribute("email"),psw);
+            UserBean ub = new UserBeanFacade().loginUser((String) session.getAttribute("email"),psw);
 
             if(ub.getEmail().equalsIgnoreCase("ERRORE")){
                 throw new Exception("Wrong password");
@@ -43,7 +43,7 @@ public class ServletChangeName extends HttpServlet {
             if (ub.getCognome().equalsIgnoreCase(surname)){
                 throw new Exception("New surname is the same as the old surname");
             }
-            ub = new UserBeanDAO().changeName(ub, name, surname);
+            ub = new UserBeanFacade().changeName(ub, name, surname);
             if(ub == null)
                 throw new Exception("Something went wrong");
             session.setAttribute("name",ub.getNome());
