@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="css/custom.css">
   <link rel="stylesheet" href="css/training_plane.css">
 </head>
-<body>
+<body style="min-height: 100vh;">
 <%
   if(dataFromSession==null) {
     response.sendRedirect(request.getContextPath() + "/index.jsp");
