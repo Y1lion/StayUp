@@ -30,10 +30,10 @@
             <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3" class="active" aria-current="true"></button>
         </div>
         <div class="carousel-inner">
-            <div class="carousel-item carousel-item-next carousel-item-start">
+            <div class="carousel-item carousel-item-next">
                 <img src="images/carousel1.svg" class="d-block w-100">
             </div>
-            <div class="carousel-item active carousel-item-next carousel-item-start">
+            <div class="carousel-item active carousel-item-next">
                 <img src="images/carousel2.svg" class="d-block w-100">
             </div>
             <div class="carousel-item carousel-item-next carousel-item-start">
