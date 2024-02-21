@@ -28,7 +28,7 @@
     PersonalTrainer pt= new PersonalTrainerDAO().retrieveInfo(dataFromSession);
     List<Subscription> subs=new SubscriptionDAO().getAllSubscriptions(pt);%>
 <div class="container-fluid">
-  <form action="addTrainingPlan" onsubmit="return controllaDate()">
+  <form action="addTrainingPlan" method="post" onsubmit="return controllaDate()">
     <div class="d-flex mx-auto justify-content-between w-75 mt-3 flex-wrap">
 
       <button class="btn col-lg-4 col-12 col-xl-3 btn-outline-primary align-self-end" onclick="window.location.reload();">Cancel Training plan</button>

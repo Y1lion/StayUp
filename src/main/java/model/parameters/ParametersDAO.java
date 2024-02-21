@@ -50,7 +50,7 @@ public class ParametersDAO {
                 preparedStatement.close();
                 ConnectionPool.releaseConnection(connection);
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
+                
                 e.printStackTrace();
             }
         }
@@ -108,7 +108,7 @@ public class ParametersDAO {
                 preparedStatement.close();
                 ConnectionPool.releaseConnection(connection);
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
+                
                 e.printStackTrace();
             }
         }
@@ -194,7 +194,7 @@ public class ParametersDAO {
                     preparedStatement.close();
                 ConnectionPool.releaseConnection(connection);
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
+                
                 e.printStackTrace();
             }
         }

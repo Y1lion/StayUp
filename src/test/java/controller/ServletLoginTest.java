@@ -79,7 +79,7 @@ class ServletLoginTest {
 
     @Test
     void doPostEmailFail() throws ServletException, IOException {
-        when(request.getParameter("emailLog")).thenReturn("a@a.it");
+        when(request.getParameter("emailLog")).thenReturn("a@a.i");
         when(request.getParameter("passwordLog")).thenReturn("Ciaoprova1@");
         servlet.doPost(request, response);
         verify(request, times(2)).getParameter(anyString());
