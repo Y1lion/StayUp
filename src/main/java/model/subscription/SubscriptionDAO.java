@@ -179,7 +179,7 @@ public class SubscriptionDAO {
             }
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            
             e.printStackTrace();
         }finally{
             try {
@@ -188,7 +188,7 @@ public class SubscriptionDAO {
                     ConnectionPool.releaseConnection(conn);
                 }
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
+                
                 e.printStackTrace();
             }
         }
@@ -214,7 +214,7 @@ public class SubscriptionDAO {
             return subs;
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            
             e.printStackTrace();
         }finally{
             try {
@@ -223,7 +223,7 @@ public class SubscriptionDAO {
                     ConnectionPool.releaseConnection(conn);
                 }
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
+                
                 e.printStackTrace();
             }
         }
