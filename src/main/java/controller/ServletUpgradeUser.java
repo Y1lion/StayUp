@@ -4,7 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.user.UserBean;
-import model.user.UserBeanDAO;
+import model.user.UserBeanFacade;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class ServletUpgradeUser extends HttpServlet {
                 throw new Exception("Email format is not respected");
             if (email.length() < 6 || email.length() > 40)
                 throw new Exception("Email length is not respected");
-            UserBeanDAO ubd = new UserBeanDAO();
+            UserBeanFacade ubd = new UserBeanFacade();
             UserBean ub = ubd.recoverInfos(email);
             ubd.upgradeToPT(ub);
             JSONObject jsonUser = new JSONObject();

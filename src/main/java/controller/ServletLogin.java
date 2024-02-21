@@ -5,7 +5,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.utils.PasswordEncryptionUtil;
 import model.user.UserBean;
-import model.user.UserBeanDAO;
+import model.user.UserBeanFacade;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,7 +29,7 @@ public class ServletLogin extends HttpServlet {
             if(!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$"))
                 throw new Exception("Password format is not respected");
             password = PasswordEncryptionUtil.encryptPassword(password);
-            UserBeanDAO usDAO = new UserBeanDAO();
+            UserBeanFacade usDAO = new UserBeanFacade();
             UserBean us=usDAO.loginUser(ID,password);
             if(!us.getEmail().equals("ERRORE")){
                 HttpSession sess=request.getSession(true);

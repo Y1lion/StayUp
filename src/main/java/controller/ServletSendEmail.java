@@ -8,7 +8,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.user.UserBean;
-import model.user.UserBeanDAO;
+import model.user.UserBeanFacade;
 import model.utils.PasswordEncryptionUtil;
 import model.utils.RandomStringGenerator;
 
@@ -32,7 +32,7 @@ public class ServletSendEmail extends HttpServlet {
             if(emailuser.length()<6 || emailuser.length()>40)
                 throw new Exception("Email lenght is not respected");
             String psw=RandomStringGenerator.generateRandomString();
-            UserBean ub=new UserBeanDAO().checkEmail(emailuser);
+            UserBean ub=new UserBeanFacade().checkEmail(emailuser);
             if (ub.getEmail().equalsIgnoreCase("ERRORE"))
                 throw new Exception("Account doesn't exist");
             ApiClient client = Postmark.getApiClient("dc790940-a28a-4e55-9824-8cb69f51d804");
@@ -40,7 +40,7 @@ public class ServletSendEmail extends HttpServlet {
             message.setMessageStream("stayup");
             MessageResponse sending = client.deliverMessage(message);
             psw=PasswordEncryptionUtil.encryptPassword(psw);
-            new UserBeanDAO().forgotPsw(ub,psw);
+            new UserBeanFacade().forgotPsw(ub,psw);
             System.out.println("Email sent successfully!");
             request.setAttribute("success","./login.jsp");
             request.getRequestDispatcher("./infopages/success.jsp").forward(request,response);
