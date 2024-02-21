@@ -4,11 +4,11 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.personalTrainer.PersonalTrainer;
-import model.personalTrainer.PersonalTrainerDAO;
+import model.personalTrainer.PersonalTrainerFacade;
 import model.subscription.Subscription;
-import model.subscription.SubscriptionDAO;
+import model.subscription.SubscriptionFacade;
 import model.user.UserBean;
-import model.user.UserBeanDAO;
+import model.user.UserBeanFacade;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -24,8 +24,8 @@ public class ServletRequestSubscription extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             HttpSession session = request.getSession();
-            UserBean ub = new UserBeanDAO().recoverInfos((String) session.getAttribute("email"));
-            PersonalTrainer pt = new PersonalTrainerDAO().retrieveInfo(request.getParameter("visitEmail"));
+            UserBean ub = new UserBeanFacade().recoverInfos((String) session.getAttribute("email"));
+            PersonalTrainer pt = new PersonalTrainerFacade().retrieveInfo(request.getParameter("visitEmail"));
             if (pt == null || pt.getUser() == null){
                 throw new Exception("Personal Trainer email not valid");
             }
@@ -34,7 +34,7 @@ public class ServletRequestSubscription extends HttpServlet {
                 throw new Exception("Date end is before today date");
             }
 
-            Subscription s = new SubscriptionDAO().addSubscription(ub, pt, dateEnd);
+            Subscription s = new SubscriptionFacade().addSubscription(ub, pt, dateEnd);
 
             if (s == null){
                 throw new Exception("Something went wrong");
