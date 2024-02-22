@@ -13,7 +13,7 @@
     <script src="js/utils.js"></script>
     <link rel="stylesheet" href="css/custom.css">
 </head>
-<body class="bgGradient">
+<body class="bg-primary" style="min-height: 100vh;">
 <%if(dataFromSession==null)
         response.sendRedirect(request.getContextPath() + "/index.jsp");
     else{
@@ -146,7 +146,6 @@
         </div>
     </div>
 </div>
-<%@include file="parts/footer.jsp"%>
 <%}%>
 </body>
 </html>
