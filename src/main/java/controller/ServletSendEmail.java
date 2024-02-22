@@ -35,7 +35,7 @@ public class ServletSendEmail extends HttpServlet {
             UserBean ub=new UserBeanFacade().checkEmail(emailuser);
             if (ub.getEmail().equalsIgnoreCase("ERRORE"))
                 throw new Exception("Account doesn't exist");
-            ApiClient client = Postmark.getApiClient("dc790940-a28a-4e55-9824-8cb69f51d804");
+            ApiClient client = Postmark.getApiClient(System.getenv("API_KEY"));
             Message message = new Message("a.abbate20@studenti.unisa.it", emailuser, "New Password for StayUp", "Your password: "+psw);
             message.setMessageStream("stayup");
             MessageResponse sending = client.deliverMessage(message);
