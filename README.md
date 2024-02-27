@@ -75,7 +75,7 @@ Add additional notes about how to deploy this on a live system -->
   <img src="https://contrib.rocks/image?repo=c4mrs/StayUp" />
 </a>
 
-See also the list of [contributors](https://github.com/c4mrs/StayUp/graphs/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/y1lion/StayUp/graphs/contributors) who participated in this project.
 
 <!--## License
 
