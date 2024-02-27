@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=".github/StayUp_LOGO.jpeg" width="256" heigth="256">
+  <img src="src/main/webapp/images/StayUp_LOGO.jpeg" width="256" heigth="256">
   <!--<h3 align="center"><code>StayUp</code></h3>-->
 </p>
 
@@ -8,7 +8,7 @@
 </p>
 
 <h6 align="center">
-  <a href="https://c4mrs.github.io/StayUp/javadoc">📄 API Docs</a>
+  <a href="https://github.com/y1lion/StayUp/tree/master/docs">📄 API Docs</a>
 </h6>
 
 ## Getting Started
@@ -25,7 +25,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 1. Clone the repository:
 ```bash
-$ git clone https://github.com/c4mrs/StayUp.git
+$ git clone https://github.com/y1lion/StayUp.git
 ```
 2. Open the project with your IDE and wait for Maven to install all the dependencies.
 3. Configure Tomcat in your IDE.
